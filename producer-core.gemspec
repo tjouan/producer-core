@@ -17,4 +17,9 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files`.split $/
   s.test_files  = s.files.grep /\A(spec|features)\//
   s.executables = s.files.grep(/\Abin\//) { |f| File.basename(f) }
+
+
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'cucumber'
+  s.add_development_dependency 'aruba'
 end

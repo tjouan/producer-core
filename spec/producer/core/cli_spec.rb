@@ -2,7 +2,9 @@ require 'spec_helper'
 
 module Producer::Core
   describe CLI do
-    let(:arguments) { %w{host recipe.rb} }
+    include FixturesHelpers
+
+    let(:arguments) { ['host', fixture_path_for('recipes/empty.rb')] }
     subject(:cli)   { CLI.new(arguments) }
 
     describe '#initialize' do
@@ -12,6 +14,18 @@ module Producer::Core
     end
 
     describe '#run!' do
+      it 'builds a recipe' do
+        expect(Recipe).to receive(:from_file).with(arguments[1]).and_call_original
+        cli.run!
+      end
+
+      it 'evaluates the recipe' do
+        recipe = double('recipe')
+        allow(Recipe).to receive(:from_file).and_return(recipe)
+        expect(recipe).to receive(:evaluate)
+        cli.run!
+      end
+
       context 'missing argument' do
         let(:arguments) { %w{host} }
         let(:stdout)    { StringIO.new }

@@ -12,6 +12,8 @@ module Producer
 
       def run!
         print_usage_and_exit(64) unless @arguments.length == 2
+
+        Recipe.from_file(@arguments[1]).evaluate
       end
 
 

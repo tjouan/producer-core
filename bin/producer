@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'producer/core'
+
+Producer::Core::CLI.new(ARGV).run!

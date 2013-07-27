@@ -54,6 +54,23 @@ module Producer::Core
           expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
         end
       end
+
+      describe '#tasks' do
+        let(:code) { Proc.new { task(:some_task) } }
+
+        it 'returns registered tasks' do
+          expect(dsl.tasks[0].name).to eq :some_task
+        end
+      end
+
+      describe '#task' do
+        let(:code) { Proc.new { task(:one); task(:two) } }
+
+        it 'registers tasks in declaration order' do
+          expect(dsl.tasks[0].name).to eq :one
+          expect(dsl.tasks[1].name).to eq :two
+        end
+      end
     end
   end
 end

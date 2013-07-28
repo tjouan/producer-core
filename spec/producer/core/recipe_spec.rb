@@ -29,7 +29,7 @@ module Producer::Core
 
     describe '#evaluate' do
       it 'builds a recipe DSL sandbox' do
-        expect(Recipe).to receive(:new).with(code).and_call_original
+        expect(Recipe::DSL).to receive(:new).with(code).and_call_original
         recipe.evaluate
       end
     end

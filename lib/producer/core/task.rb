@@ -9,7 +9,21 @@ module Producer
       end
 
       def evaluate
-        instance_eval &@block
+        DSL.new &@block
+      end
+
+
+      class DSL
+        ConditionNotMetError = Class.new(RuntimeError)
+
+        def initialize(&block)
+          instance_eval &block
+        rescue ConditionNotMetError
+        end
+
+        def condition(&block)
+          raise ConditionNotMetError unless block.call
+        end
       end
     end
   end

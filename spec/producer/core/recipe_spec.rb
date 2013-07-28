@@ -32,7 +32,7 @@ module Producer::Core
       let(:code)    { "raise '#{message}'" }
 
       it 'evaluates its code' do
-        expect { recipe.evaluate }.to raise_error(RuntimeError, 'error from recipe')
+        expect { recipe.evaluate }.to raise_error(RuntimeError, message)
       end
     end
   end

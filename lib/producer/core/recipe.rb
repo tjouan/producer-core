@@ -12,7 +12,18 @@ module Producer
       end
 
       def evaluate
-        Object.new.instance_eval @code
+        dsl = DSL.new(@code)
+      end
+
+
+      class DSL
+        def initialize(code = nil, &block)
+          if code
+            instance_eval code
+          else
+            instance_eval &block
+          end
+        end
       end
     end
   end

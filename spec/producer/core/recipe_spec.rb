@@ -4,7 +4,7 @@ module Producer::Core
   describe Recipe do
     include FixturesHelpers
 
-    let(:code)        { 'some ruby code' }
+    let(:code)        { 'nil' }
     subject(:recipe)  { Recipe.new(code) }
 
     describe '.from_file' do
@@ -28,11 +28,22 @@ module Producer::Core
     end
 
     describe '#evaluate' do
-      let(:message) { 'error from recipe' }
-      let(:code)    { "raise '#{message}'" }
+      it 'builds a recipe DSL sandbox' do
+        expect(Recipe).to receive(:new).with(code).and_call_original
+        recipe.evaluate
+      end
+    end
 
-      it 'evaluates its code' do
-        expect { recipe.evaluate }.to raise_error(RuntimeError, message)
+
+    describe Recipe::DSL do
+      let(:dsl) { Recipe::DSL.new &code }
+
+      describe '#new' do
+        let(:code) { Proc.new { raise 'error from recipe' } }
+
+        it 'evaluates its code' do
+          expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
+        end
       end
     end
   end

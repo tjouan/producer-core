@@ -38,7 +38,7 @@ module Producer::Core
     describe Recipe::DSL do
       let(:dsl) { Recipe::DSL.new &code }
 
-      describe '#new' do
+      describe '#initialize' do
         let(:code) { Proc.new { raise 'error from recipe' } }
 
         it 'evaluates its code' do

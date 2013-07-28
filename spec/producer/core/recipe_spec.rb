@@ -45,6 +45,15 @@ module Producer::Core
           expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
         end
       end
+
+      describe '#source' do
+        let(:code)  { "source '#{fixture_path_for 'recipes/error'}'" }
+        let(:dsl)   { Recipe::DSL.new code }
+
+        it 'evaluates its code' do
+          expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
+        end
+      end
     end
   end
 end

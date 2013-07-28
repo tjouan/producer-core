@@ -24,6 +24,13 @@ module Producer
             instance_eval &block
           end
         end
+
+
+        private
+
+        def source(filepath)
+          instance_eval File.read("./#{filepath}.rb")
+        end
       end
     end
   end

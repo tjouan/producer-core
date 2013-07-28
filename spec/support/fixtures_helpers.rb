@@ -1,7 +1,7 @@
 module FixturesHelpers
-  FIXTURE_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures')
+  FIXTURES_PATH = 'spec/fixtures'
 
   def fixture_path_for(path)
-    File.join(FIXTURE_PATH, path)
+    File.join(FIXTURES_PATH, path)
   end
 end

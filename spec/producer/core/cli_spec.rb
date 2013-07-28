@@ -32,7 +32,9 @@ module Producer::Core
         subject(:cli)   { CLI.new(arguments, stdout) }
 
         it 'exits' do
-          expect { cli.run! }.to raise_error SystemExit
+          expect { cli.run! }.to raise_error(SystemExit) { |e|
+            expect(e.status).to eq 64
+          }
         end
 
         it 'prints the usage' do

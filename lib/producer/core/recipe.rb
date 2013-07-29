@@ -12,8 +12,8 @@ module Producer
         @filepath = filepath
       end
 
-      def evaluate
-        dsl = DSL.new(@code).evaluate
+      def evaluate(env)
+        dsl = DSL.new(@code).evaluate(env)
         dsl.tasks.each.map(&:evaluate)
       end
 
@@ -27,7 +27,7 @@ module Producer
           @tasks  = []
         end
 
-        def evaluate
+        def evaluate(env)
           if @code
             instance_eval @code
           else

@@ -5,6 +5,7 @@ module Producer::Core
     include FixturesHelpers
 
     let(:code)        { 'nil' }
+    let(:env)         { double('env') }
     subject(:recipe)  { Recipe.new(code) }
 
     describe '.from_file' do
@@ -35,7 +36,7 @@ module Producer::Core
     describe '#evaluate' do
       it 'builds a recipe DSL sandbox' do
         expect(Recipe::DSL).to receive(:new).with(code).and_call_original
-        recipe.evaluate
+        recipe.evaluate(env)
       end
     end
 
@@ -65,23 +66,23 @@ module Producer::Core
       describe '#evaluate' do
         it 'evaluates its code' do
           dsl = Recipe::DSL.new { raise 'error from recipe' }
-          expect { dsl.evaluate }.to raise_error(RuntimeError, 'error from recipe')
+          expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
         end
 
         it 'returns itself' do
-          expect(dsl.evaluate).to eq dsl
+          expect(dsl.evaluate(env)).to eq dsl
         end
       end
 
       context 'DSL specific methods' do
-        subject(:dsl) { Recipe::DSL.new(&code).evaluate }
+        subject(:dsl) { Recipe::DSL.new(&code).evaluate(env) }
 
         describe '#source' do
           let(:code)    { "source '#{fixture_path_for 'recipes/error'}'" }
           subject(:dsl) { Recipe::DSL.new code }
 
           it 'sources the recipe given as argument' do
-            expect { dsl.evaluate }.to raise_error(RuntimeError, 'error from recipe')
+            expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
           end
         end
 

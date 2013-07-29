@@ -13,16 +13,26 @@ module Producer::Core
       end
     end
 
+    # FIXME: spec/method need refactoring
     describe '#run!' do
       it 'builds a recipe' do
         expect(Recipe).to receive(:from_file).with(arguments[1]).and_call_original
         cli.run!
       end
 
-      it 'evaluates the recipe' do
+      it 'builds an environment with the current recipe' do
+        recipe = double('recipe').as_null_object
+        allow(Recipe).to receive(:from_file).and_return(recipe)
+        expect(Env).to receive(:new).with(recipe).and_call_original
+        cli.run!
+      end
+
+      it 'evaluates the recipe with the environment' do
         recipe = double('recipe')
         allow(Recipe).to receive(:from_file).and_return(recipe)
-        expect(recipe).to receive(:evaluate)
+        env = double('env')
+        allow(Env).to receive(:new).and_return(env)
+        expect(recipe).to receive(:evaluate).with(env)
         cli.run!
       end
 

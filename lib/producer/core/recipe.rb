@@ -1,14 +1,15 @@
 module Producer
   module Core
     class Recipe
-      attr_reader :code
+      attr_reader :code, :filepath
 
       def self.from_file(filepath)
-        new(File.read(filepath))
+        new(File.read(filepath), filepath)
       end
 
-      def initialize(code)
-        @code = code
+      def initialize(code, filepath = nil)
+        @code     = code
+        @filepath = filepath
       end
 
       def evaluate

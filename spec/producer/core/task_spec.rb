@@ -20,7 +20,7 @@ module Producer::Core
     end
 
     describe Task::DSL do
-      let(:dsl) { Task::DSL.new &block }
+      subject(:dsl) { Task::DSL.new &block }
 
       describe '#initialize' do
         let(:block) { Proc.new { raise 'error from task' } }
@@ -48,7 +48,7 @@ module Producer::Core
             raise
           } }
 
-          it 'evaluates all the block' do
+          it 'stops block evaluation' do
             expect { dsl }.not_to raise_error
           end
         end

@@ -13,7 +13,7 @@ module Producer
       end
 
       def evaluate
-        dsl = DSL.new(@code)
+        dsl = DSL.new(@code).evaluate
         dsl.tasks.each.map(&:evaluate)
       end
 
@@ -22,12 +22,18 @@ module Producer
         attr_reader :tasks
 
         def initialize(code = nil, &block)
-          @tasks = []
-          if code
-            instance_eval code
+          @code   = code
+          @block  = block
+          @tasks  = []
+        end
+
+        def evaluate
+          if @code
+            instance_eval @code
           else
-            instance_eval &block
+            instance_eval &@block
           end
+          self
         end
 
 

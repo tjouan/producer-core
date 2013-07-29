@@ -41,39 +41,65 @@ module Producer::Core
 
 
     describe Recipe::DSL do
+      let(:code)    { Proc.new { } }
       subject(:dsl) { Recipe::DSL.new &code }
 
       describe '#initialize' do
-        let(:code) { Proc.new { raise 'error from recipe' } }
+        context 'when a string of code is given as argument' do
+          subject(:dsl) { Recipe::DSL.new 'nil' }
 
+          it 'returns the DSL instance' do
+            expect(dsl).to be_a Recipe::DSL
+          end
+        end
+
+        context 'when a code block is given as argument' do
+          subject(:dsl) { Recipe::DSL.new Proc.new { } }
+
+          it 'returns the DSL instance' do
+            expect(dsl).to be_a Recipe::DSL
+          end
+        end
+      end
+
+      describe '#evaluate' do
         it 'evaluates its code' do
-          expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
+          dsl = Recipe::DSL.new { raise 'error from recipe' }
+          expect { dsl.evaluate }.to raise_error(RuntimeError, 'error from recipe')
+        end
+
+        it 'returns itself' do
+          expect(dsl.evaluate).to eq dsl
         end
       end
 
-      describe '#source' do
-        let(:code)    { "source '#{fixture_path_for 'recipes/error'}'" }
-        subject(:dsl) { Recipe::DSL.new code }
+      context 'DSL specific methods' do
+        subject(:dsl) { Recipe::DSL.new(&code).evaluate }
 
-        it 'sources the recipe given as argument' do
-          expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
+        describe '#source' do
+          let(:code)    { "source '#{fixture_path_for 'recipes/error'}'" }
+          subject(:dsl) { Recipe::DSL.new code }
+
+          it 'sources the recipe given as argument' do
+            expect { dsl.evaluate }.to raise_error(RuntimeError, 'error from recipe')
+          end
         end
-      end
 
-      describe '#tasks' do
-        let(:code) { Proc.new { task(:some_task) } }
+        describe '#tasks' do
+          let(:code) { Proc.new { task(:some_task) } }
 
-        it 'returns registered tasks' do
-          expect(dsl.tasks[0].name).to eq :some_task
+          it 'returns registered tasks' do
+            expect(dsl.tasks[0].name).to eq :some_task
+          end
         end
-      end
 
-      describe '#task' do
-        let(:code) { Proc.new { task(:first); task(:last) } }
+        describe '#task' do
+          let(:code) { Proc.new { task(:first); task(:last) } }
 
-        it 'registers tasks in declaration order' do
-          expect(dsl.tasks[0].name).to eq :first
-          expect(dsl.tasks[1].name).to eq :last
+          it 'registers tasks in declaration order' do
+            expect(dsl.tasks[0].name).to eq :first
+            expect(dsl.tasks[1].name).to eq :last
+          end
         end
       end
     end

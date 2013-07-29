@@ -12,17 +12,24 @@ module Producer
 
       def run!
         check_arguments!
-        evaluate_recipe_file(@arguments[1])
+        evaluate_recipe_file
       end
 
       def check_arguments!
         print_usage_and_exit(64) unless @arguments.length == 2
       end
 
-      def evaluate_recipe_file(filepath)
+      def evaluate_recipe_file
         recipe = Recipe.from_file(@arguments[1])
         env = Env.new(recipe)
-        recipe.evaluate env
+        begin
+          recipe.evaluate env
+        rescue Recipe::RecipeEvaluationError => e
+          @stdout.puts [e.backtrace.shift, e.message].join ': '
+          @stdout.puts e.backtrace
+
+          exit 70
+        end
       end
 
 

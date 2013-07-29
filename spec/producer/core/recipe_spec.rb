@@ -5,7 +5,7 @@ module Producer::Core
     include FixturesHelpers
 
     let(:code)        { 'nil' }
-    let(:env)         { double('env') }
+    let(:env)         { double('env').as_null_object }
     subject(:recipe)  { Recipe.new(code) }
 
     describe '.from_file' do
@@ -87,6 +87,24 @@ module Producer::Core
 
         it 'returns itself' do
           expect(dsl.evaluate(env)).to eq dsl
+        end
+
+        context 'invalid recipe' do
+          let(:filepath)  { fixture_path_for 'recipes/error.rb' }
+          let(:recipe)    { Recipe.from_file(filepath) }
+          subject(:dsl)   { Recipe::DSL.new File.read(filepath) }
+
+          it 'reports the recipe file path in the error' do
+            allow(env).to receive(:current_recipe) { recipe }
+            expect { dsl.evaluate(env) }.to raise_error(RuntimeError) { |e|
+              expect(e.backtrace.first).to match /\A#{filepath}/
+            }
+          end
+
+          it 'raises a RecipeEvaluationError on NameError' do
+            dsl = Recipe::DSL.new { incorrect_keyword }
+            expect { dsl.evaluate(env) }.to raise_error(Recipe::RecipeEvaluationError)
+          end
         end
       end
 

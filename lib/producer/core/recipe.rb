@@ -1,6 +1,8 @@
 module Producer
   module Core
     class Recipe
+      RecipeEvaluationError = Class.new(StandardError)
+
       attr_reader :code, :filepath
 
       def self.from_file(filepath)
@@ -29,11 +31,15 @@ module Producer
 
         def evaluate(env)
           if @code
-            instance_eval @code
+            instance_eval @code, env.current_recipe.filepath
           else
             instance_eval &@block
           end
           self
+        rescue NameError => e
+          err = RecipeEvaluationError.new("invalid recipe keyword `#{e.name}'")
+          err.set_backtrace e.backtrace.reject { |l| l =~ /\/producer-core\// }
+          raise err
         end
 
 

@@ -20,7 +20,7 @@ module Producer::Core
       end
 
       it 'evaluates the recipe' do
-        expect(cli).to receive(:evaluate_recipe_file).with(arguments[1])
+        expect(cli).to receive(:evaluate_recipe_file)
         cli.run!
       end
     end
@@ -50,14 +50,14 @@ module Producer::Core
     describe '#evaluate_recipe_file' do
       it 'builds a recipe' do
         expect(Recipe).to receive(:from_file).with(arguments[1]).and_call_original
-        cli.evaluate_recipe_file(arguments[1])
+        cli.evaluate_recipe_file
       end
 
       it 'builds an environment with the current recipe' do
         recipe = double('recipe').as_null_object
         allow(Recipe).to receive(:from_file).and_return(recipe)
         expect(Env).to receive(:new).with(recipe).and_call_original
-        cli.evaluate_recipe_file(arguments[1])
+        cli.evaluate_recipe_file
       end
 
       it 'evaluates the recipe with the environment' do
@@ -66,7 +66,33 @@ module Producer::Core
         env = double('env')
         allow(Env).to receive(:new).and_return(env)
         expect(recipe).to receive(:evaluate).with(env)
-        cli.evaluate_recipe_file(arguments[1])
+        cli.evaluate_recipe_file
+      end
+
+      context 'error during recipe evaluation' do
+        let(:arguments) { ['host', fixture_path_for('recipes/invalid.rb')] }
+        let(:stdout)    { StringIO.new }
+        subject(:cli)   { CLI.new(arguments, stdout) }
+
+        it 'exits with a return status of 70' do
+          expect { cli.evaluate_recipe_file }
+            .to raise_error(SystemExit) { |e|
+              expect(e.status).to eq 70
+            }
+        end
+
+        it 'prints the error' do
+          begin
+            cli.evaluate_recipe_file
+          rescue SystemExit
+          end
+          expect(stdout.string).to match(/
+            \A
+            #{arguments[1]}:4:
+            .+
+            invalid\srecipe\skeyword\s`invalid_keyword'
+          /x)
+        end
       end
     end
   end

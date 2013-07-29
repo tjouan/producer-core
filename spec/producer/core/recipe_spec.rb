@@ -35,7 +35,23 @@ module Producer::Core
 
     describe '#evaluate' do
       it 'builds a recipe DSL sandbox' do
-        expect(Recipe::DSL).to receive(:new).with(code).and_call_original
+        expect(Recipe::DSL).to receive(:new).once.with(code).and_call_original
+        recipe.evaluate(env)
+      end
+
+      it 'evaluates the DSL sandbox with the environment given as argument' do
+        dsl = double('dsl').as_null_object
+        allow(Recipe::DSL).to receive(:new) { dsl }
+        expect(dsl).to receive(:evaluate)
+        recipe.evaluate(env)
+      end
+
+      it 'evaluates the DSL sandbox tasks' do
+        task = double('task')
+        allow(Task).to receive(:new) { task }
+        dsl = Recipe::DSL.new { task(:some_task) }
+        allow(Recipe::DSL).to receive(:new) { dsl }
+        expect(task).to receive(:evaluate)
         recipe.evaluate(env)
       end
     end

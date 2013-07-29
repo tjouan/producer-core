@@ -64,11 +64,11 @@ module Producer::Core
       end
 
       describe '#task' do
-        let(:code) { Proc.new { task(:one); task(:two) } }
+        let(:code) { Proc.new { task(:first); task(:last) } }
 
         it 'registers tasks in declaration order' do
-          expect(dsl.tasks[0].name).to eq :one
-          expect(dsl.tasks[1].name).to eq :two
+          expect(dsl.tasks[0].name).to eq :first
+          expect(dsl.tasks[1].name).to eq :last
         end
       end
     end

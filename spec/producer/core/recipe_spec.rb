@@ -36,7 +36,7 @@ module Producer::Core
 
 
     describe Recipe::DSL do
-      let(:dsl) { Recipe::DSL.new &code }
+      subject(:dsl) { Recipe::DSL.new &code }
 
       describe '#initialize' do
         let(:code) { Proc.new { raise 'error from recipe' } }
@@ -47,10 +47,10 @@ module Producer::Core
       end
 
       describe '#source' do
-        let(:code)  { "source '#{fixture_path_for 'recipes/error'}'" }
-        let(:dsl)   { Recipe::DSL.new code }
+        let(:code)    { "source '#{fixture_path_for 'recipes/error'}'" }
+        subject(:dsl) { Recipe::DSL.new code }
 
-        it 'evaluates its code' do
+        it 'sources the recipe given as argument' do
           expect { dsl }.to raise_error(RuntimeError, 'error from recipe')
         end
       end

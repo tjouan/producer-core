@@ -27,7 +27,7 @@ module Producer
         private
 
         def source(filepath)
-          instance_eval File.read("./#{filepath}.rb")
+          instance_eval File.read("./#{filepath}.rb"), "#{filepath}.rb"
         end
 
         def task(name, &block)

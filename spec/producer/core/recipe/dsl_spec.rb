@@ -59,11 +59,20 @@ module Producer::Core
       subject(:dsl) { Recipe::DSL.new(&code).evaluate(env) }
 
       describe '#source' do
-        let(:code)    { "source '#{fixture_path_for 'recipes/error'}'" }
-        subject(:dsl) { Recipe::DSL.new code }
+        let(:filepath)  { fixture_path_for 'recipes/error' }
+        let(:code)      { "source '#{filepath}'" }
+        subject(:dsl)   { Recipe::DSL.new code }
 
         it 'sources the recipe given as argument' do
           expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
+        end
+
+        context 'invalid sourced recipe' do
+          it 'reports the sourced recipe file path in the error' do
+            expect { dsl.evaluate(env) }.to raise_error(RuntimeError) { |e|
+              expect(e.backtrace.first).to match /\A#{filepath}/
+            }
+          end
         end
       end
 

@@ -52,7 +52,7 @@ module Producer::Core
         allow(Task).to receive(:new) { task }
         dsl = Recipe::DSL.new { task(:some_task) }
         allow(Recipe::DSL).to receive(:new) { dsl }
-        expect(task).to receive(:evaluate)
+        expect(task).to receive(:evaluate).with(env)
         recipe.evaluate(env)
       end
     end

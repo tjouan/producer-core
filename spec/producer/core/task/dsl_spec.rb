@@ -2,13 +2,15 @@ require 'spec_helper'
 
 module Producer::Core
   describe Task::DSL do
+    let(:env)     { double('env') }
     subject(:dsl) { Task::DSL.new &block }
 
-    describe '#initialize' do
+    describe '#evaluate' do
       let(:block) { Proc.new { raise 'error from task' } }
 
-      it 'evaluates its block' do
-        expect { dsl }.to raise_error(RuntimeError, 'error from task')
+      it 'evaluates its code' do
+        expect { dsl.evaluate(env) }
+          .to raise_error(RuntimeError, 'error from task')
       end
     end
 
@@ -20,7 +22,8 @@ module Producer::Core
         } }
 
         it 'evaluates all the block' do
-          expect { dsl }.to raise_error(RuntimeError, 'error after condition')
+          expect { dsl.evaluate(env) }
+            .to raise_error(RuntimeError, 'error after condition')
         end
       end
 
@@ -31,7 +34,7 @@ module Producer::Core
         } }
 
         it 'stops block evaluation' do
-          expect { dsl }.not_to raise_error
+          expect { dsl.evaluate(env) }.not_to raise_error
         end
       end
     end

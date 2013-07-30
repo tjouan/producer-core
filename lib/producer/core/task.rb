@@ -8,8 +8,8 @@ module Producer
         @block  = block
       end
 
-      def evaluate
-        DSL.new &@block
+      def evaluate(env)
+        DSL.new(&@block).evaluate(env)
       end
     end
   end

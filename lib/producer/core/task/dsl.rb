@@ -5,7 +5,11 @@ module Producer
         ConditionNotMetError = Class.new(StandardError)
 
         def initialize(&block)
-          instance_eval &block
+          @block = block
+        end
+
+        def evaluate(env)
+          instance_eval &@block
         rescue ConditionNotMetError
         end
 

@@ -13,9 +13,18 @@ module Producer::Core
     end
 
     describe '#evaluate' do
+      let(:env) { double('env') }
+
       it 'builds a task DSL sandbox' do
-        expect(Task::DSL).to receive(:new).with(&block)
-        task.evaluate
+        expect(Task::DSL).to receive(:new).with(&block).and_call_original
+        task.evaluate(env)
+      end
+
+      it 'evaluates the task DSL sandbox' do
+        dsl = double('task dsl')
+        allow(Task::DSL).to receive(:new) { dsl }
+        expect(dsl).to receive(:evaluate).with(env)
+        task.evaluate(env)
       end
     end
   end

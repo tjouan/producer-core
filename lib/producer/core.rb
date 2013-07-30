@@ -1,5 +1,6 @@
 require 'producer/core/cli'
 require 'producer/core/env'
 require 'producer/core/recipe'
+require 'producer/core/recipe/dsl'
 require 'producer/core/task'
 require 'producer/core/version'

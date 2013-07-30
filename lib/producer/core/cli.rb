@@ -11,8 +11,15 @@ module Producer
       end
 
       def run!
-        print_usage_and_exit(64) unless @arguments.length == 2
+        check_arguments!
+        evaluate_recipe_file(@arguments[1])
+      end
 
+      def check_arguments!
+        print_usage_and_exit(64) unless @arguments.length == 2
+      end
+
+      def evaluate_recipe_file(filepath)
         recipe = Recipe.from_file(@arguments[1])
         env = Env.new(recipe)
         recipe.evaluate env

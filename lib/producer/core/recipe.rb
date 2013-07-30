@@ -14,7 +14,7 @@ module Producer
 
       def evaluate(env)
         dsl = DSL.new(@code).evaluate(env)
-        dsl.tasks.each.map(&:evaluate)
+        dsl.tasks.map(&:evaluate)
       end
 
 

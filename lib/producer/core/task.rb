@@ -14,7 +14,7 @@ module Producer
 
 
       class DSL
-        ConditionNotMetError = Class.new(RuntimeError)
+        ConditionNotMetError = Class.new(StandardError)
 
         def initialize(&block)
           instance_eval &block

@@ -3,5 +3,5 @@ Given(/^a recipe with:$/) do |recipe_body|
 end
 
 When(/^I execute the recipe$/) do
-  run_simple('producer localhost recipe.rb', false)
+  run_simple('producer recipe.rb', false)
 end

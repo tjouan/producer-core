@@ -3,7 +3,7 @@ module Producer
     class CLI
       attr_reader :arguments
 
-      USAGE = "Usage: #{File.basename $0} host recipe_file"
+      USAGE = "Usage: #{File.basename $0} recipe_file"
 
       def initialize(arguments, stdout = $stdout)
         @stdout     = stdout
@@ -16,11 +16,11 @@ module Producer
       end
 
       def check_arguments!
-        print_usage_and_exit(64) unless @arguments.length == 2
+        print_usage_and_exit(64) unless @arguments.length == 1
       end
 
       def evaluate_recipe_file
-        recipe = Recipe.from_file(@arguments[1])
+        recipe = Recipe.from_file(@arguments.first)
         env = Env.new(recipe)
         begin
           recipe.evaluate env

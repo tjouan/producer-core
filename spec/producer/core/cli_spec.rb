@@ -4,8 +4,9 @@ module Producer::Core
   describe CLI do
     include FixturesHelpers
 
-    let(:arguments) { ['host', fixture_path_for('recipes/empty.rb')] }
-    subject(:cli)   { CLI.new(arguments) }
+    let(:recipe_file) { fixture_path_for('recipes/empty.rb') }
+    let(:arguments)   { [recipe_file] }
+    subject(:cli)     { CLI.new(arguments) }
 
     describe '#initialize' do
       it 'assigns the arguments' do
@@ -26,8 +27,14 @@ module Producer::Core
     end
 
     describe '#check_arguments!' do
-      context 'when an argument is missing' do
-        let(:arguments) { %w{host} }
+      context 'when recipe argument is provided' do
+        it 'does not raise any error' do
+          expect { cli.check_arguments! }.to_not raise_error
+        end
+      end
+
+      context 'when recipe argument is missing' do
+        let(:arguments) { [] }
         let(:stdout)    { StringIO.new }
         subject(:cli)   { CLI.new(arguments, stdout) }
 
@@ -50,7 +57,7 @@ module Producer::Core
     describe '#evaluate_recipe_file' do
       it 'builds a recipe' do
         expect(Recipe)
-          .to receive(:from_file).with(arguments[1]).and_call_original
+          .to receive(:from_file).with(recipe_file).and_call_original
         cli.evaluate_recipe_file
       end
 
@@ -71,9 +78,9 @@ module Producer::Core
       end
 
       context 'error during recipe evaluation' do
-        let(:arguments) { ['host', fixture_path_for('recipes/invalid.rb')] }
-        let(:stdout)    { StringIO.new }
-        subject(:cli)   { CLI.new(arguments, stdout) }
+        let(:recipe_file) { fixture_path_for('recipes/invalid.rb') }
+        let(:stdout)      { StringIO.new }
+        subject(:cli)     { CLI.new(arguments, stdout) }
 
         it 'exits with a return status of 70' do
           expect { cli.evaluate_recipe_file }
@@ -89,7 +96,7 @@ module Producer::Core
           end
           expect(stdout.string).to match(/
             \A
-            #{arguments[1]}:4:
+            #{recipe_file}:4:
             .+
             invalid\srecipe\skeyword\s`invalid_keyword'
           /x)

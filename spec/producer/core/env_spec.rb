@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Env do
-    let(:recipe)  { Recipe.new(Proc.new { nil }) }
+    let(:recipe)  { Recipe.new(proc { nil }) }
     subject(:env) { Env.new(recipe) }
 
     describe '#current_recipe' do

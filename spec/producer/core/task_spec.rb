@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Task do
     let(:name)      { :some_task }
-    let(:block)     { Proc.new { } }
+    let(:block)     { proc { } }
     subject(:task)  { Task.new(name, &block) }
 
     describe '#name' do

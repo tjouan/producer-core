@@ -23,7 +23,6 @@ module Producer
           raise err
         end
 
-
         private
 
         def source(filepath)

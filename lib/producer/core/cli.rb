@@ -32,7 +32,6 @@ module Producer
         end
       end
 
-
       private
 
       def print_usage_and_exit(status)

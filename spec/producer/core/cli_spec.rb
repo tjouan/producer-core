@@ -49,7 +49,8 @@ module Producer::Core
 
     describe '#evaluate_recipe_file' do
       it 'builds a recipe' do
-        expect(Recipe).to receive(:from_file).with(arguments[1]).and_call_original
+        expect(Recipe)
+          .to receive(:from_file).with(arguments[1]).and_call_original
         cli.evaluate_recipe_file
       end
 

@@ -36,7 +36,7 @@ module Producer::Core
         expect(dsl.evaluate(env)).to eq dsl
       end
 
-      context 'invalid recipe' do
+      context 'when recipe is invalid' do
         let(:filepath)  { fixture_path_for 'recipes/error.rb' }
         let(:recipe)    { Recipe.from_file(filepath) }
         subject(:dsl)   { Recipe::DSL.new File.read(filepath) }
@@ -67,8 +67,8 @@ module Producer::Core
           expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
         end
 
-        context 'invalid sourced recipe' do
-          it 'reports the sourced recipe file path in the error' do
+        context 'when sourced recipe is invalid' do
+          it 'reports its file path in the error' do
             expect { dsl.evaluate(env) }.to raise_error(RuntimeError) { |e|
               expect(e.backtrace.first).to match /\A#{filepath}/
             }

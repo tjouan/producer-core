@@ -13,7 +13,7 @@ module Producer::Core
     end
 
     describe '#condition' do
-      context 'condition is met (block evals to true)' do
+      context 'when met (block evals to true)' do
         let(:block) { Proc.new {
           condition { true }
           raise 'error after condition'
@@ -24,7 +24,7 @@ module Producer::Core
         end
       end
 
-      context 'condition is not met (block evals to false)' do
+      context 'when not met (block evals to false)' do
         let(:block) { Proc.new {
           condition { false }
           raise

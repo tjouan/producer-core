@@ -77,7 +77,7 @@ module Producer::Core
         cli.evaluate_recipe_file
       end
 
-      context 'error during recipe evaluation' do
+      context 'when recipe evaluation fails' do
         let(:recipe_file) { fixture_path_for('recipes/invalid.rb') }
         let(:stdout)      { StringIO.new }
         subject(:cli)     { CLI.new(arguments, stdout) }

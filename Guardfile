@@ -1,4 +1,4 @@
-guard :cucumber, cli: '--format pretty' do
+guard :cucumber, cli: '--format pretty --quiet' do
   watch(%r{\Afeatures/.+\.feature\z})
   watch(%r{\Afeatures/support/.+\.rb\z})                { 'features' }
   watch(%r{\Afeatures/step_definitions/.+_steps\.rb\z}) { 'features' }

@@ -6,11 +6,11 @@ module Producer::Core
     subject(:dsl) { Task::DSL.new &block }
 
     describe '#evaluate' do
-      let(:block) { proc { raise 'error from task' } }
+      let(:block) { proc { throw :task_code } }
 
       it 'evaluates its code' do
         expect { dsl.evaluate(env) }
-          .to raise_error(RuntimeError, 'error from task')
+          .to throw_symbol :task_code
       end
 
       context 'when given block is invalid' do
@@ -26,23 +26,23 @@ module Producer::Core
       context 'when met (block evals to true)' do
         let(:block) { proc {
           condition { true }
-          raise 'error after condition'
+          throw :after_condition
         } }
 
         it 'evaluates all the block' do
           expect { dsl.evaluate(env) }
-            .to raise_error(RuntimeError, 'error after condition')
+            .to throw_symbol :after_condition
         end
       end
 
       context 'when not met (block evals to false)' do
         let(:block) { proc {
           condition { false }
-          raise
+          throw :after_condition
         } }
 
         it 'stops block evaluation' do
-          expect { dsl.evaluate(env) }.not_to raise_error
+          expect { dsl.evaluate(env) }.not_to throw_symbol :after_condition
         end
       end
     end

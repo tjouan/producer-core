@@ -28,8 +28,8 @@ module Producer::Core
 
     describe '#evaluate' do
       it 'evaluates its code' do
-        dsl = Recipe::DSL.new { raise 'error from recipe' }
-        expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
+        dsl = Recipe::DSL.new { throw :recipe_code }
+        expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
       end
 
       it 'returns itself' do
@@ -43,7 +43,7 @@ module Producer::Core
 
         it 'reports the recipe file path in the error' do
           allow(env).to receive(:current_recipe) { recipe }
-          expect { dsl.evaluate(env) }.to raise_error(RuntimeError) { |e|
+          expect { dsl.evaluate(env) }.to raise_error(SomeErrorInRecipe) { |e|
             expect(e.backtrace.first).to match /\A#{filepath}/
           }
         end
@@ -59,17 +59,19 @@ module Producer::Core
       subject(:dsl) { Recipe::DSL.new(&code).evaluate(env) }
 
       describe '#source' do
-        let(:filepath)  { fixture_path_for 'recipes/error' }
+        let(:filepath)  { fixture_path_for 'recipes/throw' }
         let(:code)      { "source '#{filepath}'" }
         subject(:dsl)   { Recipe::DSL.new code }
 
         it 'sources the recipe given as argument' do
-          expect { dsl.evaluate(env) }.to raise_error(RuntimeError, 'error from recipe')
+          expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
         end
 
         context 'when sourced recipe is invalid' do
+          let(:filepath) { fixture_path_for 'recipes/error' }
+
           it 'reports its file path in the error' do
-            expect { dsl.evaluate(env) }.to raise_error(RuntimeError) { |e|
+            expect { dsl.evaluate(env) }.to raise_error(SomeErrorInRecipe) { |e|
               expect(e.backtrace.first).to match /\A#{filepath}/
             }
           end

@@ -1,1 +1,1 @@
-raise 'error from recipe'
+raise SomeErrorInRecipe, 'some recipe error'

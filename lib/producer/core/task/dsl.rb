@@ -2,8 +2,6 @@ module Producer
   module Core
     class Task
       class DSL
-        ConditionNotMetError = Class.new(StandardError)
-
         def initialize(&block)
           @block = block
         end
@@ -11,10 +9,14 @@ module Producer
         def evaluate(env)
           instance_eval &@block
         rescue ConditionNotMetError
+        rescue NameError => e
+          raise TaskEvaluationError,
+            "invalid task action `#{e.name}'",
+            e.backtrace
         end
 
         def condition(&block)
-          raise ConditionNotMetError unless block.call
+          fail ConditionNotMetError unless block.call
         end
       end
     end

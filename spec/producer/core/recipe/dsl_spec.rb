@@ -50,7 +50,7 @@ module Producer::Core
 
         it 'raises a RecipeEvaluationError on NameError' do
           dsl = Recipe::DSL.new { invalid_keyword }
-          expect { dsl.evaluate(env) }.to raise_error(Recipe::RecipeEvaluationError)
+          expect { dsl.evaluate(env) }.to raise_error(RecipeEvaluationError)
         end
       end
     end

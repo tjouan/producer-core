@@ -89,17 +89,24 @@ module Producer::Core
             }
         end
 
-        it 'prints the error' do
-          begin
-            cli.evaluate_recipe_file
-          rescue SystemExit
-          end
+        def trap_exit
+          yield
+        rescue SystemExit
+        end
+
+        it 'prints the specific error' do
+          trap_exit { cli.evaluate_recipe_file }
           expect(stdout.string).to match(/
             \A
             #{recipe_file}:4:
             .+
             invalid\srecipe\skeyword\s`invalid_keyword'
           /x)
+        end
+
+        it 'excludes producer own source code from the error backtrace' do
+          trap_exit { cli.evaluate_recipe_file }
+          expect(stdout.string).to_not match /\/producer-core\//
         end
       end
     end

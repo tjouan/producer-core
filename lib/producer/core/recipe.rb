@@ -1,8 +1,6 @@
 module Producer
   module Core
     class Recipe
-      RecipeEvaluationError = Class.new(StandardError)
-
       attr_reader :code, :filepath
 
       def self.from_file(filepath)

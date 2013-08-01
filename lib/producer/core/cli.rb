@@ -24,9 +24,10 @@ module Producer
         env = Env.new(recipe)
         begin
           recipe.evaluate env
-        rescue Recipe::RecipeEvaluationError => e
-          @stdout.puts [e.backtrace.shift, e.message].join ': '
-          @stdout.puts e.backtrace
+        rescue RecipeEvaluationError => e
+          backtrace = e.backtrace.reject { |l| l =~ /\/producer-core\// }
+          @stdout.puts [backtrace.shift, e.message].join ': '
+          @stdout.puts backtrace
 
           exit 70
         end

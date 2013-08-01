@@ -18,9 +18,9 @@ module Producer
           end
           self
         rescue NameError => e
-          err = RecipeEvaluationError.new("invalid recipe keyword `#{e.name}'")
-          err.set_backtrace e.backtrace.reject { |l| l =~ /\/producer-core\// }
-          raise err
+          raise RecipeEvaluationError,
+            "invalid recipe keyword `#{e.name}'",
+            e.backtrace
         end
 
         private

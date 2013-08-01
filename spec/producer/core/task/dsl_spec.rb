@@ -6,7 +6,7 @@ module Producer::Core
     subject(:dsl) { Task::DSL.new &block }
 
     describe '#evaluate' do
-      let(:block) { Proc.new { raise 'error from task' } }
+      let(:block) { proc { raise 'error from task' } }
 
       it 'evaluates its code' do
         expect { dsl.evaluate(env) }
@@ -16,7 +16,7 @@ module Producer::Core
 
     describe '#condition' do
       context 'when met (block evals to true)' do
-        let(:block) { Proc.new {
+        let(:block) { proc {
           condition { true }
           raise 'error after condition'
         } }
@@ -28,7 +28,7 @@ module Producer::Core
       end
 
       context 'when not met (block evals to false)' do
-        let(:block) { Proc.new {
+        let(:block) { proc {
           condition { false }
           raise
         } }

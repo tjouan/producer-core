@@ -4,7 +4,7 @@ module Producer::Core
   describe Recipe::DSL do
     include FixturesHelpers
 
-    let(:code)    { Proc.new { } }
+    let(:code)    { proc { } }
     let(:env)     { double('env').as_null_object }
     subject(:dsl) { Recipe::DSL.new &code }
 
@@ -18,7 +18,7 @@ module Producer::Core
       end
 
       context 'when a code block is given as argument' do
-        subject(:dsl) { Recipe::DSL.new Proc.new { } }
+        subject(:dsl) { Recipe::DSL.new proc { } }
 
         it 'returns the DSL instance' do
           expect(dsl).to be_a Recipe::DSL
@@ -77,7 +77,7 @@ module Producer::Core
       end
 
       describe '#tasks' do
-        let(:code) { Proc.new { task(:some_task) } }
+        let(:code) { proc { task(:some_task) } }
 
         it 'returns registered tasks' do
           expect(dsl.tasks[0].name).to eq :some_task
@@ -85,7 +85,7 @@ module Producer::Core
       end
 
       describe '#task' do
-        let(:code) { Proc.new { task(:first); task(:last) } }
+        let(:code) { proc { task(:first); task(:last) } }
 
         it 'registers tasks in declaration order' do
           expect(dsl.tasks[0].name).to eq :first

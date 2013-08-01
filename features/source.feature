@@ -25,6 +25,7 @@ Feature: source recipe keyword
       invalid_keyword
       """
     When I execute the recipe
+    Then the exit status must be 70
     Then the output must match:
       """
       \AOK

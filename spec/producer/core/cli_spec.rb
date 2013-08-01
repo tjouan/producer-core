@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe CLI do
+    include ExitHelpers
     include FixturesHelpers
 
     let(:recipe_file) { fixture_path_for('recipes/empty.rb') }
@@ -45,10 +46,7 @@ module Producer::Core
         end
 
         it 'prints the usage' do
-          begin
-            cli.check_arguments!
-          rescue SystemExit
-          end
+          trap_exit { cli.check_arguments! }
           expect(stdout.string).to match /\AUsage: .+/
         end
       end
@@ -87,11 +85,6 @@ module Producer::Core
             .to raise_error(SystemExit) { |e|
               expect(e.status).to eq 70
             }
-        end
-
-        def trap_exit
-          yield
-        rescue SystemExit
         end
 
         it 'prints the specific error' do

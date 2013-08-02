@@ -17,6 +17,12 @@ module Producer
         rescue Net::SFTP::StatusException
           false
         end
+
+        def file_write(path, content)
+          sftp.file.open path, 'w' do |f|
+            f.write content
+          end
+        end
       end
     end
   end

@@ -2,6 +2,7 @@
 require 'producer/core/action'
 require 'producer/core/actions/echo'
 require 'producer/core/actions/shell_command'
+require 'producer/core/actions/file_writer'
 
 # condition tests (need to be defined before the condition DSL)
 require 'producer/core/test'

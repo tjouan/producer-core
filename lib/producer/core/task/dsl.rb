@@ -19,6 +19,8 @@ module Producer
         define_action :echo,  Actions::Echo
         define_action :sh,    Actions::ShellCommand
 
+        define_action :file_write,  Actions::FileWriter
+
         attr_accessor :actions
 
         def initialize(&block)

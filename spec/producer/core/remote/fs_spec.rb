@@ -72,5 +72,30 @@ module Producer::Core
         end
       end
     end
+
+    describe '#file_write' do
+      let(:sftp)    { double('sftp').as_null_object }
+      let(:file)    { double('sftp').as_null_object }
+      let(:path)    { 'some_file_path' }
+      let(:content) { 'some_content' }
+
+      before do
+        allow(fs).to receive(:sftp) { sftp }
+        allow(sftp).to receive(:file) { file }
+      end
+
+      it 'opens the file' do
+        expect(file).to receive(:open).with(path, 'w')
+        fs.file_write path, content
+      end
+
+      it 'writes the content' do
+        expect(file).to receive(:open).with(any_args) do |&b|
+          expect(file).to receive(:write).with(content)
+          b.call file
+        end
+        fs.file_write path, content
+      end
+    end
   end
 end

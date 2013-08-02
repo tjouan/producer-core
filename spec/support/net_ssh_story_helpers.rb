@@ -29,10 +29,6 @@ module NetSSHStoryHelpers
     end
   end
 
-  def story_completed?
-    socket.script.events.empty?
-  end
-
   def sftp_story
     story do |session|
       ch = session.opens_channel
@@ -47,5 +43,12 @@ module NetSSHStoryHelpers
       )
       yield ch if block_given?
     end
+  end
+
+  def expect_story_completed
+    raise 'there is no story to expect' if socket.script.events.empty?
+    yield
+    expect(socket.script.events)
+      .to be_empty, "#{socket.script.events.count} story events still pending"
   end
 end

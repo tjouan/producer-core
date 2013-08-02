@@ -94,8 +94,7 @@ module Producer::Core
           ch.sends_exec command
           ch.gets_data arguments
         end
-        remote.execute command
-        expect(story_completed?).to be
+        expect_story_completed { remote.execute command }
       end
 
       it 'returns the output' do

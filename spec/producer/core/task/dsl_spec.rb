@@ -2,8 +2,22 @@ require 'spec_helper'
 
 module Producer::Core
   describe Task::DSL do
+    let(:block)   { proc { } }
     let(:env)     { double('env') }
     subject(:dsl) { Task::DSL.new &block }
+
+    describe '.define_action' do
+      it 'defines a new action keyword' do
+        Task::DSL.define_action(:some_action, Object)
+        expect(dsl).to respond_to :some_action
+      end
+    end
+
+    describe '#initialize' do
+      it 'has no action' do
+        expect(dsl.actions).to eq []
+      end
+    end
 
     describe '#evaluate' do
       let(:block) { proc { throw :task_code } }
@@ -11,6 +25,24 @@ module Producer::Core
       it 'evaluates its code' do
         expect { dsl.evaluate(env) }
           .to throw_symbol :task_code
+      end
+
+      context 'when a defined keyword action is called' do
+        let(:some_action_class) { Class.new(Action) }
+        let(:block)             { proc { some_action } }
+
+        before do
+          Task::DSL.define_action(:some_action, some_action_class)
+          dsl.evaluate(env)
+        end
+
+        it 'registers the action' do
+          expect(dsl.actions.first).to be_an Action
+        end
+
+        it 'provides the env to the registered action' do
+          expect(dsl.actions.first.env).to eq env
+        end
       end
 
       context 'when given block is invalid' do

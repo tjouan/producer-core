@@ -21,9 +21,18 @@ module Producer::Core
       end
 
       it 'evaluates the task DSL sandbox' do
-        dsl = double('task dsl')
+        dsl = double('task DSL').as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
         expect(dsl).to receive(:evaluate).with(env)
+        task.evaluate(env)
+      end
+
+      it 'applies DSL sandbox actions' do
+        dsl = double('task DSL').as_null_object
+        allow(Task::DSL).to receive(:new) { dsl }
+        action = double('action')
+        allow(dsl).to receive(:actions) { [action] }
+        expect(action).to receive(:apply)
         task.evaluate(env)
       end
     end

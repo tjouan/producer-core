@@ -9,7 +9,9 @@ module Producer
       end
 
       def evaluate(env)
-        DSL.new(&@block).evaluate(env)
+        dsl = DSL.new(&@block)
+        dsl.evaluate(env)
+        dsl.actions.map(&:apply)
       end
     end
   end

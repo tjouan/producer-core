@@ -14,6 +14,10 @@ module Producer
       def output(str)
         @output.puts str
       end
+
+      def remote
+        @remote ||= Remote.new(target)
+      end
     end
   end
 end

@@ -11,6 +11,7 @@ module Producer
         end
 
         def evaluate(env)
+          @env = env
           if @code
             instance_eval @code, env.current_recipe.filepath
           else
@@ -25,8 +26,16 @@ module Producer
 
         private
 
+        def env
+          @env
+        end
+
         def source(filepath)
           instance_eval File.read("./#{filepath}.rb"), "#{filepath}.rb"
+        end
+
+        def target(hostname)
+          env.target = hostname
         end
 
         def task(name, &block)

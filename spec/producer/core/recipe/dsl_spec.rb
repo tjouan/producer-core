@@ -58,6 +58,15 @@ module Producer::Core
     context 'DSL specific methods' do
       subject(:dsl) { Recipe::DSL.new(&code).evaluate(env) }
 
+      describe '#env' do
+        let(:code) { proc { env.some_message } }
+
+        it 'returns the current environment' do
+          expect(env).to receive(:some_message)
+          dsl.evaluate(env)
+        end
+      end
+
       describe '#source' do
         let(:filepath)  { fixture_path_for 'recipes/throw' }
         let(:code)      { "source '#{filepath}'" }

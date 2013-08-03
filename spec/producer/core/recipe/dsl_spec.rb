@@ -87,6 +87,15 @@ module Producer::Core
         end
       end
 
+      describe '#target' do
+        let(:code) { proc { target 'some_host.example' } }
+
+        it 'registers the target host in the env' do
+          expect(env).to receive(:target=).with('some_host.example')
+          dsl.evaluate(env)
+        end
+      end
+
       describe '#tasks' do
         let(:code) { proc { task(:some_task) } }
 

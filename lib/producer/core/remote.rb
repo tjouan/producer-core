@@ -13,6 +13,15 @@ module Producer
       def session
         @session ||= Net::SSH.start(@hostname, Etc.getlogin)
       end
+
+      def execute(command)
+        output = ''
+        session.exec command do |ch, stream, data|
+          output << data
+        end
+        session.loop
+        output
+      end
     end
   end
 end

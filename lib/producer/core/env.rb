@@ -4,7 +4,7 @@ module Producer
       attr_reader   :current_recipe
       attr_accessor :target
 
-      def initialize(recipe)
+      def initialize(recipe = nil)
         @current_recipe = recipe
         @target         = nil
       end

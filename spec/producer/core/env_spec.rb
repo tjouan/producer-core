@@ -2,18 +2,26 @@ require 'spec_helper'
 
 module Producer::Core
   describe Env do
-    let(:recipe)  { Recipe.new(proc { nil }) }
-    subject(:env) { Env.new(recipe) }
+    subject(:env) { Env.new }
 
     describe '#initialize' do
       it 'has no target' do
         expect(env.target).not_to be
       end
-    end
 
-    describe '#current_recipe' do
-      it 'returns the assigned current recipe' do
-        expect(env.current_recipe).to eq recipe
+      context 'without argument' do
+        it 'has no recipe' do
+          expect(env.current_recipe).not_to be
+        end
+      end
+
+      context 'when a recipe is given as argument' do
+        let(:recipe)  { Recipe.new(proc { nil }) }
+        subject(:env) { Env.new(recipe) }
+
+        it 'assigns the current recipe' do
+          expect(env.current_recipe).to eq recipe
+        end
       end
     end
 

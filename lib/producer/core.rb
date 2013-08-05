@@ -1,4 +1,5 @@
 require 'producer/core/action'
+require 'producer/core/actions/shell_command'
 require 'producer/core/cli'
 require 'producer/core/env'
 require 'producer/core/errors'

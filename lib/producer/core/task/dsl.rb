@@ -10,6 +10,8 @@ module Producer
           end
         end
 
+        define_action :sh, Actions::ShellCommand
+
         attr_accessor :actions
 
         def initialize(&block)

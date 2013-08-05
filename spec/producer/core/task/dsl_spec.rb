@@ -6,6 +6,12 @@ module Producer::Core
     let(:env)     { double('env') }
     subject(:dsl) { Task::DSL.new &block }
 
+    %w[sh].each do |action|
+      it "has `#{action}' action defined" do
+        expect(dsl).to respond_to action.to_sym
+      end
+    end
+
     describe '.define_action' do
       it 'defines a new action keyword' do
         Task::DSL.define_action(:some_action, Object)

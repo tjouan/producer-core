@@ -15,7 +15,7 @@ module Producer::Core
         end
 
         it 'assigns $stdout as the default output' do
-          expect(env.instance_eval { @output} ).to eq $stdout
+          expect(env.instance_eval { @output } ).to eq $stdout
         end
       end
 

@@ -16,8 +16,17 @@ module Producer
 
       def execute(command)
         output = ''
-        session.exec command do |ch, stream, data|
-          output << data
+        session.open_channel do |channel|
+          channel.exec command do |ch, success|
+            ch.on_data do |c, data|
+              output << data
+            end
+
+            ch.on_request('exit-status') do |c, data|
+              exit_status = data.read_long
+              raise RemoteCommandExecutionError if exit_status != 0
+            end
+          end
         end
         session.loop
         output

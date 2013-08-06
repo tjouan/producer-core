@@ -30,13 +30,13 @@ module Producer::Core
     end
 
     describe '#execute', :ssh do
-      let(:args)    { 'some remote command' }
-      let(:command) { "echo #{args}" }
+      let(:arguments) { 'some remote command' }
+      let(:command)   { "echo #{arguments}" }
 
       it 'executes the given command in a new channel' do
         story_with_new_channel do |ch|
           ch.sends_exec command
-          ch.gets_data args
+          ch.gets_data arguments
         end
         remote.execute command
         expect(story_completed?).to be
@@ -45,9 +45,9 @@ module Producer::Core
       it 'returns the output' do
         story_with_new_channel do |ch|
           ch.sends_exec command
-          ch.gets_data args
+          ch.gets_data arguments
         end
-        expect(remote.execute(command)).to eq args
+        expect(remote.execute(command)).to eq arguments
       end
     end
   end

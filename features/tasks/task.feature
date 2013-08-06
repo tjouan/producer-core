@@ -9,7 +9,7 @@ Feature: task evaluation
       """
     When I execute the recipe
     Then the exit status must be 0
-    And the output must contain "hello from recipe"
+    And the output must contain exactly "hello from recipe\n"
 
   Scenario: reports errors for invalid action calls in a task
     Given a recipe with:

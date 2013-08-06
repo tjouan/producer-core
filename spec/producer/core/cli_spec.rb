@@ -9,8 +9,8 @@ module Producer::Core
     let(:arguments)   { [recipe_file] }
     subject(:cli)     { CLI.new(arguments) }
 
-    describe '#initialize' do
-      it 'assigns the arguments' do
+    describe '#arguments' do
+      it 'returns the arguments' do
         expect(cli.arguments).to eq arguments
       end
     end

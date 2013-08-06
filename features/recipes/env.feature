@@ -1,4 +1,4 @@
-Feature: env recipe keyword
+Feature: `env' recipe keyword
 
   Scenario: exposes the internal env object
     Given a recipe with:

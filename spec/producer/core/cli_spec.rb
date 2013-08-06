@@ -80,26 +80,38 @@ module Producer::Core
         let(:stdout)      { StringIO.new }
         subject(:cli)     { CLI.new(arguments, stdout) }
 
-        it 'exits with a return status of 70' do
-          expect { cli.evaluate_recipe_file }
-            .to raise_error(SystemExit) { |e|
-              expect(e.status).to eq 70
-            }
+        context 'when error is known' do
+          it 'exits with a return status of 70' do
+            expect { cli.evaluate_recipe_file }
+              .to raise_error(SystemExit) { |e|
+                expect(e.status).to eq 70
+              }
+          end
+
+          it 'prints the specific error' do
+            trap_exit { cli.evaluate_recipe_file }
+            expect(stdout.string).to match(/
+              \A
+              #{recipe_file}:4:
+              .+
+              invalid\srecipe\skeyword\s`invalid_keyword'
+            /x)
+          end
+
+          it 'excludes producer own source code from the error backtrace' do
+            trap_exit { cli.evaluate_recipe_file }
+            expect(stdout.string).to_not match /\/producer-core\//
+          end
         end
 
-        it 'prints the specific error' do
-          trap_exit { cli.evaluate_recipe_file }
-          expect(stdout.string).to match(/
-            \A
-            #{recipe_file}:4:
-            .+
-            invalid\srecipe\skeyword\s`invalid_keyword'
-          /x)
-        end
-
-        it 'excludes producer own source code from the error backtrace' do
-          trap_exit { cli.evaluate_recipe_file }
-          expect(stdout.string).to_not match /\/producer-core\//
+        context 'when error is unknown (unexpected)' do
+          it 'lets the error be' do
+            UnexpectedError = Class.new(StandardError)
+            recipe = double('recipe')
+            allow(Recipe).to receive(:from_file).and_return(recipe)
+            allow(recipe).to receive(:evaluate).and_raise(UnexpectedError)
+            expect { cli.evaluate_recipe_file }.to raise_error(UnexpectedError)
+          end
         end
       end
     end

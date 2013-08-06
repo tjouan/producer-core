@@ -7,7 +7,7 @@ Feature: recipe evaluation
       """
     When I execute the recipe
     Then the exit status must be 0
-    And the output must contain "hello from recipe"
+    And the output must contain exactly "hello from recipe\n"
 
   Scenario: reports errors when evaluating an invalid recipe
     Given a recipe with:

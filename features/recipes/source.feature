@@ -1,4 +1,4 @@
-Feature: source recipe keyword
+Feature: `source' recipe keyword
 
   Scenario: requires a recipe file
     Given a recipe with:

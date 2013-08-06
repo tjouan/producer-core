@@ -109,7 +109,12 @@ module Producer::Core
       end
 
       describe '#task' do
-        let(:code) { proc { task(:first); task(:last) } }
+        let(:code) { proc { task(:first) { throw :first_task }; task(:last) } }
+
+        it 'register a task with its code' do
+          expect(dsl.tasks.first.name).to eq :first
+          expect { dsl.tasks.first.evaluate(env) }.to throw_symbol :first_task
+        end
 
         it 'registers tasks in declaration order' do
           expect(dsl.tasks[0].name).to eq :first

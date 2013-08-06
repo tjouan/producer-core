@@ -10,7 +10,7 @@ module Producer::Core
     subject(:cli)     { CLI.new(arguments) }
 
     describe '#arguments' do
-      it 'returns the arguments' do
+      it 'returns the assigned arguments' do
         expect(cli.arguments).to eq arguments
       end
     end

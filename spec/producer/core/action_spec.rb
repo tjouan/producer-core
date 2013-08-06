@@ -8,7 +8,7 @@ module Producer::Core
 
     describe '#env' do
       it 'returns the assigned env' do
-        expect(action.env).to eq env
+        expect(action.env).to be env
       end
     end
 

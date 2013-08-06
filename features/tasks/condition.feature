@@ -1,4 +1,4 @@
-Feature: condition
+Feature: `condition' task keyword
 
   Scenario: prevents task evaluation when condition is not met
     Given a recipe with:

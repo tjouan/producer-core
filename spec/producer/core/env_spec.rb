@@ -30,12 +30,12 @@ module Producer::Core
     end
 
     describe '#output' do
-      let(:standard_output) { StringIO.new }
+      let(:stdout) { StringIO.new }
 
       it 'writes the given string to the assigned IO with a record separator' do
-        env.output = standard_output
-        expect(standard_output).to receive(:puts).with('some content')
+        env.output = stdout
         env.output 'some content'
+        expect(stdout.string).to eq "some content\n"
       end
     end
 

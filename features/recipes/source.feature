@@ -1,11 +1,13 @@
 Feature: `source' recipe keyword
 
-  Scenario: requires a recipe file
+  Background:
     Given a recipe with:
       """
       source 'sourced_recipe'
       """
-    And a file named "sourced_recipe.rb" with:
+
+  Scenario: requires a recipe file
+    Given a file named "sourced_recipe.rb" with:
       """
       puts 'sourced recipe'
       """
@@ -14,14 +16,9 @@ Feature: `source' recipe keyword
     And the output must contain "sourced recipe"
 
   Scenario: reports errors from sourced recipes
-    Given a recipe with:
-      """
-      source 'sourced_recipe'
-      """
-    And a file named "sourced_recipe.rb" with:
+    Given a file named "sourced_recipe.rb" with:
       """
       puts 'OK'
-
       invalid_keyword
       """
     When I execute the recipe
@@ -29,6 +26,6 @@ Feature: `source' recipe keyword
     Then the output must match:
       """
       \AOK
-      sourced_recipe.rb:3:.+invalid recipe keyword `invalid_keyword'
+      sourced_recipe.rb:2:.+invalid recipe keyword `invalid_keyword'
       recipe.rb:1:.+
       """

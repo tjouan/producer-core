@@ -1,6 +1,6 @@
-Feature: tasks
+Feature: task evaluation
 
-  Scenario: evaluates ruby code grouped in task blocks
+  Scenario: evaluates ruby code in task blocks
     Given a recipe with:
       """
       task :hello do

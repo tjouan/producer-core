@@ -24,7 +24,7 @@ module Producer::Core
         subject(:env) { Env.new(recipe) }
 
         it 'assigns the current recipe' do
-          expect(env.current_recipe).to eq recipe
+          expect(env.current_recipe).to be recipe
         end
       end
     end

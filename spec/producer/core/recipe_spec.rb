@@ -8,7 +8,7 @@ module Producer::Core
     subject(:recipe)  { Recipe.new(code) }
 
     describe '.from_file' do
-      let (:filepath)   { fixture_path_for 'recipes/empty.rb' }
+      let(:filepath)    { fixture_path_for 'recipes/empty.rb' }
       subject(:recipe)  { Recipe.from_file(filepath) }
 
       it 'builds a recipe whose code is read from given file path' do
@@ -21,14 +21,23 @@ module Producer::Core
     end
 
     describe '#initialize' do
-      it 'builds a recipe' do
-        expect(recipe).to be_a Recipe
+      it 'assigns nil as a default filepath' do
+        expect(recipe.filepath).to be nil
       end
     end
 
     describe '#code' do
       it 'returns the assigned code' do
-        expect(recipe.code).to eq code
+        expect(recipe.code).to be code
+      end
+    end
+
+    describe '#filepath' do
+      let(:filepath)  { 'some_file_path' }
+      let(:recipe)    { Recipe.new(code, filepath) }
+
+      it 'returns the assigned file path' do
+        expect(recipe.filepath).to eq filepath
       end
     end
 

@@ -5,12 +5,12 @@ module Producer::Core
     subject(:env) { Env.new }
 
     describe '#initialize' do
-      it 'has no target' do
+      it 'assigns nil as a default target' do
         expect(env.target).not_to be
       end
 
       context 'without argument' do
-        it 'has no recipe' do
+        it 'assigns no recipe' do
           expect(env.current_recipe).not_to be
         end
 

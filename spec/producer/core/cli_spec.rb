@@ -9,6 +9,12 @@ module Producer::Core
     let(:arguments)   { [recipe_file] }
     subject(:cli)     { CLI.new(arguments) }
 
+    describe '#initialize' do
+      it 'assigns $stdout as the default standard output' do
+        expect(cli.instance_eval { @stdout }).to be $stdout
+      end
+    end
+
     describe '#arguments' do
       it 'returns the assigned arguments' do
         expect(cli.arguments).to eq arguments

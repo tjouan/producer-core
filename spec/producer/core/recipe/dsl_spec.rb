@@ -4,6 +4,10 @@ module Producer::Core
   describe Recipe::DSL do
     include FixturesHelpers
 
+    # Specific error thrown in the error fixture recipe, we can't define it in
+    # the recipe, rspec wouldn't know about it.
+    SomeErrorInRecipe = Class.new(RuntimeError)
+
     let(:code)    { proc { } }
     let(:env)     { double('env').as_null_object }
     subject(:dsl) { Recipe::DSL.new &code }

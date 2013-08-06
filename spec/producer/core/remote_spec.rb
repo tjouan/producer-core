@@ -2,9 +2,6 @@ require 'spec_helper'
 
 module Producer::Core
   describe Remote do
-    require 'net/ssh/test'
-    include Net::SSH::Test
-
     let(:hostname)    { 'some_host.example' }
     subject(:remote)  { Remote.new(hostname) }
 
@@ -32,30 +29,12 @@ module Producer::Core
       end
     end
 
-    describe '#execute' do
+    describe '#execute', type: :ssh do
       let(:args)    { 'some remote command'}
       let(:command) { "echo #{args}" }
 
-      # FIXME: refactor this with helpers, expectations and/or matchers.
-      def with_new_channel_story
-        story do |session|
-          ch = session.opens_channel
-          yield ch
-          ch.gets_close
-          ch.sends_close
-        end
-      end
-
-      def story_completed?
-        socket.script.events.empty?
-      end
-
-      before do
-        allow(remote).to receive(:session) { connection }
-      end
-
       it 'executes the given command in a new channel' do
-        with_new_channel_story do |ch|
+        story_with_new_channel do |ch|
           ch.sends_exec command
           ch.gets_data args
         end
@@ -64,7 +43,7 @@ module Producer::Core
       end
 
       it 'returns the output' do
-        with_new_channel_story do |ch|
+        story_with_new_channel do |ch|
           ch.sends_exec command
           ch.gets_data args
         end

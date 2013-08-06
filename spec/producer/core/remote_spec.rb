@@ -30,7 +30,7 @@ module Producer::Core
     end
 
     describe '#execute', :ssh do
-      let(:args)    { 'some remote command'}
+      let(:args)    { 'some remote command' }
       let(:command) { "echo #{args}" }
 
       it 'executes the given command in a new channel' do

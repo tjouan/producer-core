@@ -29,7 +29,7 @@ module Producer::Core
       end
     end
 
-    describe '#execute', type: :ssh do
+    describe '#execute', :ssh do
       let(:args)    { 'some remote command'}
       let(:command) { "echo #{args}" }
 

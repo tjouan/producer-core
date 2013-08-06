@@ -6,8 +6,10 @@ require 'support/net_ssh_story_helpers'
 
 
 RSpec.configure do |c|
-  c.include NetSSHStoryHelpers, type: :ssh
-  c.before(:each, type: :ssh) do
+  c.treat_symbols_as_metadata_keys_with_true_values = true
+
+  c.include NetSSHStoryHelpers, :ssh
+  c.before(:each, :ssh) do
     allow(remote).to receive(:session) { connection }
   end
 end

@@ -30,6 +30,15 @@ module Producer::Core
       end
     end
 
+    describe '#tasks' do
+      let(:code) { proc { task(:some_task) } }
+
+      it 'returns registered tasks' do
+        dsl.evaluate(env)
+        expect(dsl.tasks[0].name).to eq :some_task
+      end
+    end
+
     describe '#evaluate' do
       it 'evaluates its code' do
         dsl = Recipe::DSL.new { throw :recipe_code }
@@ -97,14 +106,6 @@ module Producer::Core
         it 'registers the target host in the env' do
           expect(env).to receive(:target=).with('some_host.example')
           dsl.evaluate(env)
-        end
-      end
-
-      describe '#tasks' do
-        let(:code) { proc { task(:some_task) } }
-
-        it 'returns registered tasks' do
-          expect(dsl.tasks[0].name).to eq :some_task
         end
       end
 

@@ -27,6 +27,8 @@ module Producer
             e.backtrace
         end
 
+        private
+
         def condition(&block)
           fail ConditionNotMetError unless block.call
         end

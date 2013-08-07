@@ -6,6 +6,16 @@ module Producer::Core
     let(:block)     { proc { } }
     subject(:task)  { Task.new(name, &block) }
 
+    describe '#initialize' do
+      it 'assigns the name' do
+        expect(task.instance_eval { @name }).to eq name
+      end
+
+      it 'assigns the block' do
+        expect(task.instance_eval { @block }).to be block
+      end
+    end
+
     describe '#name' do
       it 'returns its name' do
         expect(task.name).to eq name

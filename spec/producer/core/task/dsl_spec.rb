@@ -14,8 +14,15 @@ module Producer::Core
     end
 
     describe '#initialize' do
-      it 'has no action' do
-        expect(dsl.actions).to eq []
+      it 'assigns no action' do
+        expect(dsl.actions).to be_empty
+      end
+    end
+
+    describe '#actions' do
+      it 'returns the assigned actions' do
+        dsl.instance_eval { @actions = [:some_action] }
+        expect(dsl.actions).to eq [:some_action]
       end
     end
 

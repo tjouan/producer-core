@@ -6,7 +6,7 @@ module Producer
       end
 
       def process_task(task)
-        task.actions.each(&:apply)
+        task.actions.each(&:apply) if task.condition_met?
       end
     end
   end

@@ -4,7 +4,8 @@ module Producer::Core
   describe Task do
     let(:name)      { :some_task }
     let(:action)    { double('action') }
-    subject(:task)  { Task.new(name, [action]) }
+    let(:condition) { double('condition') }
+    subject(:task)  { Task.new(name, [action], condition) }
 
     describe '.evaluate' do
       let(:env)   { double('env') }
@@ -34,11 +35,19 @@ module Producer::Core
         expect(task.instance_eval { @actions }).to eq [action]
       end
 
+      it 'assigns the condition' do
+        expect(task.instance_eval { @condition }).to eq condition
+      end
+
       context 'when only the name is given as argument' do
         subject(:task)  { Task.new(name) }
 
         it 'assigns no action' do
           expect(task.actions).to be_empty
+        end
+
+        it 'assigns a truthy condition' do
+          expect(task.condition).to be_true
         end
       end
     end
@@ -52,6 +61,30 @@ module Producer::Core
     describe '#actions' do
       it 'returns the assigned actions' do
         expect(task.actions).to eq [action]
+      end
+    end
+
+    describe '#condition' do
+      it 'returns the assigned condition' do
+        expect(task.condition).to be condition
+      end
+    end
+
+    describe '#condition_met?' do
+      context 'when condition is truthy' do
+        let(:condition) { Condition.new(true) }
+
+        it 'returns true' do
+          expect(task.condition_met?).to be true
+        end
+      end
+
+      context 'when condition is falsy' do
+        let(:condition) { Condition.new(false) }
+
+        it 'returns false' do
+          expect(task.condition_met?).to be false
+        end
       end
     end
   end

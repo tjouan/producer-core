@@ -27,11 +27,13 @@ module Producer::Core
         Task::DSL.evaluate(name, env, &block)
       end
 
-      it 'builds a task with its name and registered actions' do
+      it 'builds a task with its name, actions and condition' do
         dsl = double('dsl').as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
-        allow(dsl).to receive(:actions) { [:some_action]}
-        expect(Task).to receive(:new).with(:some_task, [:some_action])
+        allow(dsl).to receive(:actions) { [:some_action] }
+        allow(dsl).to receive(:condition) { :some_condition }
+        expect(Task)
+          .to receive(:new).with(:some_task, [:some_action], :some_condition)
         Task::DSL.evaluate(name, env, &block)
       end
 
@@ -52,6 +54,10 @@ module Producer::Core
     describe '#initialize' do
       it 'assigns no action' do
         expect(dsl.actions).to be_empty
+      end
+
+      it 'assigns true as the condition' do
+        expect(dsl.instance_eval { @condition }).to be_true
       end
     end
 
@@ -89,27 +95,35 @@ module Producer::Core
       end
     end
 
-    describe '#condition' do
-      context 'when met (block evals to true)' do
-        let(:block) { proc {
-          condition { true }
-          throw :after_condition
-        } }
+    context 'DSL specific methods' do
+      subject(:dsl) { Task::DSL.new(&block).evaluate(env) }
 
-        it 'evaluates all the block' do
-          expect { dsl.evaluate(env) }
-            .to throw_symbol :after_condition
+      describe '#condition' do
+        context 'when a block is given' do
+          let(:block) { proc { condition { :some_value } } }
+
+          it 'builds a new evaluated condition' do
+            expect(Condition)
+              .to receive(:evaluate).with(env) do |&b|
+                expect(b.call).to eq :some_value
+              end
+            dsl
+          end
+
+          it 'assigns the new condition' do
+            condition = double('condition').as_null_object
+            allow(Condition).to receive(:evaluate) { condition }
+            expect(dsl.condition).to be condition
+          end
         end
       end
+    end
 
-      context 'when not met (block evals to false)' do
-        let(:block) { proc {
-          condition { false }
-          throw :after_condition
-        } }
-
-        it 'stops block evaluation' do
-          expect { dsl.evaluate(env) }.not_to throw_symbol :after_condition
+    describe '#condition' do
+      context 'without block' do
+        it 'returns the assigned condition' do
+          dsl.instance_eval { @condition = :some_condition }
+          expect(dsl.condition).to be :some_condition
         end
       end
     end

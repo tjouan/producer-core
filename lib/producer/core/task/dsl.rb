@@ -6,7 +6,7 @@ module Producer
           def evaluate(name, env, &block)
             dsl = new(&block)
             dsl.evaluate(env)
-            Task.new(name, dsl.actions)
+            Task.new(name, dsl.actions, dsl.condition)
           end
 
           def define_action(keyword, klass)
@@ -22,20 +22,19 @@ module Producer
         attr_accessor :actions
 
         def initialize(&block)
-          @block    = block
-          @actions  = []
+          @block      = block
+          @actions    = []
+          @condition  = true
         end
 
         def evaluate(env)
           @env = env
           instance_eval &@block
-        rescue ConditionNotMetError
         end
 
-        private
-
         def condition(&block)
-          fail ConditionNotMetError unless block.call
+          @condition = Condition.evaluate(@env, &block) if block
+          @condition
         end
       end
     end

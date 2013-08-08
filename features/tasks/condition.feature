@@ -1,13 +1,12 @@
 Feature: `condition' task keyword
 
-  Scenario: prevents task evaluation when condition is not met
+  Scenario: prevents task actions application when condition is not met
     Given a recipe with:
       """
       task :hello do
         condition { false }
 
-        puts 'evaluated'
-        exit 70
+        echo 'evaluated'
       end
       """
     When I execute the recipe

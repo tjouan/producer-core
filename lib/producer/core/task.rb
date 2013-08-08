@@ -1,17 +1,18 @@
 module Producer
   module Core
     class Task
-      attr_reader :name
+      attr_reader :name, :actions
 
       def initialize(name, &block)
-        @name   = name
-        @block  = block
+        @name     = name
+        @block    = block
+        @actions  = []
       end
 
       def evaluate(env)
         dsl = DSL.new(&@block)
         dsl.evaluate(env)
-        dsl.actions.map(&:apply)
+        @actions = dsl.actions
       end
     end
   end

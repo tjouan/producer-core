@@ -12,16 +12,6 @@ module Producer
 
       def run!
         check_arguments!
-        evaluate_recipe_file
-      end
-
-      def check_arguments!
-        print_usage_and_exit(64) unless @arguments.length == 1
-      end
-
-      def evaluate_recipe_file
-        recipe = Recipe.from_file(@arguments.first)
-        env = Env.new(recipe)
         begin
           recipe.evaluate env
         rescue RecipeEvaluationError => e
@@ -31,6 +21,23 @@ module Producer
 
           exit 70
         end
+        worker.process recipe.tasks
+      end
+
+      def check_arguments!
+        print_usage_and_exit(64) unless @arguments.length == 1
+      end
+
+      def env
+        @env ||= Env.new(recipe)
+      end
+
+      def recipe
+        @recipe ||= Recipe.from_file(@arguments.first)
+      end
+
+      def worker
+        @worker ||= Worker.new
       end
 
       private

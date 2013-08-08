@@ -14,6 +14,10 @@ module Producer::Core
       it 'assigns the block' do
         expect(task.instance_eval { @block }).to be block
       end
+
+      it 'has no action' do
+        expect(task.actions).to be_empty
+      end
     end
 
     describe '#name' do
@@ -37,13 +41,12 @@ module Producer::Core
         task.evaluate(env)
       end
 
-      it 'applies DSL sandbox actions' do
-        dsl = double('task DSL').as_null_object
+      it 'assigns the evaluated actions' do
+        dsl = double('dsl').as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
-        action = double('action')
-        allow(dsl).to receive(:actions) { [action] }
-        expect(action).to receive(:apply)
+        allow(dsl).to receive(:actions) { [:some_action] }
         task.evaluate(env)
+        expect(task.actions).to eq [:some_action]
       end
     end
   end

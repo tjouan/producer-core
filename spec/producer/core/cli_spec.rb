@@ -27,9 +27,53 @@ module Producer::Core
         cli.run!
       end
 
-      it 'evaluates the recipe' do
-        expect(cli).to receive(:evaluate_recipe_file)
+      it 'evaluates the recipe with the environment' do
+        expect(cli.recipe).to receive(:evaluate).with(cli.env)
         cli.run!
+      end
+
+      it 'processes the tasks with the worker' do
+        allow(cli.recipe).to receive(:tasks) { [:some_task] }
+        expect(cli.worker).to receive(:process).with([:some_task])
+        cli.run!
+      end
+
+      context 'when recipe evaluation fails' do
+        let(:recipe_file) { fixture_path_for('recipes/invalid.rb') }
+        let(:stdout)      { StringIO.new }
+        subject(:cli)     { CLI.new(arguments, stdout) }
+
+        context 'when error is known' do
+          it 'exits with a return status of 70' do
+            expect { cli.run! }
+              .to raise_error(SystemExit) { |e|
+                expect(e.status).to eq 70
+              }
+          end
+
+          it 'prints the specific error' do
+            trap_exit { cli.run! }
+            expect(stdout.string).to match(/
+              \A
+              #{recipe_file}:4:
+              .+
+              invalid\srecipe\skeyword\s`invalid_keyword'
+            /x)
+          end
+
+          it 'excludes producer own source code from the error backtrace' do
+            trap_exit { cli.run! }
+            expect(stdout.string).to_not match /\/producer-core\//
+          end
+        end
+
+        context 'when error is unknown (unexpected)' do
+          it 'lets the error be' do
+            UnexpectedError = Class.new(StandardError)
+            allow(cli.recipe).to receive(:evaluate).and_raise(UnexpectedError)
+            expect { cli.run! }.to raise_error(UnexpectedError)
+          end
+        end
       end
     end
 
@@ -58,67 +102,43 @@ module Producer::Core
       end
     end
 
-    describe '#evaluate_recipe_file' do
+    describe '#env' do
+      it 'builds an environment with the current recipe' do
+        expect(Env).to receive(:new).with(cli.recipe)
+        cli.env
+      end
+
+      it 'returns the env' do
+        env = double('env')
+        allow(Env).to receive(:new) { env }
+        expect(cli.env).to be env
+      end
+    end
+
+    describe '#recipe' do
       it 'builds a recipe' do
         expect(Recipe)
-          .to receive(:from_file).with(recipe_file).and_call_original
-        cli.evaluate_recipe_file
+          .to receive(:from_file).with(recipe_file)
+        cli.recipe
       end
 
-      it 'builds an environment with the current recipe' do
-        recipe = double('recipe').as_null_object
-        allow(Recipe).to receive(:from_file).and_return(recipe)
-        expect(Env).to receive(:new).with(recipe).and_call_original
-        cli.evaluate_recipe_file
-      end
-
-      it 'evaluates the recipe with the environment' do
+      it 'returns the recipe' do
         recipe = double('recipe')
-        allow(Recipe).to receive(:from_file).and_return(recipe)
-        env = double('env')
-        allow(Env).to receive(:new).and_return(env)
-        expect(recipe).to receive(:evaluate).with(env)
-        cli.evaluate_recipe_file
+        allow(Recipe).to receive(:new) { recipe }
+        expect(cli.recipe).to be recipe
+      end
+    end
+
+    describe '#worker' do
+      it 'builds a worker' do
+        expect(Worker).to receive(:new)
+        cli.worker
       end
 
-      context 'when recipe evaluation fails' do
-        let(:recipe_file) { fixture_path_for('recipes/invalid.rb') }
-        let(:stdout)      { StringIO.new }
-        subject(:cli)     { CLI.new(arguments, stdout) }
-
-        context 'when error is known' do
-          it 'exits with a return status of 70' do
-            expect { cli.evaluate_recipe_file }
-              .to raise_error(SystemExit) { |e|
-                expect(e.status).to eq 70
-              }
-          end
-
-          it 'prints the specific error' do
-            trap_exit { cli.evaluate_recipe_file }
-            expect(stdout.string).to match(/
-              \A
-              #{recipe_file}:4:
-              .+
-              invalid\srecipe\skeyword\s`invalid_keyword'
-            /x)
-          end
-
-          it 'excludes producer own source code from the error backtrace' do
-            trap_exit { cli.evaluate_recipe_file }
-            expect(stdout.string).to_not match /\/producer-core\//
-          end
-        end
-
-        context 'when error is unknown (unexpected)' do
-          it 'lets the error be' do
-            UnexpectedError = Class.new(StandardError)
-            recipe = double('recipe')
-            allow(Recipe).to receive(:from_file).and_return(recipe)
-            allow(recipe).to receive(:evaluate).and_raise(UnexpectedError)
-            expect { cli.evaluate_recipe_file }.to raise_error(UnexpectedError)
-          end
-        end
+      it 'returns the worker' do
+        worker = double('worker')
+        allow(Worker).to receive(:new) { worker }
+        expect(cli.worker).to be worker
       end
     end
   end

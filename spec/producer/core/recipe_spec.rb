@@ -24,6 +24,10 @@ module Producer::Core
       it 'assigns nil as a default filepath' do
         expect(recipe.filepath).to be nil
       end
+
+      it 'has no task' do
+        expect(recipe.tasks).to be_empty
+      end
     end
 
     describe '#code' do
@@ -63,6 +67,13 @@ module Producer::Core
         allow(Recipe::DSL).to receive(:new) { dsl }
         expect(task).to receive(:evaluate).with(env)
         recipe.evaluate(env)
+      end
+
+      it 'assigns the evaluated tasks' do
+        dsl = Recipe::DSL.new { task(:some_task) { } }
+        allow(Recipe::DSL).to receive(:new) { dsl }
+        recipe.evaluate(env)
+        expect(recipe.tasks.first.name).to eq :some_task
       end
     end
   end

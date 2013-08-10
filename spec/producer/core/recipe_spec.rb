@@ -4,76 +4,39 @@ module Producer::Core
   describe Recipe do
     include FixturesHelpers
 
-    let(:code)        { 'nil' }
-    subject(:recipe)  { Recipe.new(code) }
+    subject(:recipe) { Recipe.new }
 
-    describe '.from_file' do
-      let(:filepath)    { fixture_path_for 'recipes/empty.rb' }
-      subject(:recipe)  { Recipe.from_file(filepath) }
+    describe '.evaluate_from_file' do
+      let(:env)       { double('env') }
+      let(:filepath)  { fixture_path_for 'recipes/empty.rb' }
 
-      it 'builds a recipe whose code is read from given file path' do
-        expect(recipe.code).to eq File.read(filepath)
+      it 'delegates to DSL.evaluate with the recipe file content' do
+        expect(Recipe::DSL)
+          .to receive(:evaluate).with(File.read(filepath), env)
+        Recipe.evaluate_from_file(filepath, env)
       end
 
-      it 'builds a recipe whose file path is set from given file path' do
-        expect(recipe.filepath).to eq filepath
+      it 'returns the evaluated recipe' do
+        recipe = double('recipe')
+        allow(Recipe::DSL).to receive(:evaluate) { recipe }
+        expect(Recipe.evaluate_from_file(filepath, env)).to be recipe
       end
     end
 
     describe '#initialize' do
-      it 'assigns nil as a default filepath' do
-        expect(recipe.filepath).to be nil
+      context 'without arguments' do
+        it 'assigns no task' do
+          expect(recipe.tasks).to be_empty
+        end
       end
 
-      it 'has no task' do
-        expect(recipe.tasks).to be_empty
-      end
-    end
+      context 'when tasks are given as argument' do
+        let(:tasks)   { [Task.new(:some_task)] }
+        let(:recipe)  { Recipe.new(tasks) }
 
-    describe '#code' do
-      it 'returns the assigned code' do
-        expect(recipe.code).to be code
-      end
-    end
-
-    describe '#filepath' do
-      let(:filepath)  { 'some_file_path' }
-      let(:recipe)    { Recipe.new(code, filepath) }
-
-      it 'returns the assigned file path' do
-        expect(recipe.filepath).to eq filepath
-      end
-    end
-
-    describe '#evaluate' do
-      let(:env) { double('env').as_null_object }
-
-      it 'builds a recipe DSL sandbox' do
-        expect(Recipe::DSL).to receive(:new).once.with(code).and_call_original
-        recipe.evaluate(env)
-      end
-
-      it 'evaluates the DSL sandbox with the environment given as argument' do
-        dsl = double('dsl').as_null_object
-        allow(Recipe::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate)
-        recipe.evaluate(env)
-      end
-
-      it 'evaluates the DSL sandbox tasks' do
-        task = double('task')
-        allow(Task).to receive(:new) { task }
-        dsl = Recipe::DSL.new { task(:some_task) }
-        allow(Recipe::DSL).to receive(:new) { dsl }
-        expect(task).to receive(:evaluate).with(env)
-        recipe.evaluate(env)
-      end
-
-      it 'assigns the evaluated tasks' do
-        dsl = Recipe::DSL.new { task(:some_task) { } }
-        allow(Recipe::DSL).to receive(:new) { dsl }
-        recipe.evaluate(env)
-        expect(recipe.tasks.first.name).to eq :some_task
+        it 'assigns the tasks' do
+          expect(recipe.tasks).to eq tasks
+        end
       end
     end
   end

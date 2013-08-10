@@ -12,7 +12,6 @@ module Producer
 
       def run!
         check_arguments!
-        recipe.evaluate(env)
         worker.process recipe.tasks
       end
 
@@ -25,7 +24,7 @@ module Producer
       end
 
       def recipe
-        @recipe ||= Recipe.from_file(@arguments.first)
+        @recipe ||= Recipe.evaluate_from_file(@arguments.first, env)
       end
 
       def worker

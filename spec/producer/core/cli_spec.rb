@@ -27,11 +27,6 @@ module Producer::Core
         cli.run!
       end
 
-      it 'evaluates the recipe with the environment' do
-        expect(cli.recipe).to receive(:evaluate).with(cli.env)
-        cli.run!
-      end
-
       it 'processes the tasks with the worker' do
         allow(cli.recipe).to receive(:tasks) { [:some_task] }
         expect(cli.worker).to receive(:process).with([:some_task])
@@ -80,12 +75,12 @@ module Producer::Core
     describe '#recipe' do
       it 'builds a recipe' do
         expect(Recipe)
-          .to receive(:from_file).with(recipe_file)
+          .to receive(:evaluate_from_file).with(recipe_file, cli.env)
         cli.recipe
       end
 
       it 'returns the recipe' do
-        recipe = double('recipe')
+        recipe = double('recipe').as_null_object
         allow(Recipe).to receive(:new) { recipe }
         expect(cli.recipe).to be recipe
       end

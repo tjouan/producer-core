@@ -1,22 +1,14 @@
 module Producer
   module Core
     class Recipe
-      attr_reader :code, :filepath, :tasks
+      attr_accessor :tasks
 
-      def self.from_file(filepath)
-        new(File.read(filepath), filepath)
+      def self.evaluate_from_file(filepath, env)
+        DSL.evaluate(File.read(filepath), env)
       end
 
-      def initialize(code, filepath = nil)
-        @code     = code
-        @filepath = filepath
-        @tasks    = []
-      end
-
-      def evaluate(env)
-        dsl = DSL.new(@code).evaluate(env)
-        dsl.tasks.map { |e| e.evaluate env }
-        @tasks = dsl.tasks
+      def initialize(tasks = [])
+        @tasks = tasks
       end
     end
   end

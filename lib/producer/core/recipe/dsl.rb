@@ -4,6 +4,11 @@ module Producer
       class DSL
         attr_reader :tasks
 
+        def self.evaluate(code, env)
+          dsl = new(code).evaluate(env)
+          Recipe.new(dsl.tasks)
+        end
+
         def initialize(code = nil, &block)
           @code   = code
           @block  = block
@@ -17,6 +22,7 @@ module Producer
           else
             instance_eval &@block
           end
+          @tasks.each { |e| e.evaluate env }
           self
         end
 

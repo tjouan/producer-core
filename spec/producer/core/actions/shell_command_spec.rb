@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Actions::ShellCommand do
     let(:env)           { Env.new }
-    let(:command_args)  { 'hello from remote host'}
+    let(:command_args)  { 'hello from remote host' }
     let(:command)       { "echo #{command_args}" }
     subject(:sh)        { Actions::ShellCommand.new(env, command) }
 

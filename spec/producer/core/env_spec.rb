@@ -5,27 +5,12 @@ module Producer::Core
     subject(:env) { Env.new }
 
     describe '#initialize' do
+      it 'assigns $stdout as the default output' do
+        expect(env.instance_eval { @output }).to eq $stdout
+      end
+
       it 'assigns nil as a default target' do
         expect(env.target).not_to be
-      end
-
-      context 'without argument' do
-        it 'assigns no recipe' do
-          expect(env.current_recipe).not_to be
-        end
-
-        it 'assigns $stdout as the default output' do
-          expect(env.instance_eval { @output }).to eq $stdout
-        end
-      end
-
-      context 'when a recipe is given as argument' do
-        let(:recipe)  { Recipe.new(proc { nil }) }
-        subject(:env) { Env.new(recipe) }
-
-        it 'assigns the current recipe' do
-          expect(env.current_recipe).to be recipe
-        end
       end
     end
 

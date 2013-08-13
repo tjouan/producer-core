@@ -21,7 +21,7 @@ module Producer
       end
 
       def env
-        @env ||= Env.new(recipe)
+        @env ||= Env.new
       end
 
       def recipe

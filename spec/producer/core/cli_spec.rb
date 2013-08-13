@@ -66,7 +66,7 @@ module Producer::Core
 
     describe '#env' do
       it 'builds an environment with the current recipe' do
-        expect(Env).to receive(:new).with(cli.recipe)
+        expect(Env).to receive(:new)
         cli.env
       end
 

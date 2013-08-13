@@ -13,7 +13,7 @@ module Producer
         def evaluate(env)
           @env = env
           if @code
-            instance_eval @code, env.current_recipe.filepath
+            instance_eval @code
           else
             instance_eval &@block
           end

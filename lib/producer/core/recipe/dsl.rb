@@ -18,10 +18,6 @@ module Producer
             instance_eval &@block
           end
           self
-        rescue NameError => e
-          raise RecipeEvaluationError,
-            "invalid recipe keyword `#{e.name}'",
-            e.backtrace
         end
 
         private

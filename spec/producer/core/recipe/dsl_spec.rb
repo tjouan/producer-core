@@ -4,10 +4,6 @@ module Producer::Core
   describe Recipe::DSL do
     include FixturesHelpers
 
-    # Specific error thrown in the error fixture recipe, we can't define it in
-    # the recipe, rspec wouldn't know about it.
-    SomeErrorInRecipe = Class.new(RuntimeError)
-
     let(:code)    { proc { } }
     let(:env)     { double('env').as_null_object }
     subject(:dsl) { Recipe::DSL.new &code }
@@ -48,24 +44,6 @@ module Producer::Core
       it 'returns itself' do
         expect(dsl.evaluate(env)).to eq dsl
       end
-
-      context 'when recipe is invalid' do
-        let(:filepath)  { fixture_path_for 'recipes/error.rb' }
-        let(:recipe)    { Recipe.from_file(filepath) }
-        subject(:dsl)   { Recipe::DSL.new File.read(filepath) }
-
-        it 'reports the recipe file path in the error' do
-          allow(env).to receive(:current_recipe) { recipe }
-          expect { dsl.evaluate(env) }.to raise_error(SomeErrorInRecipe) { |e|
-            expect(e.backtrace.first).to match /\A#{filepath}/
-          }
-        end
-
-        it 'raises a RecipeEvaluationError on NameError' do
-          dsl = Recipe::DSL.new { invalid_keyword }
-          expect { dsl.evaluate(env) }.to raise_error(RecipeEvaluationError)
-        end
-      end
     end
 
     context 'DSL specific methods' do
@@ -87,16 +65,6 @@ module Producer::Core
 
         it 'sources the recipe given as argument' do
           expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
-        end
-
-        context 'when sourced recipe is invalid' do
-          let(:filepath) { fixture_path_for 'recipes/error' }
-
-          it 'reports its file path in the error' do
-            expect { dsl.evaluate(env) }.to raise_error(SomeErrorInRecipe) { |e|
-              expect(e.backtrace.first).to match /\A#{filepath}/
-            }
-          end
         end
       end
 

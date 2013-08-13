@@ -57,14 +57,6 @@ module Producer::Core
           expect(dsl.actions.first.env).to eq env
         end
       end
-
-      context 'when given block is invalid' do
-        it 'raises a TaskEvaluationError on NameError' do
-          dsl = Task::DSL.new { invalid_action }
-          expect { dsl.evaluate(env) }
-            .to raise_error(TaskEvaluationError)
-        end
-      end
     end
 
     describe '#condition' do

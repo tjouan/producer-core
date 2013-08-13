@@ -37,44 +37,6 @@ module Producer::Core
         expect(cli.worker).to receive(:process).with([:some_task])
         cli.run!
       end
-
-      context 'when recipe evaluation fails' do
-        let(:recipe_file) { fixture_path_for('recipes/invalid.rb') }
-        let(:stdout)      { StringIO.new }
-        subject(:cli)     { CLI.new(arguments, stdout) }
-
-        context 'when error is known' do
-          it 'exits with a return status of 70' do
-            expect { cli.run! }
-              .to raise_error(SystemExit) { |e|
-                expect(e.status).to eq 70
-              }
-          end
-
-          it 'prints the specific error' do
-            trap_exit { cli.run! }
-            expect(stdout.string).to match(/
-              \A
-              #{recipe_file}:4:
-              .+
-              invalid\srecipe\skeyword\s`invalid_keyword'
-            /x)
-          end
-
-          it 'excludes producer own source code from the error backtrace' do
-            trap_exit { cli.run! }
-            expect(stdout.string).to_not match /\/producer-core\//
-          end
-        end
-
-        context 'when error is unknown (unexpected)' do
-          it 'lets the error be' do
-            UnexpectedError = Class.new(StandardError)
-            allow(cli.recipe).to receive(:evaluate).and_raise(UnexpectedError)
-            expect { cli.run! }.to raise_error(UnexpectedError)
-          end
-        end
-      end
     end
 
     describe '#check_arguments!' do

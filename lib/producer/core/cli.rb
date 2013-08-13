@@ -12,15 +12,7 @@ module Producer
 
       def run!
         check_arguments!
-        begin
-          recipe.evaluate env
-        rescue RecipeEvaluationError => e
-          backtrace = e.backtrace.reject { |l| l =~ /\/producer-core\// }
-          @stdout.puts [backtrace.shift, e.message].join ': '
-          @stdout.puts backtrace
-
-          exit 70
-        end
+        recipe.evaluate(env)
         worker.process recipe.tasks
       end
 

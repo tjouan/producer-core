@@ -23,10 +23,6 @@ module Producer
           @env = env
           instance_eval &@block
         rescue ConditionNotMetError
-        rescue NameError => e
-          raise TaskEvaluationError,
-            "invalid task action `#{e.name}'",
-            e.backtrace
         end
 
         private

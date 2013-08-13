@@ -9,19 +9,22 @@ module Producer::Core
     subject(:dsl) { Recipe::DSL.new &code }
 
     describe '#initialize' do
-      context 'when a string of code is given as argument' do
-        subject(:dsl) { Recipe::DSL.new 'nil' }
+      it 'assigns no task' do
+        expect(dsl.instance_eval { @tasks }).to be_empty
+      end
 
-        it 'returns the DSL instance' do
-          expect(dsl).to be_a Recipe::DSL
+      context 'when a string of code is given as argument' do
+        let(:code)    { 'some_code' }
+        subject(:dsl) { Recipe::DSL.new(code) }
+
+        it 'assigns the string of code' do
+          expect(dsl.instance_eval { @code }).to eq code
         end
       end
 
       context 'when a code block is given as argument' do
-        subject(:dsl) { Recipe::DSL.new proc { } }
-
-        it 'returns the DSL instance' do
-          expect(dsl).to be_a Recipe::DSL
+        it 'assigns the code block' do
+          expect(dsl.instance_eval { @block }).to be code
         end
       end
     end

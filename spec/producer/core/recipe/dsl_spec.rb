@@ -113,7 +113,7 @@ module Producer::Core
 
         it 'registers the target host in the env' do
           expect(env).to receive(:target=).with('some_host.example')
-          dsl.evaluate(env)
+          dsl
         end
       end
 

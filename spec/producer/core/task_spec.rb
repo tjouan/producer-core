@@ -8,11 +8,13 @@ module Producer::Core
 
     describe '.evaluate' do
       let(:env)   { double('env') }
-      let(:block)  { proc { } }
+      let(:block) { proc { :some_value } }
 
       it 'delegates to DSL.evaluate' do
         expect(Task::DSL)
-          .to receive(:evaluate).with(name, env, &block)
+          .to receive(:evaluate).with(name, env) do |&block|
+            expect(block.call).to eq :some_value
+          end
         Task.evaluate(name, env, &block)
       end
 

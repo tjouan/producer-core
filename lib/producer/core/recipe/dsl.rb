@@ -22,7 +22,6 @@ module Producer
           else
             instance_eval &@block
           end
-          @tasks.each { |e| e.evaluate env }
           self
         end
 
@@ -41,7 +40,7 @@ module Producer
         end
 
         def task(name, &block)
-          @tasks << Task.new(name, &block)
+          @tasks << Task.evaluate(name, env, &block)
         end
       end
     end

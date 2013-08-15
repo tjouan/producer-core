@@ -3,16 +3,13 @@ module Producer
     class Task
       attr_reader :name, :actions
 
-      def initialize(name, &block)
-        @name     = name
-        @block    = block
-        @actions  = []
+      def self.evaluate(name, env, &block)
+        DSL::evaluate(name, env, &block)
       end
 
-      def evaluate(env)
-        dsl = DSL.new(&@block)
-        dsl.evaluate(env)
-        @actions = dsl.actions
+      def initialize(name, actions = [])
+        @name     = name
+        @actions  = actions
       end
     end
   end

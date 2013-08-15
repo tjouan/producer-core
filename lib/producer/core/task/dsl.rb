@@ -3,6 +3,12 @@ module Producer
     class Task
       class DSL
         class << self
+          def evaluate(name, env, &block)
+            dsl = new(&block)
+            dsl.evaluate(env)
+            Task.new(name, dsl.actions)
+          end
+
           def define_action(keyword, klass)
             define_method(keyword) do |*args|
               @actions << klass.new(@env, *args)

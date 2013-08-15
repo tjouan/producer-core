@@ -3,20 +3,41 @@ require 'spec_helper'
 module Producer::Core
   describe Task do
     let(:name)      { :some_task }
-    let(:block)     { proc { } }
-    subject(:task)  { Task.new(name, &block) }
+    let(:action)    { double('action') }
+    subject(:task)  { Task.new(name, [action]) }
+
+    describe '.evaluate' do
+      let(:env)   { double('env') }
+      let(:block)  { proc { } }
+
+      it 'delegates to DSL.evaluate' do
+        expect(Task::DSL)
+          .to receive(:evaluate).with(name, env, &block)
+        Task.evaluate(name, env, &block)
+      end
+
+      it 'returns the evaluated task' do
+        task = double('task')
+        allow(Task::DSL).to receive(:evaluate) { task }
+        expect(Task.evaluate(name, env, &block)).to be task
+      end
+    end
 
     describe '#initialize' do
       it 'assigns the name' do
         expect(task.instance_eval { @name }).to eq name
       end
 
-      it 'assigns the block' do
-        expect(task.instance_eval { @block }).to be block
+      it 'assigns the actions' do
+        expect(task.instance_eval { @actions }).to eq [action]
       end
 
-      it 'has no action' do
-        expect(task.actions).to be_empty
+      context 'when only the name is given as argument' do
+        subject(:task)  { Task.new(name) }
+
+        it 'has assigns no action' do
+          expect(task.actions).to be_empty
+        end
       end
     end
 
@@ -26,27 +47,9 @@ module Producer::Core
       end
     end
 
-    describe '#evaluate' do
-      let(:env) { double('env') }
-
-      it 'builds a task DSL sandbox' do
-        expect(Task::DSL).to receive(:new).with(&block).and_call_original
-        task.evaluate(env)
-      end
-
-      it 'evaluates the task DSL sandbox' do
-        dsl = double('task DSL').as_null_object
-        allow(Task::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate).with(env)
-        task.evaluate(env)
-      end
-
-      it 'assigns the evaluated actions' do
-        dsl = double('dsl').as_null_object
-        allow(Task::DSL).to receive(:new) { dsl }
-        allow(dsl).to receive(:actions) { [:some_action] }
-        task.evaluate(env)
-        expect(task.actions).to eq [:some_action]
+    describe '#actions' do
+      it 'returns the assigned actions' do
+        expect(task.actions).to eq [action]
       end
     end
   end

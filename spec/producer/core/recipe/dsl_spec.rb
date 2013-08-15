@@ -73,14 +73,6 @@ module Producer::Core
         expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
       end
 
-      it 'evaluates the registered tasks' do
-        task = double('task')
-        allow(Task).to receive(:new) { task }
-        dsl = Recipe::DSL.new { task(:some_task) }
-        expect(task).to receive(:evaluate).with(env)
-        dsl.evaluate(env)
-      end
-
       it 'returns itself' do
         expect(dsl.evaluate(env)).to eq dsl
       end
@@ -118,16 +110,20 @@ module Producer::Core
       end
 
       describe '#task' do
-        let(:code) { proc { task(:first) { :some_value }; task(:last) { } } }
+        let(:code) { proc { task(:some_task) { :some_value } } }
 
-        it 'register a task with its code' do
-          expect(dsl.tasks.first.instance_eval { @block.call })
-            .to eq :some_value
+        it 'builds a new evaluated task' do
+          expect(Task)
+            .to receive(:evaluate).with(:some_task, env) do |&block|
+              expect(block.call).to eq :some_value
+            end
+          dsl
         end
 
-        it 'registers tasks in declaration order' do
-          expect(dsl.tasks[0].name).to eq :first
-          expect(dsl.tasks[1].name).to eq :last
+        it 'registers the new task' do
+          task = double('task').as_null_object
+          allow(Task).to receive(:new) { task }
+          expect(dsl.tasks).to include(task)
         end
       end
     end

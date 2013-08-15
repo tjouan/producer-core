@@ -4,7 +4,7 @@ module Producer
       attr_reader :name, :actions
 
       def self.evaluate(name, env, &block)
-        DSL::evaluate(name, env, &block)
+        DSL.evaluate(name, env, &block)
       end
 
       def initialize(name, actions = [])

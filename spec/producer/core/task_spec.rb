@@ -12,8 +12,8 @@ module Producer::Core
 
       it 'delegates to DSL.evaluate' do
         expect(Task::DSL)
-          .to receive(:evaluate).with(name, env) do |&block|
-            expect(block.call).to eq :some_value
+          .to receive(:evaluate).with(name, env) do |&b|
+            expect(b.call).to eq :some_value
           end
         Task.evaluate(name, env, &block)
       end

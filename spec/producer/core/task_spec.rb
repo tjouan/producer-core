@@ -37,7 +37,7 @@ module Producer::Core
       context 'when only the name is given as argument' do
         subject(:task)  { Task.new(name) }
 
-        it 'has assigns no action' do
+        it 'assigns no action' do
           expect(task.actions).to be_empty
         end
       end

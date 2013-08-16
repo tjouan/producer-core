@@ -27,9 +27,9 @@ module Producer::Core
         cli.run!
       end
 
-      it 'processes the tasks with the worker' do
+      it 'processes the tasks with the interpreter' do
         allow(cli.recipe).to receive(:tasks) { [:some_task] }
-        expect(cli.worker).to receive(:process).with([:some_task])
+        expect(cli.interpreter).to receive(:process).with([:some_task])
         cli.run!
       end
     end
@@ -86,16 +86,16 @@ module Producer::Core
       end
     end
 
-    describe '#worker' do
-      it 'builds a worker' do
-        expect(Worker).to receive(:new)
-        cli.worker
+    describe '#interpreter' do
+      it 'builds a interpreter' do
+        expect(Interpreter).to receive(:new)
+        cli.interpreter
       end
 
-      it 'returns the worker' do
-        worker = double('worker')
-        allow(Worker).to receive(:new) { worker }
-        expect(cli.worker).to be worker
+      it 'returns the interpreter' do
+        interpreter = double('interpreter')
+        allow(Interpreter).to receive(:new) { interpreter }
+        expect(cli.interpreter).to be interpreter
       end
     end
   end

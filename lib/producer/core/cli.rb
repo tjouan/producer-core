@@ -12,7 +12,7 @@ module Producer
 
       def run!
         check_arguments!
-        worker.process recipe.tasks
+        interpreter.process recipe.tasks
       end
 
       def check_arguments!
@@ -27,8 +27,8 @@ module Producer
         @recipe ||= Recipe.evaluate_from_file(@arguments.first, env)
       end
 
-      def worker
-        @worker ||= Worker.new
+      def interpreter
+        @interpreter ||= Interpreter.new
       end
 
       private

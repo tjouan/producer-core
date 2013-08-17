@@ -43,22 +43,6 @@ module Producer::Core
       it 'defines a new test keyword' do
         expect(dsl).to respond_to :some_test
       end
-
-      context 'defined test keyword' do
-        let(:arguments) { [:some, :arguments] }
-
-        it 'builds a new test with the env and given arguments' do
-          expect(some_test_class).to receive(:new).with(env, arguments)
-          dsl.some_test(arguments)
-        end
-
-        it 'registers the new test' do
-          some_test = double('SomeTest instance')
-          allow(some_test_class).to receive(:new) { some_test }
-          dsl.some_test(arguments)
-          expect(dsl.tests).to include(some_test)
-        end
-      end
     end
 
     describe '#initialize' do
@@ -85,6 +69,27 @@ module Producer::Core
     describe '#evaluate' do
       it 'returns the value returned by the assigned block' do
         expect(dsl.evaluate).to eq block.call
+      end
+
+      context 'when a defined test keyword is called' do
+        let(:some_test_class) { double('SomeTest class') }
+        let(:block)           { proc { some_test :some, :args } }
+
+        before do
+          Condition::DSL.define_test(:some_test, some_test_class)
+        end
+
+        it 'builds a new test with the env and given arguments' do
+          expect(some_test_class).to receive(:new).with(env, :some, :args)
+          dsl.evaluate
+        end
+
+        it 'registers the new test' do
+          some_test = double('SomeTest instance')
+          allow(some_test_class).to receive(:new) { some_test }
+          dsl.evaluate
+          expect(dsl.tests).to include(some_test)
+        end
       end
     end
   end

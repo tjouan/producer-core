@@ -24,7 +24,7 @@ module Producer
         end
 
         def evaluate
-          @block.call
+          instance_eval &@block
         end
       end
     end

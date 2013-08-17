@@ -5,7 +5,8 @@ module Producer
         class << self
           def evaluate(env, &block)
             dsl = new(env, &block)
-            Condition.new(dsl.evaluate)
+            return_value = dsl.evaluate
+            Condition.new(dsl.tests, return_value)
           end
 
           def define_test(keyword, klass)

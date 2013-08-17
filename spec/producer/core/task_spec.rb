@@ -72,7 +72,7 @@ module Producer::Core
 
     describe '#condition_met?' do
       context 'when condition is truthy' do
-        let(:condition) { Condition.new(true) }
+        let(:condition) { Condition.new([], true) }
 
         it 'returns true' do
           expect(task.condition_met?).to be true
@@ -80,7 +80,7 @@ module Producer::Core
       end
 
       context 'when condition is falsy' do
-        let(:condition) { Condition.new(false) }
+        let(:condition) { Condition.new([], false) }
 
         it 'returns false' do
           expect(task.condition_met?).to be false

@@ -7,12 +7,19 @@ module Producer
         end
       end
 
-      def initialize(expression)
-        @expression = expression
+      def initialize(tests, return_value = nil)
+        @tests        = tests
+        @return_value = return_value
+      end
+
+      def met?
+        return !!@return_value if @tests.empty?
+        @tests.each { |t| return false unless t.success? }
+        true
       end
 
       def !
-        !@expression
+        !met?
       end
     end
   end

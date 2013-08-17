@@ -14,15 +14,15 @@ module Producer::Core
       end
 
       it 'evaluates the DSL sandbox code' do
-        dsl = double('dsl')
+        dsl = double('dsl').as_null_object
         allow(Condition::DSL).to receive(:new) { dsl }
         expect(dsl).to receive(:evaluate)
         Condition::DSL.evaluate(env, &block)
       end
 
-      it 'builds a condition with value returned from DSL evaluation' do
+      it 'builds a condition with its test and block return value' do
         expect(Condition)
-          .to receive(:new).with(dsl.evaluate)
+          .to receive(:new).with(dsl.tests, :some_condition_code)
         Condition::DSL.evaluate(env, &block)
       end
 

@@ -6,7 +6,7 @@ module Producer::Core
     let(:env)     { double('env') }
     subject(:dsl) { Condition::DSL.new(env, &block) }
 
-    %w[has_env].each do |test|
+    %w[has_env has_file].each do |test|
       it "has `#{test}' test defined" do
         expect(dsl).to respond_to test.to_sym
       end

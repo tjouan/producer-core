@@ -4,13 +4,23 @@ module Producer
       class DSL
         class << self
           def evaluate(env, &block)
-            dsl = new(&block)
+            dsl = new(env, &block)
             Condition.new(dsl.evaluate)
+          end
+
+          def define_test(keyword, klass)
+            define_method(keyword) do |*args|
+              @tests << klass.new(@env, *args)
+            end
           end
         end
 
-        def initialize(&block)
-          @block = block
+        attr_accessor :tests
+
+        def initialize(env, &block)
+          @env    = env
+          @block  = block
+          @tests  = []
         end
 
         def evaluate

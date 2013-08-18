@@ -6,6 +6,12 @@ module Producer::Core
     let(:env)     { double('env') }
     subject(:dsl) { Condition::DSL.new(env, &block) }
 
+    %w[has_env].each do |test|
+      it "has `#{test}' test defined" do
+        expect(dsl).to respond_to test.to_sym
+      end
+    end
+
     describe '.evaluate' do
       it 'builds a new DSL sandbox with given env and code' do
         expect(Condition::DSL)

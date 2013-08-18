@@ -5,6 +5,7 @@ require 'producer/core/actions/shell_command'
 
 # condition tests (need to be defined before the condition DSL)
 require 'producer/core/test'
+require 'producer/core/tests/has_env'
 
 require 'producer/core/cli'
 require 'producer/core/condition'

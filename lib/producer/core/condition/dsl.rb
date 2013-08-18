@@ -16,6 +16,8 @@ module Producer
           end
         end
 
+        define_test :has_env, Tests::HasEnv
+
         attr_accessor :tests
 
         def initialize(env, &block)

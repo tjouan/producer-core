@@ -31,6 +31,10 @@ module Producer
         session.loop
         output
       end
+
+      def environment
+        Environment.new(execute 'env')
+      end
     end
   end
 end

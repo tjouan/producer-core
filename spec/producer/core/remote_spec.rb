@@ -60,5 +60,28 @@ module Producer::Core
           .to raise_error(RemoteCommandExecutionError)
       end
     end
+
+    describe '#environment', :ssh do
+      let(:command) { 'env' }
+      let(:output)  { "FOO=bar\nBAZ=qux" }
+
+      before do
+        story_with_new_channel do |ch|
+          ch.sends_exec command
+          ch.gets_data output
+        end
+      end
+
+      it 'builds a remote environment with the result of `env` command' do
+        expect(Remote::Environment).to receive(:new).with(output)
+        remote.environment
+      end
+
+      it 'returns the environment' do
+        environment = double('environment')
+        allow(Remote::Environment).to receive(:new) { environment }
+        expect(remote.environment).to be environment
+      end
+    end
   end
 end

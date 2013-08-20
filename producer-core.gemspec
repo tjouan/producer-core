@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Producer::Core::VERSION
   s.summary = "producer-core-#{Producer::Core::VERSION}"
   s.description = <<-eoh.gsub(/^ +/, '')
-    blah
+    Software provisioning tool, including a DSL to write "recipes".
   eoh
   s.homepage = 'https://rubygems.org/gems/producer-core'
 

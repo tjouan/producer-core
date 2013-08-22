@@ -13,11 +13,7 @@ module Producer::Core
 
     describe '#process_task' do
       let(:action)  { double('action') }
-      let(:task)    { double('task').as_null_object }
-
-      before do
-        allow(task).to receive(:actions) { [action] }
-      end
+      let(:task)    { double('task', actions: [action]).as_null_object }
 
       context 'when task condition is met' do
         it 'applies the actions' do

@@ -28,10 +28,10 @@ module Producer::Core
       end
 
       it 'builds a task with its name, actions and condition' do
-        dsl = double('dsl').as_null_object
+        dsl = double(
+          'dsl', actions: [:some_action], condition: :some_condition
+        ).as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
-        allow(dsl).to receive(:actions) { [:some_action] }
-        allow(dsl).to receive(:condition) { :some_condition }
         expect(Task)
           .to receive(:new).with(:some_task, [:some_action], :some_condition)
         Task::DSL.evaluate(name, env, &block)

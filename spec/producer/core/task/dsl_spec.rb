@@ -4,7 +4,7 @@ module Producer::Core
   describe Task::DSL do
     let(:block)   { proc { } }
     let(:env)     { double('env') }
-    subject(:dsl) { Task::DSL.new &block }
+    subject(:dsl) { Task::DSL.new(&block) }
 
     %w[echo sh].each do |action|
       it "has `#{action}' action defined" do

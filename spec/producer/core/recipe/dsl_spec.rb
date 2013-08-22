@@ -6,7 +6,7 @@ module Producer::Core
 
     let(:code)    { proc { } }
     let(:env)     { double('env').as_null_object }
-    subject(:dsl) { Recipe::DSL.new &code }
+    subject(:dsl) { Recipe::DSL.new(&code) }
 
     describe '.evaluate' do
       let(:code) { 'nil' }
@@ -93,7 +93,7 @@ module Producer::Core
       describe '#source' do
         let(:filepath)  { fixture_path_for 'recipes/throw' }
         let(:code)      { "source '#{filepath}'" }
-        subject(:dsl)   { Recipe::DSL.new code }
+        subject(:dsl)   { Recipe::DSL.new(code) }
 
         it 'sources the recipe given as argument' do
           expect { dsl.evaluate(env) }.to throw_symbol :recipe_code

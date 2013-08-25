@@ -22,7 +22,7 @@ Feature: sh task action
         sh '\echo from remote'
       end
       """
-    When I execute the recipe
+    When I successfully execute the recipe
     Then the output must contain "from remote"
 
   Scenario: aborts on failed command execution

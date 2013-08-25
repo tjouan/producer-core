@@ -11,6 +11,5 @@ Feature: `source' recipe keyword
       """
       puts 'sourced recipe'
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the output must contain "sourced recipe"

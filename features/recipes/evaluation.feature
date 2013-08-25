@@ -5,6 +5,5 @@ Feature: recipe evaluation
       """
       puts 'hello from recipe'
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the output must contain exactly "hello from recipe\n"

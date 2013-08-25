@@ -7,6 +7,5 @@ Feature: `echo' task action
         echo 'hello'
       end
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the output must contain exactly "hello\n"

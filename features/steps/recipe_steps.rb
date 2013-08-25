@@ -5,3 +5,8 @@ end
 When(/^I execute the recipe$/) do
   run_simple('producer recipe.rb', false)
 end
+
+When(/^I successfully execute the recipe$/) do
+  step 'I execute the recipe'
+  assert_exit_status(0)
+end

@@ -12,8 +12,8 @@ module Producer::Core
     end
 
     describe '#session' do
-      it 'builds a new SSH session to the remote host' do
-        expect(Net::SSH).to receive(:start).with(hostname, Etc.getlogin)
+      it 'builds a new SSH session to the remote host with #user_name' do
+        expect(Net::SSH).to receive(:start).with(hostname, remote.user_name)
         remote.session
       end
 
@@ -26,6 +26,12 @@ module Producer::Core
       it 'memoizes the session' do
         allow(Net::SSH).to receive(:start) { Object.new }
         expect(remote.session).to be remote.session
+      end
+    end
+
+    describe '#user_name' do
+      it 'returns the name of the user currently logged in' do
+        expect(remote.user_name).to eq Etc.getlogin
       end
     end
 

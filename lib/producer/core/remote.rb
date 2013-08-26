@@ -11,7 +11,11 @@ module Producer
       end
 
       def session
-        @session ||= Net::SSH.start(@hostname, Etc.getlogin)
+        @session ||= Net::SSH.start(@hostname, user_name)
+      end
+
+      def user_name
+        Etc.getlogin
       end
 
       def fs

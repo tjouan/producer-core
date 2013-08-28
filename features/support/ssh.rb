@@ -76,6 +76,7 @@ Protocol 2
 HostKey #{File.expand_path @base_path}/#{KEY_PATH}
 PidFile /dev/null
 UsePrivilegeSeparation no
+Subsystem sftp /usr/lib/openssh/sftp-server
 ForceCommand HOME=#{File.expand_path @base_path} sh -c "cd ~; $SSH_ORIGINAL_COMMAND"
     eoh
 

@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency 'net-ssh'
+  s.add_dependency 'net-sftp'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'cucumber'

@@ -32,4 +32,20 @@ module NetSSHStoryHelpers
   def story_completed?
     socket.script.events.empty?
   end
+
+  def sftp_story
+    story do |session|
+      ch = session.opens_channel
+      ch.sends_subsystem('sftp')
+      ch.sends_packet(
+        Net::SFTP::Constants::PacketTypes::FXP_INIT, :long,
+        Net::SFTP::Session::HIGHEST_PROTOCOL_VERSION_SUPPORTED
+      )
+      ch.gets_packet(
+        Net::SFTP::Constants::PacketTypes::FXP_VERSION, :long,
+        Net::SFTP::Session::HIGHEST_PROTOCOL_VERSION_SUPPORTED
+      )
+      yield ch if block_given?
+    end
+  end
 end

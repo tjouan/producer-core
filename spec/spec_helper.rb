@@ -11,6 +11,6 @@ RSpec.configure do |c|
 
   c.include NetSSHStoryHelpers, :ssh
   c.before(:each, :ssh) do
-    allow(remote).to receive(:session) { connection }
+    allow(Net::SSH).to receive(:start) { connection }
   end
 end

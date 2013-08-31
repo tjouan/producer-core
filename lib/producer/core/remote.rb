@@ -19,7 +19,7 @@ module Producer
       end
 
       def user_name
-        Etc.getlogin
+        config[:user] || Etc.getlogin
       end
 
       def fs

@@ -48,8 +48,22 @@ module Producer::Core
     end
 
     describe '#user_name' do
-      it 'returns the name of the user currently logged in' do
-        expect(remote.user_name).to eq Etc.getlogin
+      context 'ssh config has an entry for user' do
+        let(:config_user_name) { 'my_user_name' }
+
+        before do
+          allow(Net::SSH::Config).to receive(:for) { { user: config_user_name } }
+        end
+
+        it 'returns the configured value' do
+          expect(remote.user_name).to eq config_user_name
+        end
+      end
+
+      context 'ssh config has no entry for user' do
+        it 'returns the name of the user currently logged in' do
+          expect(remote.user_name).to eq Etc.getlogin
+        end
       end
     end
 

@@ -1,5 +1,5 @@
 @sshd
-Feature: sh task action
+Feature: `sh' task action
 
   Scenario: executes command
     Given a recipe with:

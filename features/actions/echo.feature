@@ -8,4 +8,4 @@ Feature: `echo' task action
       end
       """
     When I successfully execute the recipe
-    And the output must contain exactly "hello\n"
+    Then the output must contain exactly "hello\n"

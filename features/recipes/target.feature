@@ -8,4 +8,4 @@ Feature: `target' recipe keyword
       puts env.target
       """
     When I successfully execute the recipe
-    And the output must contain exactly "some_host.example\n"
+    Then the output must contain exactly "some_host.example\n"

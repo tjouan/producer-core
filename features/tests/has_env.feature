@@ -13,7 +13,7 @@ Feature: `has_env' condition keyword
       end
       """
     When I successfully execute the recipe
-    And the output must contain "evaluated"
+    Then the output must contain "evaluated"
 
   Scenario: fails when remote environment variable is not defined
     Given a recipe with:
@@ -27,4 +27,4 @@ Feature: `has_env' condition keyword
       end
       """
     When I successfully execute the recipe
-    And the output must not contain "evaluated"
+    Then the output must not contain "evaluated"

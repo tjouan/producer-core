@@ -10,4 +10,4 @@ Feature: `condition' task keyword
       end
       """
     When I successfully execute the recipe
-    And the output must not contain "evaluated"
+    Then the output must not contain "evaluated"

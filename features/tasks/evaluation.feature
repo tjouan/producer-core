@@ -8,4 +8,4 @@ Feature: task evaluation
       end
       """
     When I successfully execute the recipe
-    And the output must contain exactly "hello from recipe\n"
+    Then the output must contain exactly "hello from recipe\n"

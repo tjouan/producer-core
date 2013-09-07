@@ -12,4 +12,4 @@ Feature: `source' recipe keyword
       puts 'sourced recipe'
       """
     When I successfully execute the recipe
-    And the output must contain "sourced recipe"
+    Then the output must contain "sourced recipe"

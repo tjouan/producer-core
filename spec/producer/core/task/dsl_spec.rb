@@ -16,7 +16,7 @@ module Producer::Core
       let(:name) { :some_task }
 
       it 'builds a new DSL sandbox with given code' do
-        expect(Task::DSL).to receive(:new).once.with(&block).and_call_original
+        expect(Task::DSL).to receive(:new).with(&block).and_call_original
         Task::DSL.evaluate(name, env, &block)
       end
 

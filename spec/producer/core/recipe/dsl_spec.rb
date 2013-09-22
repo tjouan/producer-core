@@ -12,7 +12,7 @@ module Producer::Core
       let(:code) { 'nil' }
 
       it 'builds a new DSL sandbox with given code' do
-        expect(Recipe::DSL).to receive(:new).once.with(code).and_call_original
+        expect(Recipe::DSL).to receive(:new).with(code).and_call_original
         Recipe::DSL.evaluate(code, env)
       end
 

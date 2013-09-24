@@ -14,6 +14,10 @@ module Producer
         @session ||= Net::SSH.start(@hostname, Etc.getlogin)
       end
 
+      def fs
+        @fs ||= Remote::FS.new(self)
+      end
+
       def execute(command)
         output = ''
         session.open_channel do |channel|

@@ -29,6 +29,24 @@ module Producer::Core
       end
     end
 
+    describe '#fs' do
+      it 'builds a new FS' do
+        expect(Remote::FS).to receive(:new)
+        remote.fs
+      end
+
+      it 'returns the new FS instance' do
+        fs = double('fs')
+        allow(Remote::FS).to receive(:new) { fs }
+        expect(remote.fs).to be fs
+      end
+
+      it 'memoizes the FS' do
+        allow(Remote::FS).to receive(:new) { Object.new }
+        expect(remote.fs).to be remote.fs
+      end
+    end
+
     describe '#execute', :ssh do
       let(:arguments) { 'some remote command' }
       let(:command)   { "echo #{arguments}" }

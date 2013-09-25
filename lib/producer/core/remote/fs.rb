@@ -7,6 +7,10 @@ module Producer
         def initialize(remote)
           @remote = remote
         end
+
+        def sftp
+          @sftp ||= @remote.session.sftp.connect
+        end
       end
     end
   end

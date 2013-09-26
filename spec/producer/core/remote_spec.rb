@@ -29,6 +29,24 @@ module Producer::Core
       end
     end
 
+    describe '#config' do
+      it 'builds a config for current host name' do
+        expect(Net::SSH::Config).to receive(:for).with(hostname)
+        remote.config
+      end
+
+      it 'returns the config' do
+        ssh_config = double('ssh config')
+        allow(Net::SSH::Config).to receive(:for) { ssh_config }
+        expect(remote.config).to be ssh_config
+      end
+
+      it 'memoizes the config' do
+        allow(Net::SSH::Config).to receive(:for) { Object.new }
+        expect(remote.config).to be remote.config
+      end
+    end
+
     describe '#user_name' do
       it 'returns the name of the user currently logged in' do
         expect(remote.user_name).to eq Etc.getlogin

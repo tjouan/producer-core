@@ -14,6 +14,10 @@ module Producer
         @session ||= Net::SSH.start(@hostname, user_name)
       end
 
+      def config
+        @config ||= Net::SSH::Config.for(@hostname)
+      end
+
       def user_name
         Etc.getlogin
       end

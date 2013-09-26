@@ -66,7 +66,7 @@ module Producer::Core
 
       context 'when querying the path raises a Net::SFTP::StatusException' do
         before do
-          response = double('response', code: '42', message: '…')
+          response = double('response', code: '42', message: 'some message')
           ex = Net::SFTP::StatusException.new(response)
           allow(stat).to receive(:file?).and_raise(ex)
         end

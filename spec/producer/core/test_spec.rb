@@ -10,6 +10,7 @@ module Producer::Core
       it 'assigns the env' do
         expect(action.instance_eval { @env }).to be env
       end
+
       it 'assigns the arguments' do
         expect(action.instance_eval { @arguments }).to eq arguments
       end

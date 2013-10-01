@@ -49,6 +49,10 @@ module Producer::Core
       it 'defines a new test keyword' do
         expect(dsl).to respond_to :some_test
       end
+
+      it 'defines the negated test' do
+        expect(dsl).to respond_to :no_some_test
+      end
     end
 
     describe '#initialize' do
@@ -95,6 +99,16 @@ module Producer::Core
           allow(some_test_class).to receive(:new) { some_test }
           dsl.evaluate
           expect(dsl.tests).to include(some_test)
+        end
+
+        context 'when keyword is prefixed with "no_"' do
+          let(:block) { proc { no_some_test :some, :args } }
+
+          it 'builds a negated test' do
+            expect(some_test_class)
+              .to receive(:new).with(env, :some, :args, negated: true)
+            dsl.evaluate
+          end
         end
       end
     end

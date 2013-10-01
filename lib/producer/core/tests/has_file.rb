@@ -2,7 +2,7 @@ module Producer
   module Core
     module Tests
       class HasFile < Test
-        def success?
+        def verify
           env.remote.fs.has_file? arguments.first
         end
       end

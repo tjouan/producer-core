@@ -14,7 +14,7 @@ module Producer
 
       def met?
         return !!@return_value if @tests.empty?
-        @tests.each { |t| return false unless t.success? }
+        @tests.each { |t| return false unless t.pass? }
         true
       end
 

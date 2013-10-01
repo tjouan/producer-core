@@ -10,18 +10,18 @@ module Producer::Core
       expect(has_file).to be_a Test
     end
 
-    describe '#success?', :ssh do
+    describe '#verify', :ssh do
       before { sftp_story }
 
       it 'delegates the call on remote FS' do
         expect(env.remote.fs).to receive(:has_file?).with(filepath)
-        has_file.success?
+        has_file.verify
       end
 
       it 'returns the file existence' do
         existence = double('existence')
         allow(env.remote.fs).to receive(:has_file?) { existence }
-        expect(has_file.success?).to be existence
+        expect(has_file.verify).to be existence
       end
     end
   end

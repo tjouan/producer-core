@@ -13,6 +13,9 @@ module Producer
             define_method(keyword) do |*args|
               @tests << klass.new(@env, *args)
             end
+            define_method("no_#{keyword}") do |*args|
+              @tests << klass.new(@env, *args, negated: true)
+            end
           end
         end
 

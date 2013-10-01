@@ -1,9 +1,9 @@
 module TestsHelpers
   def test_ok
-    double('test', success?: true)
+    double('test', pass?: true)
   end
 
   def test_ko
-    double('test', success?: false)
+    double('test', pass?: false)
   end
 end

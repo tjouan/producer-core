@@ -9,7 +9,7 @@ module Producer::Core
         expect(env.instance_eval { @output }).to eq $stdout
       end
 
-      it 'assigns nil as a default target' do
+      it 'assigns no default target' do
         expect(env.target).not_to be
       end
     end

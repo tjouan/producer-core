@@ -8,9 +8,7 @@ module Producer::Core
     subject(:sh)        { Actions::ShellCommand.new(env, command) }
 
     describe '#apply' do
-      before do
-        env.output = StringIO.new
-      end
+      before { env.output = StringIO.new }
 
       it 'delegates the call to env.remote.execute method' do
         expect(env.remote).to receive(:execute).with(command)

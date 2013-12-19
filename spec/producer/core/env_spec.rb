@@ -25,11 +25,11 @@ module Producer::Core
     end
 
     describe '#target' do
-      let(:target) { Object.new }
+      let(:target) { double 'target' }
 
       it 'returns the defined target' do
         env.target = target
-        expect(env.target).to eq target
+        expect(env.target).to be target
       end
     end
 

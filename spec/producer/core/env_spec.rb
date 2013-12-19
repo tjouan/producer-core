@@ -41,7 +41,7 @@ module Producer::Core
       end
 
       it 'returns the remote' do
-        remote = double('remote')
+        remote = double 'remote'
         allow(Remote).to receive(:new) { remote }
         expect(env.remote).to eq remote
       end

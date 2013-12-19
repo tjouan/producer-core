@@ -19,7 +19,7 @@ module Producer::Core
       end
 
       it 'returns the file existence' do
-        existence = double('existence')
+        existence = double 'existence'
         allow(env.remote.fs).to receive(:has_file?) { existence }
         expect(has_file.verify).to be existence
       end

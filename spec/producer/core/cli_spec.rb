@@ -5,7 +5,7 @@ module Producer::Core
     include ExitHelpers
     include FixturesHelpers
 
-    let(:recipe_file) { fixture_path_for('recipes/empty.rb') }
+    let(:recipe_file) { fixture_path_for 'recipes/empty.rb' }
     let(:arguments)   { [recipe_file] }
     subject(:cli)     { CLI.new(arguments) }
 
@@ -23,13 +23,13 @@ module Producer::Core
 
     describe '#run!' do
       it 'checks the arguments' do
-        expect(cli).to receive(:check_arguments!)
+        expect(cli).to receive :check_arguments!
         cli.run!
       end
 
       it 'processes the tasks with the interpreter' do
         allow(cli.recipe).to receive(:tasks) { [:some_task] }
-        expect(cli.interpreter).to receive(:process).with([:some_task])
+        expect(cli.interpreter).to receive(:process).with [:some_task]
         cli.run!
       end
     end
@@ -61,12 +61,12 @@ module Producer::Core
 
     describe '#env' do
       it 'builds an environment with the current recipe' do
-        expect(Env).to receive(:new)
+        expect(Env).to receive :new
         cli.env
       end
 
       it 'returns the env' do
-        env = double('env')
+        env = double 'env'
         allow(Env).to receive(:new) { env }
         expect(cli.env).to be env
       end
@@ -88,12 +88,12 @@ module Producer::Core
 
     describe '#interpreter' do
       it 'builds a interpreter' do
-        expect(Interpreter).to receive(:new)
+        expect(Interpreter).to receive :new
         cli.interpreter
       end
 
       it 'returns the interpreter' do
-        interpreter = double('interpreter')
+        interpreter = double 'interpreter'
         allow(Interpreter).to receive(:new) { interpreter }
         expect(cli.interpreter).to be interpreter
       end

@@ -7,7 +7,7 @@ module Producer::Core
 
     describe '#hostname' do
       it 'returns the assignated hostname' do
-        expect(remote.hostname).to be hostname
+        expect(remote.hostname).to eq hostname
       end
     end
 
@@ -69,12 +69,12 @@ module Producer::Core
 
     describe '#fs' do
       it 'builds a new FS' do
-        expect(Remote::FS).to receive(:new)
+        expect(Remote::FS).to receive :new
         remote.fs
       end
 
       it 'returns the new FS instance' do
-        fs = double('fs')
+        fs = double 'fs'
         allow(Remote::FS).to receive(:new) { fs }
         expect(remote.fs).to be fs
       end
@@ -103,7 +103,7 @@ module Producer::Core
           ch.sends_exec command
           ch.gets_data arguments
         end
-        expect(remote.execute(command)).to eq arguments
+        expect(remote.execute command).to eq arguments
       end
 
       it 'raises an exception when the exit status code is not 0' do
@@ -112,7 +112,7 @@ module Producer::Core
           ch.gets_data arguments
           ch.gets_exit_status 1
         end
-        expect { remote.execute(command) }
+        expect { remote.execute command }
           .to raise_error(RemoteCommandExecutionError)
       end
     end
@@ -134,7 +134,7 @@ module Producer::Core
       end
 
       it 'returns the environment' do
-        environment = double('environment')
+        environment = double 'environment'
         allow(Remote::Environment).to receive(:new) { environment }
         expect(remote.environment).to be environment
       end

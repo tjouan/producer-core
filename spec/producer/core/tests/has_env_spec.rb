@@ -11,7 +11,7 @@ module Producer::Core
     end
 
     describe '#verify' do
-      let(:environment) { double('environment') }
+      let(:environment) { double 'environment' }
 
       before do
         allow(env.remote).to receive(:environment) { environment }

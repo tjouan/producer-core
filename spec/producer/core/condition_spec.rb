@@ -8,7 +8,7 @@ module Producer::Core
     subject(:condition) { Condition.new(tests) }
 
     describe '.evaluate' do
-      let(:env)   { double('env') }
+      let(:env)   { double 'env' }
       let(:block) { proc { :some_condition_code } }
 
       it 'delegates to DSL.evaluate' do
@@ -20,7 +20,7 @@ module Producer::Core
       end
 
       it 'returns the evaluated condition' do
-        condition = double('condition')
+        condition = double 'condition'
         allow(Condition::DSL).to receive(:evaluate) { condition }
         expect(Condition.evaluate(env, &block)).to be condition
       end

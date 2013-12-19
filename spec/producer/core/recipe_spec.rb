@@ -7,7 +7,7 @@ module Producer::Core
     subject(:recipe) { Recipe.new }
 
     describe '.evaluate_from_file' do
-      let(:env)       { double('env') }
+      let(:env)       { double 'env' }
       let(:filepath)  { fixture_path_for 'recipes/empty.rb' }
 
       it 'delegates to DSL.evaluate with the recipe file content' do
@@ -17,7 +17,7 @@ module Producer::Core
       end
 
       it 'returns the evaluated recipe' do
-        recipe = double('recipe')
+        recipe = double 'recipe'
         allow(Recipe::DSL).to receive(:evaluate) { recipe }
         expect(Recipe.evaluate_from_file(filepath, env)).to be recipe
       end

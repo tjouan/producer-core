@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Condition::DSL do
     let(:block)   { proc { :some_condition_code } }
-    let(:env)     { double('env') }
+    let(:env)     { double 'env' }
     subject(:dsl) { Condition::DSL.new(env, &block) }
 
     %w[has_env has_file].each do |test|
@@ -22,7 +22,7 @@ module Producer::Core
       it 'evaluates the DSL sandbox code' do
         dsl = double('dsl').as_null_object
         allow(Condition::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate)
+        expect(dsl).to receive :evaluate
         Condition::DSL.evaluate(env, &block)
       end
 
@@ -33,18 +33,16 @@ module Producer::Core
       end
 
       it 'returns the condition' do
-        condition = double('task')
+        condition = double 'task'
         allow(Condition).to receive(:new) { condition }
         expect(Condition::DSL.evaluate(env, &block)).to be condition
       end
     end
 
     describe '.define_test' do
-      let(:some_test_class) { double('SomeTest class') }
+      let(:some_test_class) { double 'SomeTest class' }
 
-      before do
-        Condition::DSL.define_test(:some_test, some_test_class)
-      end
+      before { Condition::DSL.define_test(:some_test, some_test_class) }
 
       it 'defines a new test keyword' do
         expect(dsl).to respond_to :some_test
@@ -82,12 +80,10 @@ module Producer::Core
       end
 
       context 'when a defined test keyword is called' do
-        let(:some_test_class) { double('SomeTest class') }
+        let(:some_test_class) { double 'SomeTest class' }
         let(:block)           { proc { some_test :some, :args } }
 
-        before do
-          Condition::DSL.define_test(:some_test, some_test_class)
-        end
+        before { Condition::DSL.define_test(:some_test, some_test_class) }
 
         it 'builds a new test with the env and given arguments' do
           expect(some_test_class).to receive(:new).with(env, :some, :args)
@@ -95,7 +91,7 @@ module Producer::Core
         end
 
         it 'registers the new test' do
-          some_test = double('SomeTest instance')
+          some_test = double 'SomeTest instance'
           allow(some_test_class).to receive(:new) { some_test }
           dsl.evaluate
           expect(dsl.tests).to include(some_test)

@@ -36,7 +36,7 @@ module NetSSHStoryHelpers
   def sftp_story
     story do |session|
       ch = session.opens_channel
-      ch.sends_subsystem('sftp')
+      ch.sends_subsystem 'sftp'
       ch.sends_packet(
         Net::SFTP::Constants::PacketTypes::FXP_INIT, :long,
         Net::SFTP::Session::HIGHEST_PROTOCOL_VERSION_SUPPORTED

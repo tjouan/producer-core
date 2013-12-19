@@ -4,14 +4,14 @@ module Producer::Core
   describe Recipe::DSL do
     include FixturesHelpers
 
-    let(:code)    { proc { } }
+    let(:code)    { proc { :some_recipe_code } }
     let(:env)     { double('env').as_null_object }
     subject(:dsl) { Recipe::DSL.new(&code) }
 
     describe '.evaluate' do
       let(:code) { 'nil' }
 
-      it 'builds a new DSL sandbox with given code' do
+      it 'builds a new DSL sandbox with given code as string' do
         expect(Recipe::DSL).to receive(:new).with(code).and_call_original
         Recipe::DSL.evaluate(code, env)
       end
@@ -24,7 +24,7 @@ module Producer::Core
       end
 
       it 'builds a recipe with evaluated tasks' do
-        dsl = Recipe::DSL.new('task(:some_task) { }')
+        dsl = Recipe::DSL.new { task(:some_task) { } }
         allow(Recipe::DSL).to receive(:new) { dsl }
         expect(Recipe).to receive(:new).with(dsl.tasks)
         Recipe::DSL.evaluate(code, env)
@@ -62,7 +62,7 @@ module Producer::Core
       let(:code) { proc { task(:some_task) { } } }
 
       it 'returns registered tasks' do
-        dsl.evaluate(env)
+        dsl.evaluate env
         expect(dsl.tasks[0].name).to eq :some_task
       end
     end
@@ -70,11 +70,11 @@ module Producer::Core
     describe '#evaluate' do
       it 'evaluates its code' do
         dsl = Recipe::DSL.new { throw :recipe_code }
-        expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
+        expect { dsl.evaluate env }.to throw_symbol :recipe_code
       end
 
       it 'returns itself' do
-        expect(dsl.evaluate(env)).to eq dsl
+        expect(dsl.evaluate env).to eq dsl
       end
     end
 
@@ -85,8 +85,8 @@ module Producer::Core
         let(:code) { proc { env.some_message } }
 
         it 'returns the current environment' do
-          expect(env).to receive(:some_message)
-          dsl.evaluate(env)
+          expect(env).to receive :some_message
+          dsl.evaluate env
         end
       end
 
@@ -96,7 +96,7 @@ module Producer::Core
         subject(:dsl)   { Recipe::DSL.new(code) }
 
         it 'sources the recipe given as argument' do
-          expect { dsl.evaluate(env) }.to throw_symbol :recipe_code
+          expect { dsl.evaluate env }.to throw_symbol :recipe_code
         end
       end
 
@@ -114,8 +114,8 @@ module Producer::Core
 
         it 'builds a new evaluated task' do
           expect(Task)
-            .to receive(:evaluate).with(:some_task, env) do |&block|
-              expect(block.call).to eq :some_value
+            .to receive(:evaluate).with(:some_task, env) do |&b|
+              expect(b.call).to eq :some_value
             end
           dsl
         end

@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Task::DSL do
     let(:block)   { proc { } }
-    let(:env)     { double('env') }
+    let(:env)     { double 'env' }
     subject(:dsl) { Task::DSL.new(&block) }
 
     %w[echo sh].each do |action|
@@ -42,7 +42,7 @@ module Producer::Core
       end
 
       it 'returns the task' do
-        task = double('task')
+        task = double 'task'
         allow(Task).to receive(:new) { task }
         expect(Task::DSL.evaluate(name, env, &block)).to be task
       end
@@ -76,7 +76,7 @@ module Producer::Core
       let(:block) { proc { throw :task_code } }
 
       it 'evaluates its code' do
-        expect { dsl.evaluate(env) }
+        expect { dsl.evaluate env }
           .to throw_symbol :task_code
       end
 
@@ -86,7 +86,7 @@ module Producer::Core
 
         before do
           Task::DSL.define_action(:some_action, some_action_class)
-          dsl.evaluate(env)
+          dsl.evaluate env
         end
 
         it 'registers the action' do

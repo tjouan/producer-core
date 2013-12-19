@@ -3,7 +3,9 @@ require 'spec_helper'
 module Producer::Core
   describe Remote::Environment do
     let(:variables)       { { 'FOO' => 'bar', 'BAZ' => 'qux' } }
-    subject(:environment) { Remote::Environment.new(variables) }
+    let(:string)          { "FOO=bar\nBAZ=qux" }
+    let(:argument)        { variables }
+    subject(:environment) { Remote::Environment.new(argument) }
 
     describe '#initialize' do
       context 'when a hash is given' do
@@ -13,7 +15,7 @@ module Producer::Core
       end
 
       context 'when a string is given' do
-        subject(:environment) { Remote::Environment.new("FOO=bar\nBAZ=qux") }
+        let(:argument) { string }
 
         it 'assigns the key/value pairs' do
           expect(environment.instance_eval { @variables }).to eq variables

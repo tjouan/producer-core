@@ -84,8 +84,10 @@ module Producer::Core
     end
 
     describe '#!' do
-      %w[true false].each do |b|
+      [true, false].each do |b|
         context "when #met? return #{b}" do
+          before { allow(condition).to receive(:met?) { b } }
+
           it 'returns the negated #met?' do
             expect(condition.!).to be !condition.met?
           end

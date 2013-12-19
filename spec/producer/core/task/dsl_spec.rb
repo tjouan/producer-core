@@ -61,7 +61,7 @@ module Producer::Core
       end
 
       it 'assigns true as the condition' do
-        expect(dsl.instance_eval { @condition }).to be_true
+        expect(dsl.instance_eval { @condition }).to be true
       end
     end
 

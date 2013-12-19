@@ -46,8 +46,8 @@ module Producer::Core
           expect(task.actions).to be_empty
         end
 
-        it 'assigns a truthy condition' do
-          expect(task.condition).to be_true
+        it 'assigns a true condition' do
+          expect(task.condition).to be true
         end
       end
     end

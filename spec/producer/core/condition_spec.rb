@@ -14,7 +14,7 @@ module Producer::Core
       it 'delegates to DSL.evaluate' do
         expect(Condition::DSL)
           .to receive(:evaluate).with(env) do |&b|
-            expect(b.call).to eq :some_condition_code
+            expect(b).to be block
           end
         Condition.evaluate(env, &block)
       end

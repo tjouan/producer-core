@@ -72,6 +72,15 @@ module Producer::Core
       end
     end
 
+    describe '#condition' do
+      context 'without block' do
+        it 'returns the assigned condition' do
+          dsl.instance_eval { @condition = :some_condition }
+          expect(dsl.condition).to be :some_condition
+        end
+      end
+    end
+
     describe '#evaluate' do
       let(:block) { proc { throw :task_code } }
 
@@ -119,15 +128,6 @@ module Producer::Core
             allow(Condition).to receive(:evaluate) { condition }
             expect(dsl.condition).to be condition
           end
-        end
-      end
-    end
-
-    describe '#condition' do
-      context 'without block' do
-        it 'returns the assigned condition' do
-          dsl.instance_eval { @condition = :some_condition }
-          expect(dsl.condition).to be :some_condition
         end
       end
     end

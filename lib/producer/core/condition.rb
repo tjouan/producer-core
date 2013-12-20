@@ -3,7 +3,9 @@ module Producer
     class Condition
       class << self
         def evaluate(env, &block)
-          DSL.evaluate(env, &block)
+          dsl = DSL.new(env, &block)
+          return_value = dsl.evaluate
+          Condition.new(dsl.tests, return_value)
         end
       end
 

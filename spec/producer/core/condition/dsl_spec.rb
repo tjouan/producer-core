@@ -12,33 +12,6 @@ module Producer::Core
       end
     end
 
-    describe '.evaluate' do
-      it 'builds a new DSL sandbox with given env and code' do
-        expect(Condition::DSL)
-          .to receive(:new).with(env, &block).and_call_original
-        Condition::DSL.evaluate(env, &block)
-      end
-
-      it 'evaluates the DSL sandbox code' do
-        dsl = double('dsl').as_null_object
-        allow(Condition::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive :evaluate
-        Condition::DSL.evaluate(env, &block)
-      end
-
-      it 'builds a condition with its test and block return value' do
-        expect(Condition)
-          .to receive(:new).with(dsl.tests, :some_condition_code)
-        Condition::DSL.evaluate(env, &block)
-      end
-
-      it 'returns the condition' do
-        condition = double 'task'
-        allow(Condition).to receive(:new) { condition }
-        expect(Condition::DSL.evaluate(env, &block)).to be condition
-      end
-    end
-
     describe '.define_test' do
       let(:some_test_class) { double 'SomeTest class' }
 

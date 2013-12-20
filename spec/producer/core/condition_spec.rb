@@ -11,17 +11,28 @@ module Producer::Core
       let(:env)   { double 'env' }
       let(:block) { proc { :some_condition_code } }
 
-      it 'delegates to DSL.evaluate' do
+      it 'builds a new DSL sandbox with given env and code' do
         expect(Condition::DSL)
-          .to receive(:evaluate).with(env) do |&b|
-            expect(b).to be block
-          end
+          .to receive(:new).with(env, &block).and_call_original
         Condition.evaluate(env, &block)
       end
 
-      it 'returns the evaluated condition' do
-        condition = double 'condition'
-        allow(Condition::DSL).to receive(:evaluate) { condition }
+      it 'evaluates the DSL sandbox code' do
+        dsl = double('dsl').as_null_object
+        allow(Condition::DSL).to receive(:new) { dsl }
+        expect(dsl).to receive :evaluate
+        Condition.evaluate(env, &block)
+      end
+
+      it 'builds a condition with its test and block return value' do
+        expect(Condition)
+          .to receive(:new).with([], :some_condition_code)
+        Condition.evaluate(env, &block)
+      end
+
+      it 'returns the condition' do
+        condition = double 'task'
+        allow(Condition).to receive(:new) { condition }
         expect(Condition.evaluate(env, &block)).to be condition
       end
     end

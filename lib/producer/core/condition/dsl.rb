@@ -3,12 +3,6 @@ module Producer
     class Condition
       class DSL
         class << self
-          def evaluate(env, &block)
-            dsl = new(env, &block)
-            return_value = dsl.evaluate
-            Condition.new(dsl.tests, return_value)
-          end
-
           def define_test(keyword, klass)
             define_method(keyword) do |*args|
               @tests << klass.new(@env, *args)

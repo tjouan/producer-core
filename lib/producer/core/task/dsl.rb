@@ -23,9 +23,9 @@ module Producer
           @condition  = true
         end
 
-        def evaluate(env)
+        def evaluate(env, *args)
           @env = env
-          instance_eval &@block
+          instance_exec *args, &@block
         end
 
         def condition(&block)

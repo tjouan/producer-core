@@ -34,8 +34,14 @@ module Producer
           env.target = hostname
         end
 
-        def task(name, &block)
-          @tasks << Task.evaluate(name, env, &block)
+        def task(name, *args, &block)
+          @tasks << Task.evaluate(name, env, *args, &block)
+        end
+
+        def macro(name, &block)
+          define_singleton_method(name) do |*args|
+            task("#{name}", *args, &block)
+          end
         end
       end
     end

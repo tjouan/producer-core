@@ -81,11 +81,11 @@ module Producer::Core
       end
 
       describe '#task' do
-        let(:code) { proc { task(:some_task) { :some_value } } }
+        let(:code) { proc { task(:some_task, :some, :arg) { :some_value } } }
 
         it 'builds a new evaluated task' do
           expect(Task)
-            .to receive(:evaluate).with(:some_task, env) do |&b|
+            .to receive(:evaluate).with(:some_task, env, :some, :arg) do |&b|
               expect(b.call).to eq :some_value
             end
           dsl
@@ -95,6 +95,30 @@ module Producer::Core
           task = double('task').as_null_object
           allow(Task).to receive(:new) { task }
           expect(dsl.tasks).to include(task)
+        end
+      end
+
+      describe '#macro' do
+        let(:code) { proc { macro(:hello) { echo 'hello' } } }
+
+        it 'defines the new recipe keyword' do
+          expect(dsl).to respond_to(:hello)
+        end
+
+        context 'when the new keyword is called' do
+          let(:code) { proc { macro(:hello) { echo 'hello' }; hello } }
+
+          it 'registers the new task' do
+            expect(dsl.tasks.first.actions.first).to be_an Actions::Echo
+          end
+        end
+
+        context 'when macro takes arguments' do
+          let(:code) { proc { macro(:hello) { |e| echo e }; hello :arg } }
+
+          it 'evaluates task code with arguments' do
+            expect(dsl.tasks.first.actions.first.arguments.first).to be :arg
+          end
         end
       end
     end

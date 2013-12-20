@@ -53,6 +53,15 @@ module Producer::Core
           .to throw_symbol :task_code
       end
 
+      context 'when arguments are given' do
+        let(:block) { proc { |e| throw e } }
+
+        it 'passes arguments as block parameters' do
+          expect { dsl.evaluate env, :some_argument }
+            .to throw_symbol :some_argument
+        end
+      end
+
       context 'when a defined keyword action is called' do
         let(:some_action_class) { Class.new(Action) }
         let(:block)             { proc { some_action } }

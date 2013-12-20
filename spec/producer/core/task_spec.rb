@@ -9,6 +9,7 @@ module Producer::Core
 
     describe '.evaluate' do
       let(:env)   { double 'env' }
+      let(:args)  { [:some, :arguments] }
       let(:block) { proc { :some_task_code } }
 
       it 'builds a new DSL sandbox with given code' do
@@ -17,14 +18,14 @@ module Producer::Core
           expect(b).to be block
           dsl
         end
-        Task.evaluate(name, env, &block)
+        Task.evaluate(name, env, *args, &block)
       end
 
       it 'evaluates the DSL sandbox code with given environment' do
         dsl = double('dsl').as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate).with(env)
-        Task.evaluate(name, env, &block)
+        expect(dsl).to receive(:evaluate).with(env, *args)
+        Task.evaluate(name, env, *args, &block)
       end
 
       it 'builds the task with its name, actions and condition' do
@@ -34,13 +35,13 @@ module Producer::Core
         allow(Task::DSL).to receive(:new) { dsl }
         expect(Task)
           .to receive(:new).with(:some_task, [:some_action], :some_condition)
-        Task.evaluate(name, env, &block)
+        Task.evaluate(name, env, *args, &block)
       end
 
       it 'returns the task' do
         task = double 'task'
         allow(Task).to receive(:new) { task }
-        expect(Task.evaluate(name, env, &block)).to be task
+        expect(Task.evaluate(name, env, *args, &block)).to be task
       end
     end
 

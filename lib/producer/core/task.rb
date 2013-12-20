@@ -2,9 +2,9 @@ module Producer
   module Core
     class Task
       class << self
-        def evaluate(name, env, &block)
+        def evaluate(name, env, *args, &block)
           dsl = DSL.new(&block)
-          dsl.evaluate(env)
+          dsl.evaluate(env, *args)
           Task.new(name, dsl.actions, dsl.condition)
         end
       end

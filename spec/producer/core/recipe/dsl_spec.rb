@@ -8,35 +8,6 @@ module Producer::Core
     let(:env)     { double('env').as_null_object }
     subject(:dsl) { Recipe::DSL.new(&code) }
 
-    describe '.evaluate' do
-      let(:code) { 'nil' }
-
-      it 'builds a new DSL sandbox with given code as string' do
-        expect(Recipe::DSL).to receive(:new).with(code).and_call_original
-        Recipe::DSL.evaluate(code, env)
-      end
-
-      it 'evaluates the DSL sandbox code with given environment' do
-        dsl = double('dsl').as_null_object
-        allow(Recipe::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate).with(env)
-        Recipe::DSL.evaluate(code, env)
-      end
-
-      it 'builds a recipe with evaluated tasks' do
-        dsl = Recipe::DSL.new { task(:some_task) { } }
-        allow(Recipe::DSL).to receive(:new) { dsl }
-        expect(Recipe).to receive(:new).with(dsl.tasks)
-        Recipe::DSL.evaluate(code, env)
-      end
-
-      it 'returns the recipe' do
-        recipe = double('recipe').as_null_object
-        allow(Recipe).to receive(:new) { recipe }
-        expect(Recipe::DSL.evaluate(code, env)).to be recipe
-      end
-    end
-
     describe '#initialize' do
       it 'assigns no task' do
         expect(dsl.instance_eval { @tasks }).to be_empty

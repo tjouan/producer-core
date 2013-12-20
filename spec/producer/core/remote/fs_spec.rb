@@ -34,7 +34,7 @@ module Producer::Core
     # FIXME: We rely a lot on mocking net-sftp heavily, while we already use a
     # part of net-ssh story helpers, which are more close to integration tests.
     describe '#has_file?', :ssh do
-      let(:file_path) { "some_file_path" }
+      let(:file_path) { 'some_file_path' }
       let(:stat)      { double 'stat' }
 
       before do

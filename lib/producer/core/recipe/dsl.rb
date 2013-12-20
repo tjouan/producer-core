@@ -2,12 +2,14 @@ module Producer
   module Core
     class Recipe
       class DSL
-        attr_reader :tasks
-
-        def self.evaluate(code, env)
-          dsl = new(code).evaluate(env)
-          Recipe.new(dsl.tasks)
+        class << self
+          def evaluate(code, env)
+            dsl = new(code).evaluate(env)
+            Recipe.new(dsl.tasks)
+          end
         end
+
+        attr_reader :tasks
 
         def initialize(code = nil, &block)
           @code   = code

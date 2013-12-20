@@ -1,11 +1,13 @@
 module Producer
   module Core
     class Task
-      attr_reader :name, :actions, :condition
-
-      def self.evaluate(name, env, &block)
-        DSL.evaluate(name, env, &block)
+      class << self
+        def evaluate(name, env, &block)
+          DSL.evaluate(name, env, &block)
+        end
       end
+
+      attr_reader :name, :actions, :condition
 
       def initialize(name, actions = [], condition = true)
         @name       = name

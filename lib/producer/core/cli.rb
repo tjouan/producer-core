@@ -1,9 +1,9 @@
 module Producer
   module Core
     class CLI
-      attr_reader :arguments
-
       USAGE = "Usage: #{File.basename $0} recipe_file"
+
+      attr_reader :arguments
 
       def initialize(arguments, stdout = $stdout)
         @stdout     = stdout

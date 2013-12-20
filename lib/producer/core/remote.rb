@@ -34,7 +34,7 @@ module Producer
               output << data
             end
 
-            ch.on_request('exit-status') do |c, data|
+            ch.on_request 'exit-status' do |c, data|
               exit_status = data.read_long
               raise RemoteCommandExecutionError if exit_status != 0
             end

@@ -7,19 +7,29 @@ module Producer::Core
     let(:argument)        { variables }
     subject(:environment) { Remote::Environment.new(argument) }
 
-    describe '#initialize' do
-      context 'when a hash is given' do
-        it 'assigns the key/value pairs' do
-          expect(environment.instance_eval { @variables }).to eq variables
-        end
+    describe '.string_to_hash' do
+      it 'converts key=value pairs separated by new lines to a hash' do
+        expect(Remote::Environment.string_to_hash(string))
+          .to eq variables
+      end
+    end
+
+    describe '.new_from_string' do
+      it 'builds a new instance after converting from string' do
+        expect(Remote::Environment).to receive(:new).with(variables)
+        Remote::Environment.new_from_string(string)
       end
 
-      context 'when a string is given' do
-        let(:argument) { string }
+      it 'returns the instance' do
+        environment = double 'environment'
+        allow(Remote::Environment).to receive(:new) { environment }
+        expect(Remote::Environment.new_from_string(string)).to be environment
+      end
+    end
 
-        it 'assigns the key/value pairs' do
-          expect(environment.instance_eval { @variables }).to eq variables
-        end
+    describe '#initialize' do
+      it 'assigns the key/value pairs' do
+        expect(environment.instance_eval { @variables }).to eq variables
       end
     end
 

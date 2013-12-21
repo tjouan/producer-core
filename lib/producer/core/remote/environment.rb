@@ -2,24 +2,23 @@ module Producer
   module Core
     class Remote
       class Environment
+        class << self
+          def string_to_hash(str)
+            Hash[str.each_line.map { |l| l.chomp.split '=', 2 }]
+          end
+
+          def new_from_string(str)
+            new string_to_hash str
+          end
+        end
+
         require 'forwardable'
 
         extend Forwardable
         def_delegator :@variables, :has_key?
 
         def initialize(variables)
-          case variables
-          when String
-            @variables = parse_from_string variables
-          else
-            @variables = variables
-          end
-        end
-
-        private
-
-        def parse_from_string(str)
-          Hash[str.each_line.map { |l| l.chomp.split '=', 2 }]
+          @variables = variables
         end
       end
     end

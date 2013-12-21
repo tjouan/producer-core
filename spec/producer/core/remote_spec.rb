@@ -128,13 +128,13 @@ module Producer::Core
       end
 
       it 'builds a remote environment with the result of `env` command' do
-        expect(Remote::Environment).to receive(:new).with(output)
+        expect(Remote::Environment).to receive(:new_from_string).with(output)
         remote.environment
       end
 
       it 'returns the environment' do
         environment = double 'environment'
-        allow(Remote::Environment).to receive(:new) { environment }
+        allow(Remote::Environment).to receive(:new_from_string) { environment }
         expect(remote.environment).to be environment
       end
     end

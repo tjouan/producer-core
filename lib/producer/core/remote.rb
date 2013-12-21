@@ -45,7 +45,7 @@ module Producer
       end
 
       def environment
-        Environment.new(execute 'env')
+        Environment.new_from_string(execute 'env')
       end
     end
   end

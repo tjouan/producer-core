@@ -10,3 +10,7 @@ When(/^I successfully execute the recipe$/) do
   step 'I execute the recipe'
   assert_exit_status(0)
 end
+
+When(/^I execute the recipe interactively$/) do
+  run_interactive('producer recipe.rb')
+end

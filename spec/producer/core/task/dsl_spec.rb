@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Task::DSL do
     let(:block)   { proc {} }
-    let(:env)     { double 'env' }
+    let(:env)     { Env.new }
     subject(:dsl) { Task::DSL.new(env, &block) }
 
     %w[echo sh file_write].each do |action|
@@ -80,6 +80,26 @@ module Producer::Core
           dsl.condition { :some_return_value }
           expect(dsl.condition.return_value).to eq :some_return_value
         end
+      end
+    end
+
+    describe '#ask' do
+      let(:question)        { 'Which letter?' }
+      let(:choices)         { %w[A B] }
+      let(:prompter_class)  { double('prompter class').as_null_object }
+      subject(:ask)         { dsl.ask question, choices,
+                              prompter: prompter_class }
+
+      it 'builds a prompter' do
+        expect(prompter_class).to receive(:new).with(env.input, env.output)
+        ask
+      end
+
+      it 'prompts and returns the choice' do
+        prompter = double 'prompter'
+        allow(prompter_class).to receive(:new) { prompter }
+        allow(prompter).to receive(:prompt) { :choice }
+        expect(ask).to eq :choice
       end
     end
   end

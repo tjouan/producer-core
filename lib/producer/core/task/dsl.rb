@@ -32,6 +32,10 @@ module Producer
           @condition = Condition.evaluate(@env, &block) if block
           @condition
         end
+
+        def ask(question, choices, prompter: Prompter)
+          prompter.new(env.input, env.output).prompt(question, choices)
+        end
       end
     end
   end

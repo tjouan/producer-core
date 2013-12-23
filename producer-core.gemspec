@@ -1,11 +1,9 @@
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH << lib unless $LOAD_PATH.include? lib
-require 'producer/core/version'
+require File.expand_path('../lib/producer/core/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name    = 'producer-core'
-  s.version = Producer::Core::VERSION
-  s.summary = "producer-core-#{Producer::Core::VERSION}"
+  s.version = Producer::Core::VERSION.dup
+  s.summary = 'Provisioning tool'
   s.description = <<-eoh.gsub(/^ +/, '')
     Software provisioning tool, including a DSL to write "recipes".
   eoh

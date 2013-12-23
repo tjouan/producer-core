@@ -1,11 +1,11 @@
 Feature: `echo' task action
 
-  Scenario: ouputs text
+  Scenario: prints text on standard output
     Given a recipe with:
       """
-      task :some_task do
+      task :say_hello do
         echo 'hello'
       end
       """
     When I successfully execute the recipe
-    Then the output must contain exactly "hello\n"
+    Then the output must match /\Ahello\n/

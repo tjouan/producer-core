@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Actions::ShellCommand do
-    let(:env)           { Env.new }
+    let(:env)           { Env.new(output: StringIO.new) }
     let(:command_args)  { 'hello from remote host' }
     let(:command)       { "echo #{command_args}" }
     subject(:sh)        { Actions::ShellCommand.new(env, command) }
@@ -15,10 +15,10 @@ module Producer::Core
         sh.apply
       end
 
-      it 'forwards the returned output to env.output' do
+      it 'writes the returned output to env.output with a record separator' do
         allow(env.remote).to receive(:execute) { command_args }
-        expect(env).to receive(:output).with(command_args)
         sh.apply
+        expect(env.output.string).to eq "#{command_args}\n"
       end
     end
   end

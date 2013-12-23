@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Env do
+    let(:output)  { double 'output' }
     subject(:env) { Env.new }
 
     describe '#initialize' do
@@ -12,15 +13,21 @@ module Producer::Core
       it 'assigns no default target' do
         expect(env.target).not_to be
       end
+
+      context 'when output is given as argument' do
+        subject(:env) { Env.new(output: output) }
+
+        it 'assigns the given output' do
+          expect(env.instance_eval { @output }).to eq output
+        end
+      end
     end
 
     describe '#output' do
-      let(:stdout) { StringIO.new }
+      subject(:env) { Env.new(output: output) }
 
-      it 'writes the given string to the assigned IO with a record separator' do
-        env.output = stdout
-        env.output 'some content'
-        expect(stdout.string).to eq "some content\n"
+      it 'returns the assigned output' do
+        expect(env.output).to eq output
       end
     end
 

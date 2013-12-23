@@ -1,16 +1,11 @@
 module Producer
   module Core
     class Env
-      attr_writer   :output
-      attr_accessor :target
+      attr_accessor :output, :target
 
-      def initialize
-        @output = $stdout
+      def initialize(output: $stdout)
+        @output = output
         @target = nil
-      end
-
-      def output(str)
-        @output.puts str
       end
 
       def remote

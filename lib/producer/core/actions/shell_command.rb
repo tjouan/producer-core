@@ -3,7 +3,7 @@ module Producer
     module Actions
       class ShellCommand < Action
         def apply
-          env.output env.remote.execute(arguments.first)
+          env.output.puts env.remote.execute(arguments.first)
         end
       end
     end

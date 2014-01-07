@@ -7,17 +7,27 @@ module Producer::Core
 
     let(:recipe_file) { fixture_path_for 'recipes/empty.rb' }
     let(:arguments)   { [recipe_file] }
-    subject(:cli)     { CLI.new(arguments) }
+    let(:stdout)      { StringIO.new }
+
+    subject(:cli)     { CLI.new(arguments, stdout: stdout) }
 
     describe '#initialize' do
+      subject(:cli) { CLI.new(arguments) }
+
       it 'assigns $stdout as the default standard output' do
-        expect(cli.instance_eval { @stdout }).to be $stdout
+        expect(cli.stdout).to be $stdout
       end
     end
 
     describe '#arguments' do
       it 'returns the assigned arguments' do
         expect(cli.arguments).to eq arguments
+      end
+    end
+
+    describe '#stdout' do
+      it 'returns the assigned standard output' do
+        expect(cli.stdout).to be stdout
       end
     end
 
@@ -43,8 +53,6 @@ module Producer::Core
 
       context 'when recipe argument is missing' do
         let(:arguments) { [] }
-        let(:stdout)    { StringIO.new }
-        subject(:cli)   { CLI.new(arguments, stdout) }
 
         it 'exits with a return status of 64' do
           expect { cli.check_arguments! }.to raise_error(SystemExit) { |e|

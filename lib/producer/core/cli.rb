@@ -3,11 +3,11 @@ module Producer
     class CLI
       USAGE = "Usage: #{File.basename $0} recipe_file"
 
-      attr_reader :arguments
+      attr_reader :arguments, :stdout
 
-      def initialize(arguments, stdout = $stdout)
-        @stdout     = stdout
+      def initialize(arguments, stdout: $stdout)
         @arguments  = arguments
+        @stdout     = stdout
       end
 
       def run!

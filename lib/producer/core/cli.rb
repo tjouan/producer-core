@@ -1,22 +1,32 @@
 module Producer
   module Core
     class CLI
+      ArgumentError = Class.new(::ArgumentError)
+
       USAGE = "Usage: #{File.basename $0} recipe_file"
+
+      class << self
+        def run!(arguments, output: $stderr)
+          begin
+            cli = new(arguments)
+          rescue ArgumentError
+            output.puts USAGE
+            exit 64
+          end
+          cli.run!
+        end
+      end
 
       attr_reader :arguments, :stdout
 
       def initialize(arguments, stdout: $stdout)
+        raise ArgumentError unless arguments.any?
         @arguments  = arguments
         @stdout     = stdout
       end
 
       def run!
-        check_arguments!
         interpreter.process recipe.tasks
-      end
-
-      def check_arguments!
-        print_usage_and_exit(64) unless @arguments.length == 1
       end
 
       def env
@@ -29,14 +39,6 @@ module Producer
 
       def interpreter
         @interpreter ||= Interpreter.new
-      end
-
-      private
-
-      def print_usage_and_exit(status)
-        @stdout.puts USAGE
-
-        exit status
       end
     end
   end

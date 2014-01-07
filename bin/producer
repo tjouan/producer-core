@@ -2,4 +2,4 @@
 
 require 'producer/core'
 
-Producer::Core::CLI.new(ARGV).run!
+Producer::Core::CLI.run!(ARGV)

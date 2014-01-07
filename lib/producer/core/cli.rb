@@ -5,13 +5,15 @@ module Producer
 
       USAGE = "Usage: #{File.basename $0} recipe_file"
 
+      EX_USAGE = 64
+
       class << self
         def run!(arguments, output: $stderr)
           begin
             cli = new(arguments)
           rescue ArgumentError
             output.puts USAGE
-            exit 64
+            exit EX_USAGE
           end
           cli.run!
         end

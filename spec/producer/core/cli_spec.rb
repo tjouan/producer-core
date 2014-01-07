@@ -5,7 +5,7 @@ module Producer::Core
     include ExitHelpers
     include FixturesHelpers
 
-    let(:recipe_file) { fixture_path_for 'recipes/empty.rb' }
+    let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
     let(:arguments)   { [recipe_file] }
     let(:stdout)      { StringIO.new }
 
@@ -23,7 +23,7 @@ module Producer::Core
       it 'runs the CLI' do
         cli = double 'cli'
         allow(CLI).to receive(:new) { cli }
-        expect(cli).to receive :run!
+        expect(cli).to receive :run
         run
       end
 
@@ -69,51 +69,37 @@ module Producer::Core
       end
     end
 
-    describe '#run!' do
-      it 'processes the tasks with the interpreter' do
-        allow(cli.recipe).to receive(:tasks) { [:some_task] }
-        expect(cli.interpreter).to receive(:process).with [:some_task]
-        cli.run!
-      end
-    end
-
-    describe '#env' do
-      it 'builds an environment with the current recipe' do
-        expect(Env).to receive :new
-        cli.env
-      end
-
-      it 'returns the env' do
-        env = double 'env'
-        allow(Env).to receive(:new) { env }
-        expect(cli.env).to be env
-      end
-    end
-
     describe '#recipe' do
-      it 'builds a recipe' do
-        expect(Recipe)
-          .to receive(:evaluate_from_file).with(recipe_file, cli.env)
-        cli.recipe
-      end
-
-      it 'returns the recipe' do
-        recipe = double('recipe').as_null_object
-        allow(Recipe).to receive(:new) { recipe }
+      it 'returns the assigned recipe' do
+        recipe = double 'recipe'
+        cli.recipe = recipe
         expect(cli.recipe).to be recipe
       end
     end
 
-    describe '#interpreter' do
-      it 'builds a interpreter' do
-        expect(Interpreter).to receive :new
-        cli.interpreter
+    describe '#run' do
+      it 'loads the recipe' do
+        cli.run
+        expect(cli.recipe).to be_a Recipe
       end
 
-      it 'returns the interpreter' do
-        interpreter = double 'interpreter'
-        allow(Interpreter).to receive(:new) { interpreter }
-        expect(cli.interpreter).to be interpreter
+      it 'process recipe tasks with given worker' do
+        worker = double 'worker'
+        expect(worker).to receive(:process).with [kind_of(Task), kind_of(Task)]
+        cli.run worker: worker
+      end
+    end
+
+    describe '#load_recipe' do
+      it 'evaluates the recipe file with an env' do
+        expect(Recipe)
+          .to receive(:evaluate_from_file).with(recipe_file, kind_of(Env))
+        cli.load_recipe
+      end
+
+      it 'assigns the evaluated recipe' do
+        cli.load_recipe
+        expect(cli.recipe.tasks.count).to be 2
       end
     end
   end

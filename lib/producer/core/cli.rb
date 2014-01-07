@@ -15,11 +15,12 @@ module Producer
             output.puts USAGE
             exit EX_USAGE
           end
-          cli.run!
+          cli.run
         end
       end
 
       attr_reader :arguments, :stdout
+      attr_accessor :recipe
 
       def initialize(arguments, stdout: $stdout)
         raise ArgumentError unless arguments.any?
@@ -27,20 +28,13 @@ module Producer
         @stdout     = stdout
       end
 
-      def run!
-        interpreter.process recipe.tasks
+      def run(worker: Interpreter.new)
+        load_recipe
+        worker.process recipe.tasks
       end
 
-      def env
-        @env ||= Env.new
-      end
-
-      def recipe
-        @recipe ||= Recipe.evaluate_from_file(@arguments.first, env)
-      end
-
-      def interpreter
-        @interpreter ||= Interpreter.new
+      def load_recipe
+        @recipe = Recipe.evaluate_from_file(@arguments.first, Env.new)
       end
     end
   end

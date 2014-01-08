@@ -14,7 +14,7 @@ module Producer::Core
       end
 
       it 'assigns no task' do
-        expect(dsl.instance_eval { @tasks }).to be_empty
+        expect(dsl.tasks).to be_empty
       end
 
       context 'when a string of code is given as argument' do

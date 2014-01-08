@@ -33,7 +33,7 @@ module Producer::Core
 
     # FIXME: We rely a lot on mocking net-sftp heavily, while we already use a
     # part of net-ssh story helpers, which are more close to integration tests.
-    describe '#has_file?', :ssh do
+    describe '#file?', :ssh do
       let(:file_path) { 'some_file_path' }
       let(:stat)      { double 'stat' }
 
@@ -47,7 +47,7 @@ module Producer::Core
           before { allow(stat).to receive(:file?) { true } }
 
           it 'returns true' do
-            expect(fs.has_file? file_path).to be true
+            expect(fs.file? file_path).to be true
           end
         end
 
@@ -55,7 +55,7 @@ module Producer::Core
           before { allow(stat).to receive(:file?) { false } }
 
           it 'returns false' do
-            expect(fs.has_file? file_path).to be false
+            expect(fs.file? file_path).to be false
           end
         end
       end
@@ -68,7 +68,7 @@ module Producer::Core
         end
 
         it 'returns false' do
-          expect(fs.has_file? file_path).to be false
+          expect(fs.file? file_path).to be false
         end
       end
     end

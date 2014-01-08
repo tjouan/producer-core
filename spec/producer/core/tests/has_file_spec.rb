@@ -14,13 +14,13 @@ module Producer::Core
       before { sftp_story }
 
       it 'delegates the call on remote FS' do
-        expect(env.remote.fs).to receive(:has_file?).with(filepath)
+        expect(env.remote.fs).to receive(:file?).with(filepath)
         has_file.verify
       end
 
       it 'returns the file existence' do
         existence = double 'existence'
-        allow(env.remote.fs).to receive(:has_file?) { existence }
+        allow(env.remote.fs).to receive(:file?) { existence }
         expect(has_file.verify).to be existence
       end
     end

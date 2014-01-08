@@ -12,7 +12,7 @@ module Producer
           @sftp ||= @remote.session.sftp.connect
         end
 
-        def has_file?(path)
+        def file?(path)
           sftp.stat!(path).file?
         rescue Net::SFTP::StatusException
           false

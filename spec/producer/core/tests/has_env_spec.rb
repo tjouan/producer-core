@@ -18,22 +18,22 @@ module Producer::Core
       end
 
       it 'stringifies the queried variable name' do
-        expect(environment).to receive(:has_key?).with(kind_of(String))
+        expect(environment).to receive(:key?).with(kind_of(String))
         has_env.verify
       end
 
       it 'upcases the queried variable name' do
-        expect(environment).to receive(:has_key?).with('SOME_VARIABLE_NAME')
+        expect(environment).to receive(:key?).with('SOME_VARIABLE_NAME')
         has_env.verify
       end
 
       it 'returns true when remote environment var is defined' do
-        allow(environment).to receive(:has_key?) { true }
+        allow(environment).to receive(:key?) { true }
         expect(has_env.verify).to be true
       end
 
       it 'returns false when remote environment var is not defined' do
-        allow(environment).to receive(:has_key?) { false }
+        allow(environment).to receive(:key?) { false }
         expect(has_env.verify).to be false
       end
     end

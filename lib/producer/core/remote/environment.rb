@@ -15,7 +15,7 @@ module Producer
         require 'forwardable'
 
         extend Forwardable
-        def_delegator :@variables, :has_key?
+        def_delegator :@variables, :key?
 
         def initialize(variables)
           @variables = variables

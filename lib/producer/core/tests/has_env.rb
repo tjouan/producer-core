@@ -3,7 +3,7 @@ module Producer
     module Tests
       class HasEnv < Test
         def verify
-          env.remote.environment.has_key? arguments.first.to_s.upcase
+          env.remote.environment.key? arguments.first.to_s.upcase
         end
       end
     end

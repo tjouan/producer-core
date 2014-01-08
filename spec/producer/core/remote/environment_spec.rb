@@ -33,13 +33,13 @@ module Producer::Core
       end
     end
 
-    describe '#has_key?' do
+    describe '#key?' do
       let(:key) { 'SOME_KEY' }
 
       it 'forwards the message to @variables' do
         expect(environment.instance_eval { @variables })
-          .to receive(:has_key?).with(key)
-        environment.has_key? key
+          .to receive(:key?).with(key)
+        environment.key? key
       end
     end
   end

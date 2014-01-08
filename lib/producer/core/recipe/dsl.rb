@@ -2,16 +2,16 @@ module Producer
   module Core
     class Recipe
       class DSL
-        attr_reader :tasks
+        attr_reader :env, :tasks
 
-        def initialize(code = nil, &block)
+        def initialize(env, code = nil, &block)
+          @env    = env
           @code   = code
           @block  = block
           @tasks  = []
         end
 
-        def evaluate(env)
-          @env = env
+        def evaluate
           if @code
             instance_eval @code
           else
@@ -21,10 +21,6 @@ module Producer
         end
 
         private
-
-        def env
-          @env
-        end
 
         def source(filepath)
           instance_eval File.read("./#{filepath}.rb"), "#{filepath}.rb"

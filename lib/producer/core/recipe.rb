@@ -3,7 +3,7 @@ module Producer
     class Recipe
       class << self
         def evaluate_from_file(filepath, env)
-          dsl = DSL.new(File.read(filepath)).evaluate(env)
+          dsl = DSL.new(env, File.read(filepath)).evaluate
           Recipe.new(dsl.tasks)
         end
       end

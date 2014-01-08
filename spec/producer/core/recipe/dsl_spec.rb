@@ -6,16 +6,20 @@ module Producer::Core
 
     let(:code)    { proc { :some_recipe_code } }
     let(:env)     { double('env').as_null_object }
-    subject(:dsl) { Recipe::DSL.new(&code) }
+    subject(:dsl) { Recipe::DSL.new(env, &code) }
 
     describe '#initialize' do
+      it 'assigns the given env' do
+        expect(dsl.env).to be env
+      end
+
       it 'assigns no task' do
         expect(dsl.instance_eval { @tasks }).to be_empty
       end
 
       context 'when a string of code is given as argument' do
         let(:code)    { 'some_code' }
-        subject(:dsl) { Recipe::DSL.new(code) }
+        subject(:dsl) { Recipe::DSL.new(env, code) }
 
         it 'assigns the string of code' do
           expect(dsl.instance_eval { @code }).to eq code
@@ -33,41 +37,41 @@ module Producer::Core
       let(:code) { proc { task(:some_task) { } } }
 
       it 'returns registered tasks' do
-        dsl.evaluate env
+        dsl.evaluate
         expect(dsl.tasks[0].name).to eq :some_task
       end
     end
 
     describe '#evaluate' do
       it 'evaluates its code' do
-        dsl = Recipe::DSL.new { throw :recipe_code }
-        expect { dsl.evaluate env }.to throw_symbol :recipe_code
+        dsl = Recipe::DSL.new(env) { throw :recipe_code }
+        expect { dsl.evaluate }.to throw_symbol :recipe_code
       end
 
       it 'returns itself' do
-        expect(dsl.evaluate env).to eq dsl
+        expect(dsl.evaluate).to eq dsl
       end
     end
 
     context 'DSL specific methods' do
-      subject(:dsl) { Recipe::DSL.new(&code).evaluate(env) }
+      subject(:dsl) { Recipe::DSL.new(env, &code).evaluate }
 
       describe '#env' do
         let(:code) { proc { env.some_message } }
 
         it 'returns the current environment' do
           expect(env).to receive :some_message
-          dsl.evaluate env
+          dsl.evaluate
         end
       end
 
       describe '#source' do
         let(:filepath)  { fixture_path_for 'recipes/throw' }
         let(:code)      { "source '#{filepath}'" }
-        subject(:dsl)   { Recipe::DSL.new(code) }
+        subject(:dsl)   { Recipe::DSL.new(env, code) }
 
         it 'sources the recipe given as argument' do
-          expect { dsl.evaluate env }.to throw_symbol :recipe_code
+          expect { dsl.evaluate }.to throw_symbol :recipe_code
         end
       end
 

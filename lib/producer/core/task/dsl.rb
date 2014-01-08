@@ -15,16 +15,16 @@ module Producer
 
         define_action :file_write,  Actions::FileWriter
 
-        attr_accessor :actions
+        attr_accessor :env, :actions
 
-        def initialize(&block)
+        def initialize(env, &block)
+          @env        = env
           @block      = block
           @actions    = []
           @condition  = true
         end
 
-        def evaluate(env, *args)
-          @env = env
+        def evaluate(*args)
           instance_exec *args, &@block
         end
 

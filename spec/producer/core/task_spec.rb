@@ -12,19 +12,19 @@ module Producer::Core
       let(:args)  { [:some, :arguments] }
       let(:block) { proc { :some_task_code } }
 
-      it 'builds a new DSL sandbox with given code' do
+      it 'builds a new DSL sandbox with given env and code' do
         dsl = double('dsl').as_null_object
-        expect(Task::DSL).to receive(:new).with(no_args) do |&b|
+        expect(Task::DSL).to receive(:new).with(env) do |&b|
           expect(b).to be block
           dsl
         end
         Task.evaluate(name, env, *args, &block)
       end
 
-      it 'evaluates the DSL sandbox code with given environment' do
+      it 'evaluates the DSL sandbox code with given arguments' do
         dsl = double('dsl').as_null_object
         allow(Task::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate).with(env, *args)
+        expect(dsl).to receive(:evaluate).with(*args)
         Task.evaluate(name, env, *args, &block)
       end
 

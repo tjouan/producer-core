@@ -4,7 +4,7 @@ module Producer::Core
   describe Task::DSL do
     let(:block)   { proc { } }
     let(:env)     { double 'env' }
-    subject(:dsl) { Task::DSL.new(&block) }
+    subject(:dsl) { Task::DSL.new(env, &block) }
 
     %w[echo sh file_write].each do |action|
       it "has `#{action}' action defined" do
@@ -20,6 +20,10 @@ module Producer::Core
     end
 
     describe '#initialize' do
+      it 'assigns the given env' do
+        expect(dsl.env).to be env
+      end
+
       it 'assigns no action' do
         expect(dsl.actions).to be_empty
       end
@@ -49,7 +53,7 @@ module Producer::Core
       let(:block) { proc { throw :task_code } }
 
       it 'evaluates its code' do
-        expect { dsl.evaluate env }
+        expect { dsl.evaluate }
           .to throw_symbol :task_code
       end
 
@@ -57,7 +61,7 @@ module Producer::Core
         let(:block) { proc { |e| throw e } }
 
         it 'passes arguments as block parameters' do
-          expect { dsl.evaluate env, :some_argument }
+          expect { dsl.evaluate :some_argument }
             .to throw_symbol :some_argument
         end
       end
@@ -68,7 +72,7 @@ module Producer::Core
 
         before do
           Task::DSL.define_action(:some_action, some_action_class)
-          dsl.evaluate env
+          dsl.evaluate
         end
 
         it 'registers the action' do
@@ -82,7 +86,7 @@ module Producer::Core
     end
 
     context 'DSL specific methods' do
-      subject(:dsl) { Task::DSL.new(&block).evaluate(env) }
+      subject(:dsl) { Task::DSL.new(env, &block).evaluate }
 
       describe '#condition' do
         context 'when a block is given' do
@@ -90,7 +94,7 @@ module Producer::Core
 
           it 'builds a new evaluated condition' do
             expect(Condition)
-              .to receive(:evaluate).with(env) do |&b|
+              .to receive :evaluate do |&b|
                 expect(b.call).to eq :some_value
               end
             dsl

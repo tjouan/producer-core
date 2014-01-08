@@ -34,7 +34,7 @@ module Producer::Core
     end
 
     describe '#tasks' do
-      let(:code) { proc { task(:some_task) { } } }
+      let(:code) { proc { task(:some_task) {} } }
 
       it 'returns registered tasks' do
         dsl.evaluate

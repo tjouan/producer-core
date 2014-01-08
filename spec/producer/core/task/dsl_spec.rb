@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Task::DSL do
-    let(:block)   { proc { } }
+    let(:block)   { proc {} }
     let(:env)     { double 'env' }
     subject(:dsl) { Task::DSL.new(env, &block) }
 

@@ -17,5 +17,12 @@ module Producer::Core
         expect(action.arguments).to eq arguments
       end
     end
+
+    describe '#output' do
+      it 'delegates to env output' do
+        expect(action.env).to receive(:output).with(:content)
+        action.output :content
+      end
+    end
   end
 end

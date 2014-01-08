@@ -7,7 +7,7 @@ module Producer::Core
     subject(:echo)  { Actions::Echo.new(env, text) }
 
     describe '#apply' do
-      it 'writes the given string to env.output with a record separator' do
+      it 'writes the given string to env output with a record separator' do
         echo.apply
         expect(env.output.string).to eq "hello\n"
       end

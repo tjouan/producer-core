@@ -3,7 +3,7 @@ module Producer
     module Actions
       class Echo < Action
         def apply
-          env.output.puts arguments.first
+          output.puts arguments.first
         end
       end
     end

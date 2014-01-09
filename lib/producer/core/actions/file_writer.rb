@@ -3,7 +3,7 @@ module Producer
     module Actions
       class FileWriter < Action
         def apply
-          remote.fs.file_write path, content
+          fs.file_write path, content
         end
 
         def path

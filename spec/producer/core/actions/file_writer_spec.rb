@@ -8,8 +8,8 @@ module Producer::Core
     subject(:writer)    { Actions::FileWriter.new(env, path, content) }
 
     describe '#apply' do
-      it 'writes the content to remote file' do
-        expect(writer.remote.fs).to receive(:file_write).with(path, content)
+      it 'writes content to file on remote filesystem' do
+        expect(writer.fs).to receive(:file_write).with(path, content)
         writer.apply
       end
     end

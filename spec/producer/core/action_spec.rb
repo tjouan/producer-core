@@ -31,5 +31,11 @@ module Producer::Core
         expect(action.remote).to be action.env.remote
       end
     end
+
+    describe '#fs' do
+      it 'returns env remote fs' do
+        expect(action.fs).to be action.env.remote.fs
+      end
+    end
   end
 end

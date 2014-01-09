@@ -5,6 +5,7 @@ module Producer
 
       extend Forwardable
       def_delegators :@env, :output, :remote
+      def_delegators :remote, :fs
 
       attr_accessor :env, :arguments
 

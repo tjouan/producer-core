@@ -19,8 +19,7 @@ module Producer
         end
       end
 
-      attr_reader :arguments, :stdout
-      attr_accessor :recipe
+      attr_reader :arguments, :stdout, :recipe
 
       def initialize(arguments, stdout: $stdout)
         raise ArgumentError unless arguments.any?

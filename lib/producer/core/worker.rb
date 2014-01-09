@@ -1,6 +1,6 @@
 module Producer
   module Core
-    class Interpreter
+    class Worker
       def process(tasks)
         tasks.each { |t| process_task t }
       end

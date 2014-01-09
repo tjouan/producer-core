@@ -28,7 +28,7 @@ module Producer
         @stdout     = stdout
       end
 
-      def run(worker: Interpreter.new)
+      def run(worker: Worker.new)
         load_recipe
         worker.process recipe.tasks
       end

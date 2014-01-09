@@ -1,7 +1,8 @@
 module Producer
   module Core
     class Env
-      attr_accessor :output, :target
+      attr_reader   :output
+      attr_accessor :target
 
       def initialize(output: $stdout)
         @output = output

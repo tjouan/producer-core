@@ -7,7 +7,7 @@ module Producer::Core
 
     describe '#initialize' do
       it 'assigns $stdout as the default output' do
-        expect(env.instance_eval { @output }).to eq $stdout
+        expect(env.output).to be $stdout
       end
 
       it 'assigns no default target' do
@@ -18,7 +18,7 @@ module Producer::Core
         subject(:env) { Env.new(output: output) }
 
         it 'assigns the given output' do
-          expect(env.instance_eval { @output }).to eq output
+          expect(env.output).to eq output
         end
       end
     end

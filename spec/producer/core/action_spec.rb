@@ -2,7 +2,8 @@ require 'spec_helper'
 
 module Producer::Core
   describe Action do
-    let(:env)         { double 'env' }
+    let(:output)      { StringIO.new }
+    let(:env)         { Env.new(output: output) }
     let(:arguments)   { [:some, :arguments] }
     subject(:action)  { Action.new(env, *arguments) }
 
@@ -20,8 +21,14 @@ module Producer::Core
 
     describe '#output' do
       it 'delegates to env output' do
-        expect(action.env).to receive(:output).with(:content)
-        action.output :content
+        action.output.puts 'some content'
+        expect(output.string).to eq "some content\n"
+      end
+    end
+
+    describe '#remote' do
+      it 'returns env remote' do
+        expect(action.remote).to be action.env.remote
       end
     end
   end

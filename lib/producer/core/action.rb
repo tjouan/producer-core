@@ -4,7 +4,7 @@ module Producer
       require 'forwardable'
 
       extend Forwardable
-      def_delegator :@env, :output
+      def_delegators :@env, :output, :remote
 
       attr_accessor :env, :arguments
 

@@ -8,17 +8,15 @@ module Producer::Core
     subject(:sh)        { Actions::ShellCommand.new(env, command) }
 
     describe '#apply' do
-      before { env.output = StringIO.new }
-
-      it 'delegates the call to env.remote.execute method' do
-        expect(env.remote).to receive(:execute).with(command)
+      it 'executes the remote command' do
+        expect(sh.remote).to receive(:execute).with(command)
         sh.apply
       end
 
-      it 'writes the returned output to env.output with a record separator' do
-        allow(env.remote).to receive(:execute) { command_args }
+      it 'writes the returned output with a record separator' do
+        allow(sh.remote).to receive(:execute) { command_args }
         sh.apply
-        expect(env.output.string).to eq "#{command_args}\n"
+        expect(sh.output.string).to eq "#{command_args}\n"
       end
     end
   end

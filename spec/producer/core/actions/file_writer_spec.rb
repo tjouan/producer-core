@@ -8,8 +8,8 @@ module Producer::Core
     subject(:writer)    { Actions::FileWriter.new(env, path, content) }
 
     describe '#apply' do
-      it 'delegates the call to env.remote.fs.file_write method' do
-        expect(env.remote.fs).to receive(:file_write).with(path, content)
+      it 'writes the content to remote file' do
+        expect(writer.remote.fs).to receive(:file_write).with(path, content)
         writer.apply
       end
     end

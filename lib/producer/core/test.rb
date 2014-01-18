@@ -1,6 +1,12 @@
 module Producer
   module Core
     class Test
+      require 'forwardable'
+
+      extend Forwardable
+      def_delegators :@env, :remote
+      def_delegators :remote, :fs
+
       attr_reader :env, :arguments
 
       def initialize(env, *arguments, negated: false)

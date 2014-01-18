@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Test do
-    let(:env)         { double 'env' }
+    let(:env)         { Env.new }
     let(:arguments)   { [:some, :arguments] }
     subject(:test)    { Test.new(env, *arguments) }
 
@@ -31,6 +31,18 @@ module Producer::Core
     describe '#env' do
       it 'returns the assigned env' do
         expect(test.env).to be env
+      end
+    end
+
+    describe '#remote' do
+      it 'returns env remote' do
+        expect(test.remote).to be test.env.remote
+      end
+    end
+
+    describe '#fs' do
+      it 'returns env remote fs' do
+        expect(test.fs).to be test.env.remote.fs
       end
     end
 

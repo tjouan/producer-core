@@ -27,11 +27,22 @@ module Producer::Core
     end
 
     describe '#key?' do
-      let(:key) { 'SOME_KEY' }
+      context 'when key is defined' do
+        it 'returns true' do
+          expect(environment.key? 'FOO').to be true
+        end
+      end
 
-      it 'forwards the message to @variables' do
-        expect(environment.variables).to receive(:key?).with(key)
-        environment.key? key
+      context 'when key is not defined' do
+        it 'returns false' do
+          expect(environment.key? 'INEXISTENT_KEY').to be false
+        end
+      end
+    end
+
+    describe '#[]' do
+      it 'returns the value indexed by given key' do
+        expect(environment['FOO']).to eq 'bar'
       end
     end
   end

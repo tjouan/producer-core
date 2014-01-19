@@ -15,7 +15,7 @@ module Producer
         require 'forwardable'
 
         extend Forwardable
-        def_delegator :@variables, :key?
+        def_delegators :@variables, :[], :key?
 
         attr_reader :variables
 

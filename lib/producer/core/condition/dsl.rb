@@ -16,7 +16,7 @@ module Producer
         define_test :has_env,   Tests::HasEnv
         define_test :has_file,  Tests::HasFile
 
-        attr_accessor :tests
+        attr_reader :tests
 
         def initialize(env, &block)
           @env    = env

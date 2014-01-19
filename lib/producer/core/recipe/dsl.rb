@@ -2,7 +2,7 @@ module Producer
   module Core
     class Recipe
       class DSL
-        attr_reader :env, :tasks
+        attr_reader :env, :code, :block, :tasks
 
         def initialize(env, code = nil, &block)
           @env    = env

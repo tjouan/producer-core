@@ -22,13 +22,13 @@ module Producer::Core
         subject(:dsl) { described_class.new(env, code) }
 
         it 'assigns the string of code' do
-          expect(dsl.instance_eval { @code }).to eq code
+          expect(dsl.code).to eq code
         end
       end
 
       context 'when a code block is given as argument' do
         it 'assigns the code block' do
-          expect(dsl.instance_eval { @block }).to be code
+          expect(dsl.block).to be code
         end
       end
     end

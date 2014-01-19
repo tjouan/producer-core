@@ -19,7 +19,7 @@ module Producer::Core
 
       context 'when a string of code is given as argument' do
         let(:code)    { 'some_code' }
-        subject(:dsl) { Recipe::DSL.new(env, code) }
+        subject(:dsl) { described_class.new(env, code) }
 
         it 'assigns the string of code' do
           expect(dsl.instance_eval { @code }).to eq code
@@ -44,7 +44,7 @@ module Producer::Core
 
     describe '#evaluate' do
       it 'evaluates its code' do
-        dsl = Recipe::DSL.new(env) { throw :recipe_code }
+        dsl = described_class.new(env) { throw :recipe_code }
         expect { dsl.evaluate }.to throw_symbol :recipe_code
       end
 
@@ -54,7 +54,7 @@ module Producer::Core
     end
 
     context 'DSL specific methods' do
-      subject(:dsl) { Recipe::DSL.new(env, &code).evaluate }
+      subject(:dsl) { described_class.new(env, &code).evaluate }
 
       describe '#env' do
         let(:code) { proc { env.some_message } }
@@ -68,7 +68,7 @@ module Producer::Core
       describe '#source' do
         let(:filepath)  { fixture_path_for 'recipes/throw' }
         let(:code)      { "source '#{filepath}'" }
-        subject(:dsl)   { Recipe::DSL.new(env, code) }
+        subject(:dsl)   { described_class.new(env, code) }
 
         it 'sources the recipe given as argument' do
           expect { dsl.evaluate }.to throw_symbol :recipe_code

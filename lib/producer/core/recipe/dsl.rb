@@ -20,8 +20,6 @@ module Producer
           self
         end
 
-        private
-
         def source(filepath)
           instance_eval File.read("./#{filepath}.rb"), "#{filepath}.rb"
         end

@@ -5,7 +5,7 @@ module Producer::Core
     include FixturesHelpers
 
     let(:code)    { proc { :some_recipe_code } }
-    let(:env)     { double('env').as_null_object }
+    let(:env)     { Env.new }
     subject(:dsl) { Recipe::DSL.new(env, &code) }
 
     describe '#initialize' do
@@ -53,76 +53,50 @@ module Producer::Core
       end
     end
 
-    context 'DSL specific methods' do
-      subject(:dsl) { described_class.new(env, &code).evaluate }
+    describe '#source' do
+      let(:filepath)  { fixture_path_for 'recipes/throw' }
 
-      describe '#env' do
-        let(:code) { proc { env.some_message } }
+      it 'sources the recipe given as argument' do
+        expect { dsl.source filepath }.to throw_symbol :recipe_code
+      end
+    end
 
-        it 'returns the current environment' do
-          expect(env).to receive :some_message
-          dsl.evaluate
-        end
+    describe '#target' do
+      let(:host) { 'some_host.example' }
+
+      it 'registers the target host in the env' do
+        dsl.target host
+        expect(env.target).to eq host
+      end
+    end
+
+    describe '#task' do
+      it 'registers a new evaluated task' do
+        expect { dsl.task(:some_task) { :some_task_code } }
+          .to change { dsl.tasks.count }.by 1
+      end
+    end
+
+    describe '#macro' do
+      it 'defines the new recipe keyword' do
+        dsl.macro :hello
+        expect(dsl).to respond_to(:hello)
       end
 
-      describe '#source' do
-        let(:filepath)  { fixture_path_for 'recipes/throw' }
-        let(:code)      { "source '#{filepath}'" }
-        subject(:dsl)   { described_class.new(env, code) }
-
-        it 'sources the recipe given as argument' do
-          expect { dsl.evaluate }.to throw_symbol :recipe_code
-        end
-      end
-
-      describe '#target' do
-        let(:code) { proc { target 'some_host.example' } }
-
-        it 'registers the target host in the env' do
-          expect(env).to receive(:target=).with('some_host.example')
-          dsl
-        end
-      end
-
-      describe '#task' do
-        let(:code) { proc { task(:some_task, :some, :arg) { :some_value } } }
-
-        it 'builds a new evaluated task' do
-          expect(Task)
-            .to receive(:evaluate).with(:some_task, env, :some, :arg) do |&b|
-              expect(b.call).to eq :some_value
-            end
-          dsl
-        end
+      context 'when a defined macro is called' do
+        before { dsl.macro(:hello) { :some_macro_code } }
 
         it 'registers the new task' do
-          task = double('task').as_null_object
-          allow(Task).to receive(:new) { task }
-          expect(dsl.tasks).to include(task)
+          expect { dsl.hello }.to change { dsl.tasks.count }.by 1
         end
       end
 
-      describe '#macro' do
-        let(:code) { proc { macro(:hello) { echo 'hello' } } }
+      context 'when a defined macro is called with arguments' do
+        before { dsl.macro(:hello) { |a, b| echo a, b } }
 
-        it 'defines the new recipe keyword' do
-          expect(dsl).to respond_to(:hello)
-        end
-
-        context 'when the new keyword is called' do
-          let(:code) { proc { macro(:hello) { echo 'hello' }; hello } }
-
-          it 'registers the new task' do
-            expect(dsl.tasks.first.actions.first).to be_an Actions::Echo
-          end
-        end
-
-        context 'when macro takes arguments' do
-          let(:code) { proc { macro(:hello) { |e| echo e }; hello :arg } }
-
-          it 'evaluates task code with arguments' do
-            expect(dsl.tasks.first.actions.first.arguments.first).to be :arg
-          end
+        it 'evaluates task code with arguments' do
+          dsl.hello :some, :args
+          expect(dsl.tasks.first.actions.first.arguments).to eq [:some, :args]
         end
       end
     end

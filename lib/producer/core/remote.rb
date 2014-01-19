@@ -4,7 +4,7 @@ module Producer
       require 'etc'
       require 'net/ssh'
 
-      attr_accessor :hostname
+      attr_reader :hostname
 
       def initialize(hostname)
         @hostname = hostname

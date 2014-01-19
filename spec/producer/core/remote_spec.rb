@@ -5,8 +5,8 @@ module Producer::Core
     let(:hostname)    { 'some_host.example' }
     subject(:remote)  { Remote.new(hostname) }
 
-    describe '#hostname' do
-      it 'returns the assignated hostname' do
+    describe '#initialize' do
+      it 'assigns the given hostname' do
         expect(remote.hostname).to eq hostname
       end
     end

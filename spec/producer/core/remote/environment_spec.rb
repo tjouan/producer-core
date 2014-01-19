@@ -9,21 +9,20 @@ module Producer::Core
 
     describe '.string_to_hash' do
       it 'converts key=value pairs separated by new lines to a hash' do
-        expect(Remote::Environment.string_to_hash(string))
-          .to eq variables
+        expect(described_class.string_to_hash(string)).to eq variables
       end
     end
 
     describe '.new_from_string' do
       it 'builds a new instance after converting from string' do
-        expect(Remote::Environment).to receive(:new).with(variables)
-        Remote::Environment.new_from_string(string)
+        expect(described_class).to receive(:new).with(variables)
+        described_class.new_from_string(string)
       end
 
       it 'returns the instance' do
         environment = double 'environment'
-        allow(Remote::Environment).to receive(:new) { environment }
-        expect(Remote::Environment.new_from_string(string)).to be environment
+        allow(described_class).to receive(:new) { environment }
+        expect(described_class.new_from_string(string)).to be environment
       end
     end
 

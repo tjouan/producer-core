@@ -7,7 +7,7 @@ module Producer
       def_delegators :@env, :output, :remote
       def_delegators :remote, :fs
 
-      attr_accessor :env, :arguments
+      attr_reader :env, :arguments
 
       def initialize(env, *args)
         @env        = env

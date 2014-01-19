@@ -53,7 +53,9 @@ module Producer::Core
       context 'without arguments' do
         let(:arguments) { [] }
 
-        specify { expect { cli }.to raise_error described_class::ArgumentError }
+        it 'raises our ArgumentError exception' do
+          expect { cli }.to raise_error described_class::ArgumentError
+        end
       end
     end
 

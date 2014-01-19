@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module Producer::Core
   describe Env do
-    let(:output)  { double 'output' }
     subject(:env) { Env.new }
 
     describe '#initialize' do
@@ -15,19 +14,12 @@ module Producer::Core
       end
 
       context 'when output is given as argument' do
-        subject(:env) { Env.new(output: output) }
+        let(:output)  { double 'output' }
+        subject(:env) { described_class.new(output: output) }
 
         it 'assigns the given output' do
           expect(env.output).to eq output
         end
-      end
-    end
-
-    describe '#output' do
-      subject(:env) { Env.new(output: output) }
-
-      it 'returns the assigned output' do
-        expect(env.output).to eq output
       end
     end
 

@@ -14,15 +14,9 @@ module Producer::Core
     end
 
     describe '.new_from_string' do
-      it 'builds a new instance after converting from string' do
-        expect(described_class).to receive(:new).with(variables)
-        described_class.new_from_string(string)
-      end
-
-      it 'returns the instance' do
-        environment = double 'environment'
-        allow(described_class).to receive(:new) { environment }
-        expect(described_class.new_from_string(string)).to be environment
+      it 'returns a new instance with converted keys and values' do
+        environment = described_class.new_from_string string
+        expect(environment.variables).to eq variables
       end
     end
 

@@ -13,7 +13,7 @@ module Producer::Core
     end
 
     describe '.define_test' do
-      let(:some_test_class) { double 'SomeTest class' }
+      let(:some_test_class) { Test }
 
       before { Condition::DSL.define_test(:some_test, some_test_class) }
 
@@ -23,6 +23,29 @@ module Producer::Core
 
       it 'defines the negated test' do
         expect(dsl).to respond_to :no_some_test
+      end
+
+      context 'when a test keyword is called' do
+        it 'registers the test' do
+          expect { dsl.some_test }.to change { dsl.tests.count }.from(0).to(1)
+        end
+
+        it 'registers the test with current env' do
+          dsl.some_test
+          expect(dsl.tests.first.env).to be env
+        end
+
+        it 'registers the test with given arguments' do
+          dsl.some_test :some, :args
+          expect(dsl.tests.first.arguments).to eq [:some, :args]
+        end
+      end
+
+      context 'when a negated test keyword is called' do
+        it 'registers a negated test' do
+          dsl.no_some_test
+          expect(dsl.tests.first).to be_negated
+        end
       end
     end
 
@@ -41,37 +64,13 @@ module Producer::Core
     end
 
     describe '#evaluate' do
-      it 'returns the value returned by the assigned block' do
-        expect(dsl.evaluate).to eq block.call
+      it 'evaluates its code' do
+        dsl = described_class.new(env) { throw :condition_code }
+        expect { dsl.evaluate }.to throw_symbol :condition_code
       end
 
-      context 'when a defined test keyword is called' do
-        let(:some_test_class) { double 'SomeTest class' }
-        let(:block)           { proc { some_test :some, :args } }
-
-        before { Condition::DSL.define_test(:some_test, some_test_class) }
-
-        it 'builds a new test with the env and given arguments' do
-          expect(some_test_class).to receive(:new).with(env, :some, :args)
-          dsl.evaluate
-        end
-
-        it 'registers the new test' do
-          some_test = double 'SomeTest instance'
-          allow(some_test_class).to receive(:new) { some_test }
-          dsl.evaluate
-          expect(dsl.tests).to include(some_test)
-        end
-
-        context 'when keyword is prefixed with "no_"' do
-          let(:block) { proc { no_some_test :some, :args } }
-
-          it 'builds a negated test' do
-            expect(some_test_class)
-              .to receive(:new).with(env, :some, :args, negated: true)
-            dsl.evaluate
-          end
-        end
+      it 'returns the value returned by the assigned block' do
+        expect(dsl.evaluate).to eq block.call
       end
     end
   end

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Producer::Core
   describe Condition do
-    include TestsHelpers
-
+    let(:test_ok)       { double 'test', pass?: true }
+    let(:test_ko)       { double 'test', pass?: false }
     let(:tests)         { [test_ok, test_ko] }
     subject(:condition) { Condition.new(tests) }
 

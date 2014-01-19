@@ -8,32 +8,16 @@ module Producer::Core
     subject(:condition) { Condition.new(tests) }
 
     describe '.evaluate' do
-      let(:env)   { double 'env' }
-      let(:block) { proc { :some_condition_code } }
+      let(:env)             { double 'env' }
+      let(:block)           { proc { some_test; :some_return_value } }
+      let(:some_test_class) { Class.new(Test) }
+      subject(:condition)   { described_class.evaluate(env, &block) }
 
-      it 'builds a new DSL sandbox with given env and code' do
-        expect(Condition::DSL)
-          .to receive(:new).with(env, &block).and_call_original
-        Condition.evaluate(env, &block)
-      end
+      before { Condition::DSL.define_test(:some_test, some_test_class) }
 
-      it 'evaluates the DSL sandbox code' do
-        dsl = double('dsl').as_null_object
-        allow(Condition::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive :evaluate
-        Condition.evaluate(env, &block)
-      end
-
-      it 'builds a condition with its test and block return value' do
-        expect(Condition)
-          .to receive(:new).with([], :some_condition_code)
-        Condition.evaluate(env, &block)
-      end
-
-      it 'returns the condition' do
-        condition = double 'task'
-        allow(Condition).to receive(:new) { condition }
-        expect(Condition.evaluate(env, &block)).to be condition
+      it 'returns an evaluated condition' do
+        expect(condition.tests.first).to be_a Test
+        expect(condition.return_value).to eq :some_return_value
       end
     end
 
@@ -48,7 +32,7 @@ module Producer::Core
 
       context 'when a return value is given as argument' do
         let(:return_value)  { :some_return_value }
-        subject(:condition) { Condition.new(tests, return_value) }
+        subject(:condition) { described_class.new(tests, return_value) }
 
         it 'assigns the return value' do
           expect(condition.return_value).to eq return_value
@@ -74,7 +58,7 @@ module Producer::Core
       end
 
       context 'when there are no test' do
-        subject(:condition) { Condition.new([], return_value) }
+        subject(:condition) { described_class.new([], return_value) }
 
         context 'and return value is truthy' do
           let(:return_value) { :some_truthy_value }

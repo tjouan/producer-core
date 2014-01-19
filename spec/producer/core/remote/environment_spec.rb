@@ -28,7 +28,7 @@ module Producer::Core
 
     describe '#initialize' do
       it 'assigns the key/value pairs' do
-        expect(environment.instance_eval { @variables }).to eq variables
+        expect(environment.variables).to eq variables
       end
     end
 
@@ -36,8 +36,7 @@ module Producer::Core
       let(:key) { 'SOME_KEY' }
 
       it 'forwards the message to @variables' do
-        expect(environment.instance_eval { @variables })
-          .to receive(:key?).with(key)
+        expect(environment.variables).to receive(:key?).with(key)
         environment.key? key
       end
     end

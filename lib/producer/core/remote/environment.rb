@@ -17,6 +17,8 @@ module Producer
         extend Forwardable
         def_delegator :@variables, :key?
 
+        attr_reader :variables
+
         def initialize(variables)
           @variables = variables
         end

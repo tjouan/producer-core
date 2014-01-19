@@ -9,6 +9,8 @@ module Producer
         end
       end
 
+      attr_reader :tests, :return_value
+
       def initialize(tests, return_value = nil)
         @tests        = tests
         @return_value = return_value

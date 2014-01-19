@@ -39,11 +39,11 @@ module Producer::Core
 
     describe '#initialize' do
       it 'assigns the tests' do
-        expect(condition.instance_eval { @tests }).to eq tests
+        expect(condition.tests).to eq tests
       end
 
       it 'assigns nil as a default return value' do
-        expect(condition.instance_eval { @return_value }).to be nil
+        expect(condition.return_value).to be nil
       end
 
       context 'when a return value is given as argument' do
@@ -51,7 +51,7 @@ module Producer::Core
         subject(:condition) { Condition.new(tests, return_value) }
 
         it 'assigns the return value' do
-          expect(condition.instance_eval { @return_value }).to eq return_value
+          expect(condition.return_value).to eq return_value
         end
       end
     end

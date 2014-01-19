@@ -7,7 +7,7 @@ module Producer::Core
 
     describe '#new' do
       it 'assigns the remote given as argument' do
-        expect(fs.instance_eval { @remote }).to be remote
+        expect(fs.remote).to be remote
       end
     end
 

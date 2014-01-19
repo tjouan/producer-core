@@ -4,6 +4,8 @@ module Producer
       class FS
         require 'net/sftp'
 
+        attr_reader :remote
+
         def initialize(remote)
           @remote = remote
         end

@@ -27,23 +27,16 @@ module Producer::Core
     end
 
     describe '#initialize' do
-      it 'assigns the code' do
-        expect(dsl.instance_eval { @block }).to be block
+      it 'assigns the env' do
+        expect(dsl.env).to be env
       end
 
-      it 'assigns the env' do
-        expect(dsl.instance_eval { @env }).to be env
+      it 'assigns the code' do
+        expect(dsl.block).to be block
       end
 
       it 'assigns no test' do
         expect(dsl.tests).to be_empty
-      end
-    end
-
-    describe '#tests' do
-      it 'returns the assigned tests' do
-        dsl.instance_eval { @tests = [:some_test] }
-        expect(dsl.tests).to eq [:some_test]
       end
     end
 

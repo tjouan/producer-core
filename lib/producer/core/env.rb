@@ -1,10 +1,11 @@
 module Producer
   module Core
     class Env
-      attr_reader   :output
+      attr_reader   :input, :output
       attr_accessor :target
 
-      def initialize(output: $stdout)
+      def initialize(input: $stdin, output: $stdout)
+        @input  = input
         @output = output
         @target = nil
       end

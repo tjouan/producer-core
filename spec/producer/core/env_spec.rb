@@ -5,12 +5,25 @@ module Producer::Core
     subject(:env) { Env.new }
 
     describe '#initialize' do
+      it 'assigns $stdin as the default output' do
+        expect(env.input).to be $stdin
+      end
+
       it 'assigns $stdout as the default output' do
         expect(env.output).to be $stdout
       end
 
       it 'assigns no default target' do
         expect(env.target).not_to be
+      end
+
+      context 'when input is given as argument' do
+        let(:input)   { double 'input' }
+        subject(:env) { described_class.new(input: input) }
+
+        it 'assigns the given input' do
+          expect(env.input).to eq input
+        end
       end
 
       context 'when output is given as argument' do

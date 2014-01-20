@@ -61,24 +61,6 @@ module Producer::Core
       end
     end
 
-    describe '#name' do
-      it 'returns its name' do
-        expect(task.name).to eq name
-      end
-    end
-
-    describe '#actions' do
-      it 'returns the assigned actions' do
-        expect(task.actions).to eq [action]
-      end
-    end
-
-    describe '#condition' do
-      it 'returns the assigned condition' do
-        expect(task.condition).to be condition
-      end
-    end
-
     describe '#condition_met?' do
       context 'when condition is truthy' do
         let(:condition) { Condition.new([], true) }

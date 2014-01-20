@@ -116,26 +116,14 @@ module Producer::Core
       end
     end
 
-    describe '#environment', :ssh do
+    describe '#environment' do
       let(:command) { 'env' }
-      let(:output)  { "FOO=bar\nBAZ=qux" }
+      let(:output)  { 'FOO=bar' }
 
-      before do
-        story_with_new_channel do |ch|
-          ch.sends_exec command
-          ch.gets_data output
-        end
-      end
+      before { allow(remote).to receive(:execute) { output } }
 
-      it 'builds a remote environment with the result of `env` command' do
-        expect(Remote::Environment).to receive(:new_from_string).with(output)
-        remote.environment
-      end
-
-      it 'returns the environment' do
-        environment = double 'environment'
-        allow(Remote::Environment).to receive(:new_from_string) { environment }
-        expect(remote.environment).to be environment
+      it 'returns a remote environment' do
+        expect(remote.environment['FOO']).to eq 'bar'
       end
     end
   end

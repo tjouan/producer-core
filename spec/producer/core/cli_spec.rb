@@ -71,14 +71,6 @@ module Producer::Core
       end
     end
 
-    describe '#recipe' do
-      it 'returns the assigned recipe' do
-        recipe = double 'recipe'
-        cli.instance_eval { @recipe = recipe }
-        expect(cli.recipe).to be recipe
-      end
-    end
-
     describe '#run' do
       it 'loads the recipe' do
         cli.run

@@ -75,13 +75,6 @@ module Producer::Core
     end
 
     describe '#condition' do
-      context 'without block' do
-        it 'returns the assigned condition' do
-          dsl.instance_eval { @condition = :some_condition }
-          expect(dsl.condition).to be :some_condition
-        end
-      end
-
       context 'when a block is given' do
         it 'assigns a new evaluated condition' do
           dsl.condition { :some_return_value }

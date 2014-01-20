@@ -37,15 +37,15 @@ module Producer::Core
 
     describe '#initialize' do
       it 'assigns the name' do
-        expect(task.instance_eval { @name }).to eq name
+        expect(task.name).to eq name
       end
 
       it 'assigns the actions' do
-        expect(task.instance_eval { @actions }).to eq [action]
+        expect(task.actions).to eq [action]
       end
 
       it 'assigns the condition' do
-        expect(task.instance_eval { @condition }).to eq condition
+        expect(task.condition).to eq condition
       end
 
       context 'when only the name is given as argument' do

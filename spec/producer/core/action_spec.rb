@@ -2,8 +2,9 @@ require 'spec_helper'
 
 module Producer::Core
   describe Action do
+    let(:input)       { StringIO.new }
     let(:output)      { StringIO.new }
-    let(:env)         { Env.new(output: output) }
+    let(:env)         { Env.new(input: input, output: output) }
     let(:arguments)   { [:some, :arguments] }
     subject(:action)  { Action.new(env, *arguments) }
 
@@ -16,6 +17,12 @@ module Producer::Core
     describe '#arguments' do
       it 'returns the assigned arguments' do
         expect(action.arguments).to eq arguments
+      end
+    end
+
+    describe '#input' do
+      it 'returns env input' do
+        expect(action.input).to be input
       end
     end
 

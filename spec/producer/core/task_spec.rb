@@ -8,40 +8,30 @@ module Producer::Core
     subject(:task)  { Task.new(name, [action], condition) }
 
     describe '.evaluate' do
-      let(:env)   { double 'env' }
-      let(:args)  { [:some, :arguments] }
-      let(:block) { proc { :some_task_code } }
+      let(:name)              { :some_task }
+      let(:env)               { double 'env' }
+      let(:block)             { proc { condition { :condition }; some_action } }
+      let(:some_action_class) { Class.new(Action) }
+      subject(:task)          { Task.evaluate(name, env, :some, :args, &block) }
 
-      it 'builds a new DSL sandbox with given env and code' do
-        dsl = double('dsl').as_null_object
-        expect(Task::DSL).to receive(:new).with(env) do |&b|
-          expect(b).to be block
-          dsl
+      before { Task::DSL.define_action(:some_action, some_action_class) }
+
+      it 'returns an evaluated task' do
+        expect(task).to be_kind_of Task
+      end
+
+      context 'evaluated task' do
+        it 'has the requested name' do
+          expect(task.name).to eq name
         end
-        Task.evaluate(name, env, *args, &block)
-      end
 
-      it 'evaluates the DSL sandbox code with given arguments' do
-        dsl = double('dsl').as_null_object
-        allow(Task::DSL).to receive(:new) { dsl }
-        expect(dsl).to receive(:evaluate).with(*args)
-        Task.evaluate(name, env, *args, &block)
-      end
+        it 'has the requested actions' do
+          expect(task.actions.first).to be_kind_of some_action_class
+        end
 
-      it 'builds the task with its name, actions and condition' do
-        dsl = double(
-          'dsl', actions: [:some_action], condition: :some_condition
-        ).as_null_object
-        allow(Task::DSL).to receive(:new) { dsl }
-        expect(Task)
-          .to receive(:new).with(:some_task, [:some_action], :some_condition)
-        Task.evaluate(name, env, *args, &block)
-      end
-
-      it 'returns the task' do
-        task = double 'task'
-        allow(Task).to receive(:new) { task }
-        expect(Task.evaluate(name, env, *args, &block)).to be task
+        it 'has the requested condition' do
+          expect(task.condition.return_value).to be :condition
+        end
       end
     end
 

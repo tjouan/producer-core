@@ -27,7 +27,7 @@ module Producer::Core
 
       context 'when a test keyword is called' do
         it 'registers the test' do
-          expect { dsl.some_test }.to change { dsl.tests.count }.from(0).to(1)
+          expect { dsl.some_test }.to change { dsl.tests.count }.by 1
         end
 
         it 'registers the test with current env' do

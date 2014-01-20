@@ -13,9 +13,28 @@ module Producer::Core
     end
 
     describe '.define_action' do
+      let(:some_action_class) { Class.new(Action) }
+
+      before { described_class.define_action(:some_action, some_action_class) }
+
       it 'defines a new action keyword' do
-        Task::DSL.define_action(:some_action, Object)
         expect(dsl).to respond_to :some_action
+      end
+
+      context 'when an action keyword is called' do
+        it 'registers the action' do
+          expect { dsl.some_action }.to change { dsl.actions.count }.by 1
+        end
+
+        it 'registers the action with current env' do
+          dsl.some_action
+          expect(dsl.actions.first.env).to be env
+        end
+
+        it 'registers the action with given arguments' do
+          dsl.some_action :some, :args
+          expect(dsl.actions.first.arguments).to eq [:some, :args]
+        end
       end
     end
 
@@ -37,15 +56,6 @@ module Producer::Core
       end
     end
 
-    describe '#condition' do
-      context 'without block' do
-        it 'returns the assigned condition' do
-          dsl.instance_eval { @condition = :some_condition }
-          expect(dsl.condition).to be :some_condition
-        end
-      end
-    end
-
     describe '#evaluate' do
       let(:block) { proc { throw :task_code } }
 
@@ -62,46 +72,20 @@ module Producer::Core
             .to throw_symbol :some_argument
         end
       end
-
-      context 'when a defined keyword action is called' do
-        let(:some_action_class) { Class.new(Action) }
-        let(:block)             { proc { some_action } }
-
-        before do
-          Task::DSL.define_action(:some_action, some_action_class)
-          dsl.evaluate
-        end
-
-        it 'registers the action' do
-          expect(dsl.actions.first).to be_an Action
-        end
-
-        it 'provides the env to the registered action' do
-          expect(dsl.actions.first.env).to eq env
-        end
-      end
     end
 
-    context 'DSL specific methods' do
-      subject(:dsl) { Task::DSL.new(env, &block).evaluate }
+    describe '#condition' do
+      context 'without block' do
+        it 'returns the assigned condition' do
+          dsl.instance_eval { @condition = :some_condition }
+          expect(dsl.condition).to be :some_condition
+        end
+      end
 
-      describe '#condition' do
-        context 'when a block is given' do
-          let(:block) { proc { condition { :some_value } } }
-
-          it 'builds a new evaluated condition' do
-            expect(Condition)
-              .to receive :evaluate do |&b|
-                expect(b.call).to eq :some_value
-              end
-            dsl
-          end
-
-          it 'assigns the new condition' do
-            condition = double('condition').as_null_object
-            allow(Condition).to receive(:evaluate) { condition }
-            expect(dsl.condition).to be condition
-          end
+      context 'when a block is given' do
+        it 'assigns a new evaluated condition' do
+          dsl.condition { :some_return_value }
+          expect(dsl.condition.return_value).to eq :some_return_value
         end
       end
     end

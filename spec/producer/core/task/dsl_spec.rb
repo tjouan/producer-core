@@ -24,12 +24,16 @@ module Producer::Core
         expect(dsl.env).to be env
       end
 
+      it 'assigns the given block' do
+        expect(dsl.block).to be block
+      end
+
       it 'assigns no action' do
         expect(dsl.actions).to be_empty
       end
 
       it 'assigns true as the condition' do
-        expect(dsl.instance_eval { @condition }).to be true
+        expect(dsl.condition).to be true
       end
     end
 

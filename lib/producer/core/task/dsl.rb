@@ -15,7 +15,7 @@ module Producer
 
         define_action :file_write,  Actions::FileWriter
 
-        attr_accessor :env, :actions
+        attr_accessor :env, :block, :actions, :condition
 
         def initialize(env, &block)
           @env        = env

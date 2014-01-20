@@ -33,13 +33,6 @@ module Producer::Core
       end
     end
 
-    describe '#actions' do
-      it 'returns the assigned actions' do
-        dsl.instance_eval { @actions = [:some_action] }
-        expect(dsl.actions).to eq [:some_action]
-      end
-    end
-
     describe '#condition' do
       context 'without block' do
         it 'returns the assigned condition' do

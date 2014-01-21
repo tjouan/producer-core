@@ -31,6 +31,45 @@ module Producer::Core
       end
     end
 
+    describe '#dir?' do
+      let(:sftp)  { double('sftp').as_null_object }
+      let(:path)  { 'some_directory_path' }
+      let(:stat)  { double 'stat' }
+
+      before do
+        allow(fs).to receive(:sftp) { sftp }
+        allow(sftp).to receive(:stat!).with(path) { stat }
+      end
+
+      context 'when path given as argument is a directory' do
+        before { allow(stat).to receive(:directory?) { true } }
+
+        it 'returns true' do
+          expect(fs.dir? path).to be true
+        end
+      end
+
+      context 'when path given as argument is not a directory' do
+        before { allow(stat).to receive(:directory?) { false } }
+
+        it 'returns false' do
+          expect(fs.dir? path).to be false
+        end
+      end
+
+      context 'when querying the path raises a Net::SFTP::StatusException' do
+        before do
+          response = double 'response', code: '42', message: 'some message'
+          ex = Net::SFTP::StatusException.new(response)
+          allow(sftp).to receive(:stat!).with(path).and_raise(ex)
+        end
+
+        it 'returns false' do
+          expect(fs.dir? path).to be false
+        end
+      end
+    end
+
     # FIXME: We rely a lot on mocking net-sftp heavily, while we already use a
     # part of net-ssh story helpers, which are more close to integration tests.
     describe '#file?', :ssh do

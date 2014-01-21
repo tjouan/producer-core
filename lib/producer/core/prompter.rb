@@ -10,11 +10,11 @@ module Producer
 
       def prompt(question, choices)
         cs = choices.each_with_index.inject('') do |m, (c, i)|
-          m += "#{i}: #{c}\n"
+          m += "#{i}: #{c.last}\n"
         end
         output.puts "#{question}\n#{cs}Choice:"
         choice = input.gets
-        choices[choice.to_i]
+        choices[choice.to_i].first
       end
     end
   end

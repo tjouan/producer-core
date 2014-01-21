@@ -19,7 +19,7 @@ module Producer::Core
 
     describe '#prompt' do
       let(:question)  { 'Which letter?' }
-      let(:choices)   { %w[A B] }
+      let(:choices)   { [[:a, ?A], [:b, ?B]] }
 
       it 'prompts choices' do
         prompter.prompt question, choices
@@ -34,7 +34,7 @@ module Producer::Core
       it 'returns value for entry chosen by user' do
         input.puts '1'
         input.rewind
-        expect(prompter.prompt question, choices).to eq 'B'
+        expect(prompter.prompt question, choices).to eq :b
       end
     end
   end

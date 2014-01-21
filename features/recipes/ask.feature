@@ -4,9 +4,9 @@ Feature: `ask' recipe keyword
     Given a recipe with:
       """
       task :ask_letter do
-        letter = ask 'Which letter?', %w[A B]
+        letter = ask 'Which letter?', [[:a, ?A], [:b, ?B]]
 
-        echo letter
+        echo letter.inspect
       end
       """
     When I execute the recipe interactively
@@ -17,6 +17,6 @@ Feature: `ask' recipe keyword
       0: A
       1: B
       Choice:
-      B
+      :b
       """
     And the exit status must be 0

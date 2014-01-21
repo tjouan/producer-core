@@ -85,7 +85,7 @@ module Producer::Core
 
     describe '#ask' do
       let(:question)        { 'Which letter?' }
-      let(:choices)         { %w[A B] }
+      let(:choices)         { [[:a, ?A], [:b, ?B]] }
       let(:prompter_class)  { double('prompter class').as_null_object }
       subject(:ask)         { dsl.ask question, choices,
                               prompter: prompter_class }

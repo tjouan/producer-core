@@ -100,5 +100,19 @@ module Producer::Core
         end
       end
     end
+
+    describe '#set' do
+      it 'registers a key/value pair in env registry' do
+        dsl.set :some_key, :some_value
+        expect(env[:some_key]).to eq :some_value
+      end
+    end
+
+    describe '#get' do
+      it 'fetches a value from the registry at given index' do
+        dsl.set :some_key, :some_value
+        expect(dsl.get :some_key).to eq :some_value
+      end
+    end
   end
 end

@@ -37,6 +37,14 @@ module Producer
             task("#{name}", *args, &block)
           end
         end
+
+        def set(key, value)
+          env[key] = value
+        end
+
+        def get(key)
+          env[key]
+        end
       end
     end
   end

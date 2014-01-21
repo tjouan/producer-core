@@ -1,3 +1,7 @@
+Given /^a remote directory named "([^"]+)"$/ do |path|
+  create_dir path
+end
+
 Given /^a remote file named "([^"]+)"$/ do |file_name|
   write_file file_name, ''
 end

@@ -17,6 +17,10 @@ module Producer::Core
         expect(env.target).not_to be
       end
 
+      it 'assigns an empty registry' do
+        expect(env.registry).to be_empty
+      end
+
       context 'when input is given as argument' do
         let(:input)   { double 'input' }
         subject(:env) { described_class.new(input: input) }
@@ -60,6 +64,21 @@ module Producer::Core
 
       it 'memoizes the remote' do
         expect(env.remote).to be env.remote
+      end
+    end
+
+    describe '#[]' do
+      subject(:env) { Env.new(registry: { some_key: :some_value }) }
+
+      it 'returns the value indexed by given key from the registry' do
+        expect(env[:some_key]).to eq :some_value
+      end
+    end
+
+    describe '#[]=' do
+      it 'registers given value at given index in the registry' do
+        env[:some_key] = :some_value
+        expect(env[:some_key]).to eq :some_value
       end
     end
   end

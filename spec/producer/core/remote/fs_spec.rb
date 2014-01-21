@@ -112,6 +112,18 @@ module Producer::Core
       end
     end
 
+    describe '#mkdir' do
+      let(:sftp)  { double 'sftp' }
+      let(:path)  { 'some_directory_path' }
+
+      before { allow(fs).to receive(:sftp) { sftp } }
+
+      it 'creates the directory' do
+        expect(sftp).to receive(:mkdir!).with(path)
+        fs.mkdir path
+      end
+    end
+
     describe '#file_write' do
       let(:sftp)    { double('sftp').as_null_object }
       let(:file)    { double('sftp').as_null_object }

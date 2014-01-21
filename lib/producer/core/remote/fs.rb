@@ -26,6 +26,10 @@ module Producer
           false
         end
 
+        def mkdir(path)
+          sftp.mkdir! path
+        end
+
         def file_write(path, content)
           sftp.file.open path, 'w' do |f|
             f.write content

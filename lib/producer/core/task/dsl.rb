@@ -37,6 +37,10 @@ module Producer
         def ask(question, choices, prompter: Prompter)
           prompter.new(env.input, env.output).prompt(question, choices)
         end
+
+        def get(key)
+          env[key]
+        end
       end
     end
   end

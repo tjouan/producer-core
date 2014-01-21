@@ -102,5 +102,13 @@ module Producer::Core
         expect(ask).to eq :choice
       end
     end
+
+    describe '#get' do
+      let(:env) { Env.new(registry: { some_key: :some_value }) }
+
+      it 'fetches a value from the registry at given index' do
+        expect(dsl.get :some_key).to eq :some_value
+      end
+    end
   end
 end

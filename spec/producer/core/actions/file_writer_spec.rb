@@ -2,10 +2,10 @@ require 'spec_helper'
 
 module Producer::Core
   describe Actions::FileWriter do
-    let(:env)           { Env.new }
-    let(:path)          { 'some_path' }
-    let(:content)       { 'some_content' }
-    subject(:writer)    { Actions::FileWriter.new(env, path, content) }
+    let(:env)         { Env.new }
+    let(:path)        { 'some_path' }
+    let(:content)     { 'some_content' }
+    subject(:writer)  { Actions::FileWriter.new(env, path, content) }
 
     describe '#apply' do
       it 'writes content to file on remote filesystem' do

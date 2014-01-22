@@ -12,8 +12,6 @@ module Producer
           end
         end
 
-        require 'forwardable'
-
         extend Forwardable
         def_delegators :@variables, :[], :key?
 

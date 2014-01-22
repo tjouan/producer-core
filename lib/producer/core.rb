@@ -1,3 +1,5 @@
+require 'forwardable'
+
 # task actions
 require 'producer/core/action'
 require 'producer/core/actions/echo'

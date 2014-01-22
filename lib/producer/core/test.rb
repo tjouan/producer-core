@@ -1,8 +1,6 @@
 module Producer
   module Core
     class Test
-      require 'forwardable'
-
       extend Forwardable
       def_delegators :@env, :remote
       def_delegators :remote, :fs

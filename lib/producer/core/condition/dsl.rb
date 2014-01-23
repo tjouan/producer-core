@@ -13,9 +13,10 @@ module Producer
           end
         end
 
-        define_test :has_env,   Tests::HasEnv
-        define_test :has_dir,   Tests::HasDir
-        define_test :has_file,  Tests::HasFile
+        define_test :file_contains, Tests::FileContains
+        define_test :has_env,       Tests::HasEnv
+        define_test :has_dir,       Tests::HasDir
+        define_test :has_file,      Tests::HasFile
 
         attr_reader :block, :env, :tests
 

@@ -2,8 +2,6 @@ module Producer
   module Core
     class Remote
       class FS
-        require 'net/sftp'
-
         attr_reader :remote
 
         def initialize(remote)

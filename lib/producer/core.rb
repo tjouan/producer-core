@@ -1,5 +1,10 @@
 require 'forwardable'
 
+require 'etc'
+require 'net/ssh'
+require 'net/sftp'
+
+
 # task actions
 require 'producer/core/action'
 require 'producer/core/actions/echo'

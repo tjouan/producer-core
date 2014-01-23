@@ -1,9 +1,6 @@
 module Producer
   module Core
     class Remote
-      require 'etc'
-      require 'net/ssh'
-
       attr_reader :hostname
 
       def initialize(hostname)

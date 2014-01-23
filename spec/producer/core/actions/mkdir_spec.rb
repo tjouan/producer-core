@@ -20,4 +20,3 @@ module Producer::Core
     end
   end
 end
-

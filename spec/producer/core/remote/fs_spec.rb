@@ -125,8 +125,8 @@ module Producer::Core
     end
 
     describe '#file_write' do
-      let(:sftp)    { double('sftp').as_null_object }
-      let(:file)    { double('sftp').as_null_object }
+      let(:sftp)    { double 'sftp' }
+      let(:file)    { double 'file' }
       let(:path)    { 'some_file_path' }
       let(:content) { 'some_content' }
 

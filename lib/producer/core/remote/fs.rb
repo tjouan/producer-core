@@ -30,6 +30,12 @@ module Producer
           sftp.mkdir! path
         end
 
+        def file_read(path)
+          sftp.file.open(path) { |f| content = f.read }
+        rescue Net::SFTP::StatusException
+          nil
+        end
+
         def file_write(path, content)
           sftp.file.open path, 'w' do |f|
             f.write content

@@ -124,6 +124,37 @@ module Producer::Core
       end
     end
 
+    describe '#file_read' do
+      let(:sftp)    { double 'sftp' }
+      let(:file)    { double 'file' }
+      let(:f)       { double 'f' }
+      let(:path)    { 'some_file_path' }
+      let(:content) { 'some_content' }
+
+      before do
+        allow(fs).to receive(:sftp) { sftp }
+        allow(sftp).to receive(:file) { file }
+        allow(file).to receive(:open).and_yield(f)
+        allow(f).to receive(:read) { content }
+      end
+
+      it 'returns the file content' do
+        expect(fs.file_read(path)).to eq content
+      end
+
+      context 'when opening the file raises a Net::SFTP::StatusException' do
+        before do
+          response = double 'response', code: '42', message: 'some message'
+          ex = Net::SFTP::StatusException.new(response)
+          allow(file).to receive(:open).and_raise(ex)
+        end
+
+        it 'returns nil' do
+          expect(fs.file_read(path)).to be nil
+        end
+      end
+    end
+
     describe '#file_write' do
       let(:sftp)    { double 'sftp' }
       let(:file)    { double 'file' }

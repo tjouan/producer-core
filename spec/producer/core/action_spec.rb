@@ -27,9 +27,8 @@ module Producer::Core
     end
 
     describe '#output' do
-      it 'delegates to env output' do
-        action.output.puts 'some content'
-        expect(output.string).to eq "some content\n"
+      it 'returns env output' do
+        expect(action.output).to be output
       end
     end
 

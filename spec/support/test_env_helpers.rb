@@ -26,6 +26,9 @@ module TestEnvHelpers
   end
 
   def build_remote
-    Producer::Core::Testing::MockRemote.new('some_host.test')
+    fs = RSpec::Mocks::Mock.new('remote fs', __declared_as: 'Double')
+    remote = Producer::Core::Testing::MockRemote.new('some_host.test')
+    remote.define_singleton_method(:fs) { fs }
+    remote
   end
 end

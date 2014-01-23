@@ -20,7 +20,7 @@ module Producer
       end
 
       def fs
-        @fs ||= Remote::FS.new(self)
+        @fs ||= Remote::FS.new(session.sftp.connect)
       end
 
       def execute(command)

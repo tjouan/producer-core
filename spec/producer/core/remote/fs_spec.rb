@@ -3,44 +3,20 @@ require 'spec_helper'
 module Producer::Core
   class Remote
     describe FS do
-      let(:remote)  { Remote.new('some_host.example') }
-      subject(:fs)  { FS.new(remote) }
+      let(:sftp)    { double 'sftp' }
+      subject(:fs)  { FS.new(sftp) }
 
       describe '#initialize' do
-        it 'assigns the remote given as argument' do
-          expect(fs.remote).to be remote
-        end
-      end
-
-      describe '#sftp', :ssh do
-        before { sftp_story }
-
-        it 'builds a new SFTP session' do
-          expect(remote.session.sftp).to receive :connect
-          fs.sftp
-        end
-
-        it 'returns the new SFTP session' do
-          session = double 'session'
-          allow(remote.session.sftp).to receive(:connect) { session }
-          expect(fs.sftp).to be session
-        end
-
-        it 'memoizes the FS' do
-          allow(remote.session.sftp).to receive(:connect) { Object.new }
-          expect(fs.sftp).to be fs.sftp
+        it 'assigns the sftp session' do
+          expect(fs.sftp).to be sftp
         end
       end
 
       describe '#dir?' do
-        let(:sftp)  { double('sftp').as_null_object }
         let(:path)  { 'some_directory_path' }
         let(:stat)  { double 'stat' }
 
-        before do
-          allow(fs).to receive(:sftp) { sftp }
-          allow(sftp).to receive(:stat!).with(path) { stat }
-        end
+        before { allow(sftp).to receive(:stat!).with(path) { stat } }
 
         context 'when path given as argument is a directory' do
           before { allow(stat).to receive(:directory?) { true } }
@@ -114,10 +90,7 @@ module Producer::Core
       end
 
       describe '#mkdir' do
-        let(:sftp)  { double 'sftp' }
-        let(:path)  { 'some_directory_path' }
-
-        before { allow(fs).to receive(:sftp) { sftp } }
+        let(:path) { 'some_directory_path' }
 
         it 'creates the directory' do
           expect(sftp).to receive(:mkdir!).with(path)
@@ -126,14 +99,12 @@ module Producer::Core
       end
 
       describe '#file_read' do
-        let(:sftp)    { double 'sftp' }
         let(:file)    { double 'file' }
         let(:f)       { double 'f' }
         let(:path)    { 'some_file_path' }
         let(:content) { 'some_content' }
 
         before do
-          allow(fs).to receive(:sftp) { sftp }
           allow(sftp).to receive(:file) { file }
           allow(file).to receive(:open).and_yield(f)
           allow(f).to receive(:read) { content }
@@ -157,13 +128,11 @@ module Producer::Core
       end
 
       describe '#file_write' do
-        let(:sftp)    { double 'sftp' }
         let(:file)    { double 'file' }
         let(:path)    { 'some_file_path' }
         let(:content) { 'some_content' }
 
         before do
-          allow(fs).to receive(:sftp) { sftp }
           allow(sftp).to receive(:file) { file }
         end
 

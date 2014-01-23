@@ -2,14 +2,10 @@ module Producer
   module Core
     class Remote
       class FS
-        attr_reader :remote
+        attr_reader :sftp
 
-        def initialize(remote)
-          @remote = remote
-        end
-
-        def sftp
-          @sftp ||= @remote.session.sftp.connect
+        def initialize(sftp)
+          @sftp = sftp
         end
 
         def dir?(path)

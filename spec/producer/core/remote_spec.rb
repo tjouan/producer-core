@@ -68,20 +68,11 @@ module Producer::Core
     end
 
     describe '#fs' do
-      it 'builds a new FS' do
-        expect(Remote::FS).to receive :new
-        remote.fs
-      end
+      let(:sftp_session) { double 'sftp session' }
 
-      it 'returns the new FS instance' do
-        fs = double 'fs'
-        allow(Remote::FS).to receive(:new) { fs }
-        expect(remote.fs).to be fs
-      end
-
-      it 'memoizes the FS' do
-        allow(Remote::FS).to receive(:new) { Object.new }
-        expect(remote.fs).to be remote.fs
+      it 'returns an FS instance built with a new sftp session' do
+        remote.stub_chain(:session, :sftp, :connect) { sftp_session }
+        expect(remote.fs.sftp).to be sftp_session
       end
     end
 

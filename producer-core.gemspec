@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(/\Abin\//) { |f| File.basename(f) }
 
 
-  s.add_dependency 'net-ssh'
-  s.add_dependency 'net-sftp'
+  s.add_dependency 'net-ssh',   '~> 2.7.0'
+  s.add_dependency 'net-sftp',  '~> 2.1.2'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'cucumber'

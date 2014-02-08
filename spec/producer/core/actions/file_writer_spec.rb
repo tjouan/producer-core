@@ -1,28 +1,30 @@
 require 'spec_helper'
 
 module Producer::Core
-  describe Actions::FileWriter do
-    let(:env)         { Env.new }
-    let(:path)        { 'some_path' }
-    let(:content)     { 'some_content' }
-    subject(:writer)  { Actions::FileWriter.new(env, path, content) }
+  module Actions
+    describe FileWriter do
+      let(:env)         { Env.new }
+      let(:path)        { 'some_path' }
+      let(:content)     { 'some_content' }
+      subject(:writer)  { FileWriter.new(env, path, content) }
 
-    describe '#apply' do
-      it 'writes content to file on remote filesystem' do
-        expect(writer.fs).to receive(:file_write).with(path, content)
-        writer.apply
+      describe '#apply' do
+        it 'writes content to file on remote filesystem' do
+          expect(writer.fs).to receive(:file_write).with(path, content)
+          writer.apply
+        end
       end
-    end
 
-    describe '#path' do
-      it 'returns the path' do
-        expect(writer.path).to eq path
+      describe '#path' do
+        it 'returns the path' do
+          expect(writer.path).to eq path
+        end
       end
-    end
 
-    describe '#content' do
-      it 'returns the content' do
-        expect(writer.content).to eq content
+      describe '#content' do
+        it 'returns the content' do
+          expect(writer.content).to eq content
+        end
       end
     end
   end

@@ -6,7 +6,7 @@ module Producer::Core
       let(:remote)  { Remote.new('some_host.example') }
       subject(:fs)  { FS.new(remote) }
 
-      describe '#new' do
+      describe '#initialize' do
         it 'assigns the remote given as argument' do
           expect(fs.remote).to be remote
         end

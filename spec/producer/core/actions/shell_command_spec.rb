@@ -8,6 +8,8 @@ module Producer::Core
       let(:command)       { "echo #{command_args}" }
       subject(:sh)        { ShellCommand.new(env, command) }
 
+      it_behaves_like 'action'
+
       describe '#apply' do
         it 'executes the remote command' do
           expect(sh.remote).to receive(:execute).with(command)

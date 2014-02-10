@@ -8,9 +8,7 @@ module Producer::Core
       let(:content)   { 'some_content' }
       subject(:test)  { FileContains.new(env, filepath, content) }
 
-      it 'is a kind of test' do
-        expect(test).to be_a Test
-      end
+      it_behaves_like 'test'
 
       describe '#verify' do
         let(:fs) { double 'fs' }

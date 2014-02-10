@@ -7,9 +7,7 @@ module Producer::Core
       let(:variable_name) { :some_variable_name }
       subject(:has_env)   { HasEnv.new(env, variable_name) }
 
-      it 'is a kind of test' do
-        expect(has_env).to be_a Test
-      end
+      it_behaves_like 'test'
 
       describe '#verify' do
         let(:environment) { double 'environment' }

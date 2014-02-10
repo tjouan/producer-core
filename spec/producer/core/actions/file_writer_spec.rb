@@ -8,6 +8,8 @@ module Producer::Core
       let(:content)     { 'some_content' }
       subject(:writer)  { FileWriter.new(env, path, content) }
 
+      it_behaves_like 'action'
+
       describe '#apply' do
         it 'writes content to file on remote filesystem' do
           expect(writer.fs).to receive(:file_write).with(path, content)

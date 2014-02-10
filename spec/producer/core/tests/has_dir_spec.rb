@@ -7,9 +7,7 @@ module Producer::Core
       let(:path)        { 'some_directory' }
       subject(:has_dir) { HasDir.new(env, path) }
 
-      it 'is a kind of test' do
-        expect(has_dir).to be_a Test
-      end
+      it_behaves_like 'test'
 
       describe '#verify', :ssh do
         before { sftp_story }

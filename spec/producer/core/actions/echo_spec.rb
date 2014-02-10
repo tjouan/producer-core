@@ -7,6 +7,8 @@ module Producer::Core
       let(:text)      { 'hello' }
       subject(:echo)  { Echo.new(env, text) }
 
+      it_behaves_like 'action'
+
       describe '#apply' do
         it 'writes the given string to env output with a record separator' do
           echo.apply

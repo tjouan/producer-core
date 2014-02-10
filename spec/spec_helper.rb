@@ -1,8 +1,6 @@
 require 'producer/core'
 
-require 'support/exit_helpers'
-require 'support/fixtures_helpers'
-require 'support/net_ssh_story_helpers'
+Dir['spec/support/**/*.rb'].map { |e| require e.gsub 'spec/', '' }
 
 
 RSpec.configure do |c|

@@ -3,8 +3,9 @@ require 'spec_helper'
 module Producer::Core
   class Remote
     describe FS do
-      let(:sftp)    { double 'sftp' }
-      subject(:fs)  { FS.new(sftp) }
+      let(:sftp_file) { double 'sftp_file' }
+      let(:sftp)      { double('sftp', file: sftp_file) }
+      subject(:fs)    { FS.new(sftp) }
 
       describe '#initialize' do
         it 'assigns the sftp session' do
@@ -99,14 +100,12 @@ module Producer::Core
       end
 
       describe '#file_read' do
-        let(:file)    { double 'file' }
         let(:f)       { double 'f' }
         let(:path)    { 'some_file_path' }
         let(:content) { 'some_content' }
 
         before do
-          allow(sftp).to receive(:file) { file }
-          allow(file).to receive(:open).and_yield(f)
+          allow(sftp_file).to receive(:open).and_yield(f)
           allow(f).to receive(:read) { content }
         end
 
@@ -118,7 +117,7 @@ module Producer::Core
           before do
             response = double 'response', code: '42', message: 'some message'
             ex = Net::SFTP::StatusException.new(response)
-            allow(file).to receive(:open).and_raise(ex)
+            allow(sftp_file).to receive(:open).and_raise(ex)
           end
 
           it 'returns nil' do
@@ -128,23 +127,18 @@ module Producer::Core
       end
 
       describe '#file_write' do
-        let(:file)    { double 'file' }
         let(:path)    { 'some_file_path' }
         let(:content) { 'some_content' }
 
-        before do
-          allow(sftp).to receive(:file) { file }
-        end
-
         it 'opens the file' do
-          expect(file).to receive(:open).with(path, 'w')
+          expect(sftp_file).to receive(:open).with(path, 'w')
           fs.file_write path, content
         end
 
         it 'writes the content' do
-          expect(file).to receive(:open).with(any_args) do |&b|
-            expect(file).to receive(:write).with(content)
-            b.call file
+          expect(sftp_file).to receive(:open).with(any_args) do |&b|
+            expect(sftp_file).to receive(:write).with(content)
+            b.call sftp_file
           end
           fs.file_write path, content
         end

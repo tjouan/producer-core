@@ -2,8 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   module Tests
-    describe FileContains do
-      let(:env)       { Env.new }
+    describe FileContains, :env do
       let(:filepath)  { 'some_file' }
       let(:content)   { 'some_content' }
       subject(:test)  { FileContains.new(env, filepath, content) }
@@ -11,13 +10,9 @@ module Producer::Core
       it_behaves_like 'test'
 
       describe '#verify' do
-        let(:fs) { double 'fs' }
-
-        before { allow(test).to receive(:fs) { fs } }
-
         context 'when file contains the content' do
           before do
-            allow(fs)
+            allow(remote_fs)
               .to receive(:file_read).with(filepath) { "foo#{content}bar" }
           end
 
@@ -28,7 +23,7 @@ module Producer::Core
 
         context 'when file does not contain the content' do
           before do
-            allow(fs).to receive(:file_read).with(filepath) { 'foo bar' }
+            allow(remote_fs).to receive(:file_read).with(filepath) { 'foo bar' }
           end
 
           it 'returns false' do
@@ -37,7 +32,9 @@ module Producer::Core
         end
 
         context 'when file does not exist' do
-          before { allow(fs).to receive(:file_read).with(filepath) { nil } }
+          before do
+            allow(remote_fs).to receive(:file_read).with(filepath) { nil }
+          end
 
           it 'returns false' do
             expect(test.verify).to be false

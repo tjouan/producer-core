@@ -1,8 +1,7 @@
 module Producer::Core
   shared_examples 'action' do
-    let(:input)       { StringIO.new }
-    let(:output)      { StringIO.new }
-    let(:env)         { Env.new(input: input, output: output) }
+    include TestEnvHelpers
+
     let(:arguments)   { [:some, :arguments] }
     subject(:action)  { described_class.new(env, *arguments) }
 
@@ -20,25 +19,25 @@ module Producer::Core
 
     describe '#input' do
       it 'returns env input' do
-        expect(action.input).to be input
+        expect(action.input).to be env.input
       end
     end
 
     describe '#output' do
       it 'returns env output' do
-        expect(action.output).to be output
+        expect(action.output).to be env.output
       end
     end
 
     describe '#remote' do
       it 'returns env remote' do
-        expect(action.remote).to be action.env.remote
+        expect(action.remote).to be env.remote
       end
     end
 
     describe '#fs' do
       it 'returns env remote fs' do
-        expect(action.fs).to be action.env.remote.fs
+        expect(action.fs).to be env.remote.fs
       end
     end
   end

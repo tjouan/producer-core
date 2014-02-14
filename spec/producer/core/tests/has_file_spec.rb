@@ -2,24 +2,21 @@ require 'spec_helper'
 
 module Producer::Core
   module Tests
-    describe HasFile do
-      let(:env)           { Env.new }
+    describe HasFile, :env do
       let(:filepath)      { 'some_file' }
       subject(:has_file)  { HasFile.new(env, filepath) }
 
       it_behaves_like 'test'
 
-      describe '#verify', :ssh do
-        before { sftp_story }
-
+      describe '#verify' do
         it 'delegates the call on remote FS' do
-          expect(env.remote.fs).to receive(:file?).with(filepath)
+          expect(remote_fs).to receive(:file?).with(filepath)
           has_file.verify
         end
 
         it 'returns the file existence' do
           existence = double 'existence'
-          allow(env.remote.fs).to receive(:file?) { existence }
+          allow(remote_fs).to receive(:file?) { existence }
           expect(has_file.verify).to be existence
         end
       end

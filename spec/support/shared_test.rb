@@ -1,6 +1,7 @@
 module Producer::Core
   shared_examples 'test' do
-    let(:env)         { Env.new }
+    include TestEnvHelpers
+
     let(:arguments)   { [:some, :arguments] }
     subject(:test)    { described_class.new(env, *arguments) }
 

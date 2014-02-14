@@ -4,10 +4,11 @@ module Producer
       attr_reader   :input, :output, :registry
       attr_accessor :target
 
-      def initialize(input: $stdin, output: $stdout, registry: {})
+      def initialize(input: $stdin, output: $stdout, remote: nil, registry: {})
         @input    = input
         @output   = output
         @registry = registry
+        @remote   = remote
         @target   = nil
       end
 

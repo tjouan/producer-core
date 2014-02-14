@@ -7,8 +7,8 @@ module Producer
       def initialize(input: $stdin, output: $stdout, registry: {})
         @input    = input
         @output   = output
-        @target   = nil
         @registry = registry
+        @target   = nil
       end
 
       def remote

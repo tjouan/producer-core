@@ -26,7 +26,7 @@ module Producer::Core
         subject(:env) { described_class.new(input: input) }
 
         it 'assigns the given input' do
-          expect(env.input).to eq input
+          expect(env.input).to be input
         end
       end
 
@@ -35,7 +35,7 @@ module Producer::Core
         subject(:env) { described_class.new(output: output) }
 
         it 'assigns the given output' do
-          expect(env.output).to eq output
+          expect(env.output).to be output
         end
       end
     end

@@ -2,8 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   module Actions
-    describe Echo do
-      let(:env)       { Env.new(output: StringIO.new) }
+    describe Echo, :env do
       let(:text)      { 'hello' }
       subject(:echo)  { Echo.new(env, text) }
 
@@ -12,7 +11,7 @@ module Producer::Core
       describe '#apply' do
         it 'writes the given string to env output with a record separator' do
           echo.apply
-          expect(env.output.string).to eq "hello\n"
+          expect(output).to eq "hello\n"
         end
       end
     end

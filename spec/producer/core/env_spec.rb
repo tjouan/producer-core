@@ -38,6 +38,15 @@ module Producer::Core
           expect(env.output).to be output
         end
       end
+
+      context 'when remote is given as argument' do
+        let(:remote)  { double 'remote' }
+        subject(:env) { described_class.new(remote: remote) }
+
+        it 'assigns the given remote' do
+          expect(env.remote).to be remote
+        end
+      end
     end
 
     describe '#target' do

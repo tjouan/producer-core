@@ -40,6 +40,25 @@ module Producer::Core
             expect { remote.execute(command) }.to raise_error(RemoteCommandExecutionError)
           end
         end
+
+        context 'dummy type command' do
+          context 'executable exists' do
+            let(:command) { 'type true' }
+
+            it 'returns an empty string' do
+              expect(remote.execute(command)).to eq ''
+            end
+          end
+
+          context 'executable does not exist' do
+            let(:command) { 'type some_non_existent_executable' }
+
+            it 'raises a RemoteCommandExecutionError' do
+              expect { remote.execute(command) }
+                .to raise_error(RemoteCommandExecutionError)
+            end
+          end
+        end
       end
     end
   end

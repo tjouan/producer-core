@@ -17,6 +17,13 @@ module Producer
             output << ''
           when 'false'
             raise RemoteCommandExecutionError
+          when 'type'
+            raise RemoteCommandExecutionError unless %w[
+              echo
+              true
+              false
+              type
+            ].include? tokens.first
           end
 
           output

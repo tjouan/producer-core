@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(/\Abin\//) { |f| File.basename(f) }
 
 
-  s.add_dependency 'net-ssh',   '~> 2.7.0'
-  s.add_dependency 'net-sftp',  '~> 2.1.2'
+  s.add_dependency 'net-ssh',   '~> 2.7'
+  s.add_dependency 'net-sftp',  '~> 2.1'
 
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'cucumber'
-  s.add_development_dependency 'aruba'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec',     '~> 2.14'
+  s.add_development_dependency 'cucumber',  '~> 1.3'
+  s.add_development_dependency 'aruba',     '~> 0.5'
+  s.add_development_dependency 'rake',      '~> 10.1'
 end

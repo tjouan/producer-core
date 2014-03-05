@@ -7,7 +7,13 @@ module Producer::Core
       let(:env)     { double 'env' }
       subject(:dsl) { DSL.new(env, &block) }
 
-      %w[file_contains has_dir has_env has_file].each do |test|
+      %w[
+        file_contains
+        has_dir
+        has_env
+        has_executable
+        has_file
+      ].each do |test|
         it "has `#{test}' test defined" do
           expect(dsl).to respond_to test.to_sym
         end

@@ -19,6 +19,7 @@ require 'producer/core/test'
 require 'producer/core/tests/file_contains'
 require 'producer/core/tests/has_dir'
 require 'producer/core/tests/has_env'
+require 'producer/core/tests/has_executable'
 require 'producer/core/tests/has_file'
 
 require 'producer/core/cli'

@@ -3,7 +3,8 @@ module Producer
     module Actions
       class ShellCommand < Action
         def apply
-          output.puts remote.execute(arguments.first)
+          remote.execute(arguments.first, output)
+          output.puts
         end
       end
     end

@@ -23,8 +23,7 @@ module Producer
         @fs ||= Remote::FS.new(session.sftp.connect)
       end
 
-      def execute(command)
-        output = ''
+      def execute(command, output = '')
         channel = session.open_channel do |channel|
           channel.exec command do |ch, success|
             ch.on_data do |c, data|

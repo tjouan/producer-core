@@ -79,6 +79,7 @@ module Producer::Core
     describe '#execute', :ssh do
       let(:arguments) { 'some remote command' }
       let(:command)   { "echo #{arguments}" }
+      let(:output)    { StringIO.new }
 
       it 'executes the given command in a new channel' do
         story_with_new_channel do |ch|
@@ -88,12 +89,21 @@ module Producer::Core
         expect_story_completed { remote.execute command }
       end
 
-      it 'returns the output' do
+      it 'returns the command standard output output' do
         story_with_new_channel do |ch|
           ch.sends_exec command
           ch.gets_data arguments
         end
         expect(remote.execute command).to eq arguments
+      end
+
+      it 'writes command standard output to provided output' do
+        story_with_new_channel do |ch|
+          ch.sends_exec command
+          ch.gets_data arguments
+        end
+        remote.execute command, output
+        expect(output.string).to eq arguments
       end
 
       it 'raises an exception when the exit status code is not 0' do

@@ -6,18 +6,20 @@ module Producer
           raise 'no session for mock remote!'
         end
 
-        def execute(command)
+        def execute(command, output = '')
           tokens = command.split
           program = tokens.shift
 
           case program
           when 'echo'
-            tokens.join ' '
+            output << tokens.join(' ')
           when 'true'
-            ''
+            output << ''
           when 'false'
             raise RemoteCommandExecutionError
           end
+
+          output
         end
       end
     end

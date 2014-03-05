@@ -15,7 +15,9 @@ module TestEnvHelpers
 
   def expect_execution(command)
     opts = { expected_from: caller.first }
-    RSpec::Mocks.expect_message(env.remote, :execute, opts).with(command)
+    RSpec::Mocks
+      .expect_message(env.remote, :execute, opts)
+      .with(command, env.output)
   end
 
 

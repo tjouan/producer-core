@@ -17,3 +17,7 @@ end
 Then /^the remote file "([^"]+)" should contain "([^"]+)"/ do |path, content|
   check_file_content path, content, true
 end
+
+Then /^the remote file "([^"]+)" should contain exactly "([^"]+)"/ do |path, content|
+  check_exact_file_content path, content
+end

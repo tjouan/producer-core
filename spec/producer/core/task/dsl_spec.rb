@@ -7,7 +7,7 @@ module Producer::Core
       let(:env)     { Env.new }
       subject(:dsl) { DSL.new(env, &block) }
 
-      %w[echo sh mkdir file_write].each do |action|
+      %w[echo sh mkdir file_write file_replace_content].each do |action|
         it "has `#{action}' action defined" do
           expect(dsl).to respond_to action.to_sym
         end

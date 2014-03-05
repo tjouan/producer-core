@@ -13,8 +13,7 @@ Feature: `file_replace_content' task action
         file_replace_content 'some_file', 'content', 'other content'
       end
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the remote file "some_file" must contain exactly "some other content"
 
   Scenario: replaces a regular expression by a string in the requested file
@@ -26,6 +25,5 @@ Feature: `file_replace_content' task action
         file_replace_content 'some_file', /\w+\z/, 'other content'
       end
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the remote file "some_file" must contain exactly "some other content"

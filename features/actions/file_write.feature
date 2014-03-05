@@ -10,6 +10,5 @@ Feature: `file_write' task action
         file_write 'some_file', 'some_content'
       end
       """
-    When I execute the recipe
-    Then the exit status must be 0
+    When I successfully execute the recipe
     And the remote file "some_file" must contain "some_content"

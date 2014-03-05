@@ -25,7 +25,7 @@ module Producer
 
       def execute(command)
         output = ''
-        session.open_channel do |channel|
+        channel = session.open_channel do |channel|
           channel.exec command do |ch, success|
             ch.on_data do |c, data|
               output << data
@@ -37,7 +37,7 @@ module Producer
             end
           end
         end
-        session.loop
+        channel.wait
         output
       end
 

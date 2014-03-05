@@ -19,11 +19,11 @@ Feature: `sh' task action
       target 'some_host.test'
 
       task :some_task do
-        sh '\echo from remote'
+        sh '\echo hello from remote'
       end
       """
     When I successfully execute the recipe
-    Then the output must contain "from remote"
+    Then the output must contain exactly "hello from remote\n"
 
   Scenario: aborts on failed command execution
     Given a recipe with:

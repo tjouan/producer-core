@@ -20,8 +20,8 @@ module Producer::Core
         context 'dummy echo command' do
           let(:command) { 'echo some arguments' }
 
-          it 'returns command arguments' do
-            expect(remote.execute(command)).to eq 'some arguments'
+          it 'returns command arguments ended by a record separator' do
+            expect(remote.execute(command)).to eq "some arguments\n"
           end
         end
 

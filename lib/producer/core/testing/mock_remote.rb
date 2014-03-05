@@ -12,7 +12,7 @@ module Producer
 
           case program
           when 'echo'
-            output << tokens.join(' ')
+            output << tokens.join(' ') << "\n"
           when 'true'
             output << ''
           when 'false'

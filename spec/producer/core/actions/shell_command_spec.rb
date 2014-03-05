@@ -15,7 +15,7 @@ module Producer::Core
           sh.apply
         end
 
-        it 'writes the returned output with a record separator' do
+        it 'writes the returned output' do
           sh.apply
           expect(output).to eq "#{command_args}\n"
         end

@@ -10,6 +10,7 @@ require 'producer/core/action'
 require 'producer/core/actions/echo'
 require 'producer/core/actions/shell_command'
 require 'producer/core/actions/mkdir'
+require 'producer/core/actions/file_append'
 require 'producer/core/actions/file_replace_content'
 require 'producer/core/actions/file_writer'
 

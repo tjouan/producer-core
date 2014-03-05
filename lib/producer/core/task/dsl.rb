@@ -13,9 +13,11 @@ module Producer
         define_action :echo,  Actions::Echo
         define_action :sh,    Actions::ShellCommand
 
-        define_action :mkdir,                 Actions::Mkdir
-        define_action :file_write,            Actions::FileWriter
+        define_action :mkdir, Actions::Mkdir
+
+        define_action :file_append,           Actions::FileAppend
         define_action :file_replace_content,  Actions::FileReplaceContent
+        define_action :file_write,            Actions::FileWriter
 
         attr_reader :env, :block, :actions
 

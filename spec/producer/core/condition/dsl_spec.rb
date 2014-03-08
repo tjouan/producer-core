@@ -8,6 +8,7 @@ module Producer::Core
       subject(:dsl) { DSL.new(env, &block) }
 
       %w[
+        `
         file_contains
         has_dir
         has_env

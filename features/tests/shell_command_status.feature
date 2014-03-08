@@ -28,3 +28,31 @@ Feature: `` condition keyword
       """
     When I successfully execute the recipe
     Then the output must not contain "evaluated"
+
+  Scenario: `sh' alias, succeeds when remote executable is available
+    Given a recipe with:
+      """
+      target 'some_host.test'
+
+      task :testing_remote_command do
+        condition { sh 'false' }
+
+        echo 'evaluated'
+      end
+      """
+    When I successfully execute the recipe
+    Then the output must not contain "evaluated"
+
+  Scenario: succeeds when remote executable is available
+    Given a recipe with:
+      """
+      target 'some_host.test'
+
+      task :testing_remote_command do
+        condition { sh 'false' }
+
+        echo 'evaluated'
+      end
+      """
+    When I successfully execute the recipe
+    Then the output must not contain "evaluated"

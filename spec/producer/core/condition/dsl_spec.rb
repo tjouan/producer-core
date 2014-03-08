@@ -9,6 +9,7 @@ module Producer::Core
 
       %w[
         `
+        sh
         file_contains
         has_dir
         has_env

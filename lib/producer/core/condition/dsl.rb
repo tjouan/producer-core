@@ -14,6 +14,7 @@ module Producer
         end
 
         define_test :`,               Tests::ShellCommandStatus
+        define_test :sh,              Tests::ShellCommandStatus
         define_test :file_contains,   Tests::FileContains
         define_test :has_env,         Tests::HasEnv
         define_test :has_executable,  Tests::HasExecutable

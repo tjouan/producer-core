@@ -14,3 +14,5 @@ module Cucumber
 end
 
 require 'aruba/cucumber'
+
+require 'cucumber/sshd/cucumber'

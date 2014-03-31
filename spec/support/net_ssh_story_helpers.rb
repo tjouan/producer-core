@@ -1,6 +1,21 @@
-module NetSSHStoryHelpers
-  require 'net/ssh/test'
+require 'net/ssh/test'
 
+if Net::SSH::Version::CURRENT >= Net::SSH::Version[2, 8, 0]
+  module Net
+    module SSH
+      module Test
+        class Socket
+          def open(host, port, connections_options = nil)
+            @host, @port = host, port
+            self
+          end
+        end
+      end
+    end
+  end
+end
+
+module NetSSHStoryHelpers
   include Net::SSH::Test
 
   def story_with_new_channel

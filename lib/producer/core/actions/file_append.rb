@@ -15,7 +15,10 @@ module Producer
         end
 
         def combined_content
-          fs.file_read(path) + content
+          original_content = fs.file_read(path)
+
+          return content unless original_content
+          original_content + content
         end
       end
     end

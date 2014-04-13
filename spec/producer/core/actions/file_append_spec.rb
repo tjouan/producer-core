@@ -36,6 +36,14 @@ module Producer::Core
         it 'returns original content and added content combined' do
           expect(action.combined_content).to eq 'some content added'
         end
+
+        context 'when fs.file_read returns nil' do
+          before { allow(remote_fs).to receive(:file_read).with(path) { nil } }
+
+          it 'returns only the added content' do
+            expect(action.combined_content).to eq ' added'
+          end
+        end
       end
     end
   end

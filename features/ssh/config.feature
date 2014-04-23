@@ -12,6 +12,7 @@ Feature: SSH settings
     When I successfully execute the recipe
     Then the output must contain my current login name
 
+  @fake_home
   Scenario: uses configured SSH user name for a given host
     Given an SSH config with:
       """

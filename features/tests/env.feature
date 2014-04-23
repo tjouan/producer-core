@@ -1,5 +1,5 @@
 @sshd
-Feature: `has_env' condition keyword
+Feature: `env?' condition keyword
 
   Scenario: succeeds when remote environment variable is defined
     Given a recipe with:
@@ -7,7 +7,7 @@ Feature: `has_env' condition keyword
       target 'some_host.test'
 
       task :testing_env_var_definition do
-        condition { has_env :shell }
+        condition { env? :shell }
 
         echo 'evaluated'
       end
@@ -21,7 +21,7 @@ Feature: `has_env' condition keyword
       target 'some_host.test'
 
       task :testing_env_var_definition do
-        condition { has_env :inexistent_var }
+        condition { env? :inexistent_var }
 
         echo 'evaluated'
       end

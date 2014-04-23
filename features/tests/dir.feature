@@ -1,5 +1,5 @@
 @sshd
-Feature: `has_dir' condition keyword
+Feature: `dir?' condition keyword
 
   Background:
     Given a recipe with:
@@ -7,7 +7,7 @@ Feature: `has_dir' condition keyword
       target 'some_host.test'
 
       task :testing_directory_existence do
-        condition { has_dir 'some_directory' }
+        condition { dir? 'some_directory' }
 
         echo 'evaluated'
       end

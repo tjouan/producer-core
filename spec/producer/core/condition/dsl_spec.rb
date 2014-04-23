@@ -11,10 +11,10 @@ module Producer::Core
         `
         sh
         file_contains
-        has_dir
-        has_env
-        has_executable
-        has_file
+        dir?
+        env?
+        executable?
+        file?
       ].each do |test|
         it "has `#{test}' test defined" do
           expect(dsl).to respond_to test.to_sym

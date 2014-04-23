@@ -1,5 +1,5 @@
 @sshd
-Feature: `has_file' condition keyword
+Feature: `file?' condition keyword
 
   Background:
     Given a recipe with:
@@ -7,7 +7,7 @@ Feature: `has_file' condition keyword
       target 'some_host.test'
 
       task :testing_file_existence do
-        condition { has_file 'some_file' }
+        condition { file? 'some_file' }
 
         echo 'evaluated'
       end

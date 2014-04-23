@@ -1,5 +1,5 @@
 @sshd
-Feature: `has_executable' condition keyword
+Feature: `executable?' condition keyword
 
   Scenario: succeeds when remote executable is available
     Given a recipe with:
@@ -7,7 +7,7 @@ Feature: `has_executable' condition keyword
       target 'some_host.test'
 
       task :testing_executable_availability do
-        condition { has_executable 'true' }
+        condition { executable? 'true' }
 
         echo 'evaluated'
       end
@@ -21,7 +21,7 @@ Feature: `has_executable' condition keyword
       target 'some_host.test'
 
       task :testing_executable_availability do
-        condition { has_executable 'some_non_existent_executable' }
+        condition { executable? 'some_non_existent_executable' }
 
         echo 'evaluated'
       end

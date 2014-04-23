@@ -7,13 +7,13 @@ Feature: negated test prefix (no_)
       target 'some_host.test'
 
       task :successful_test do
-        condition { has_env :shell }
+        condition { env? :shell }
 
         echo 'successful_test'
       end
 
       task :negated_test do
-        condition { no_has_env :shell }
+        condition { no_env? :shell }
 
         echo 'negated_test'
       end
@@ -28,13 +28,13 @@ Feature: negated test prefix (no_)
       target 'some_host.test'
 
       task :failing_test do
-        condition { has_env :inexistent_var }
+        condition { env? :inexistent_var }
 
         echo 'failing_test'
       end
 
       task :negated_test do
-        condition { no_has_env :inexistent_var }
+        condition { no_env? :inexistent_var }
 
         echo 'negated_test'
       end

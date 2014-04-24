@@ -30,8 +30,8 @@ module Producer
           nil
         end
 
-        def file_write(path, content)
-          sftp.file.open path, 'w' do |f|
+        def file_write(path, content, mode = nil)
+          sftp.file.open path, 'w', mode do |f|
             f.write content
           end
         end

@@ -14,6 +14,16 @@ module Producer::Core
           expect(remote_fs).to receive(:file_write).with(path, content)
           writer.apply
         end
+
+        context 'when a mode was given' do
+          subject(:writer) { FileWriter.new(env, path, content, 0600) }
+
+          it 'specifies the given mode' do
+            expect(remote_fs)
+              .to receive(:file_write).with(anything, anything, 0600)
+            writer.apply
+          end
+        end
       end
 
       describe '#path' do
@@ -25,6 +35,20 @@ module Producer::Core
       describe '#content' do
         it 'returns the content' do
           expect(writer.content).to eq content
+        end
+      end
+
+      describe '#mode' do
+        it 'returns nil' do
+          expect(writer.mode).to be nil
+        end
+
+        context 'when a mode was given' do
+          subject(:writer) { FileWriter.new(env, path, content, 0600) }
+
+          it 'returns the mode' do
+            expect(writer.mode).to eq 0600
+          end
         end
       end
     end

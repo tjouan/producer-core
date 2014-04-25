@@ -20,8 +20,9 @@ module Producer
           false
         end
 
-        def mkdir(path)
-          sftp.mkdir! path
+        def mkdir(path, mode = nil)
+          options = mode ? { permissions: mode } : {}
+          sftp.mkdir! path, options
         end
 
         def file_read(path)

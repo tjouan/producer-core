@@ -89,8 +89,15 @@ module Producer::Core
         let(:path) { 'some_directory_path' }
 
         it 'creates the directory' do
-          expect(sftp).to receive(:mkdir!).with(path)
+          expect(sftp).to receive(:mkdir!).with(path, anything)
           fs.mkdir path
+        end
+
+        it 'specifies permissions from optional mode argument' do
+          expect(sftp).to receive(:mkdir!) do |_, options|
+            expect(options[:permissions]).to eq 0700
+          end
+          fs.mkdir path, 0700
         end
       end
 

@@ -22,9 +22,16 @@ Then /^the remote file "([^"]+)" must contain exactly "([^"]+)"$/ do |path, cont
   check_exact_file_content path, content
 end
 
-Then /^the remote file "([^"]+)" must have (\d+) mode$/ do |path, mode|
+def stat_mode(path)
   in_current_dir do
-    puts path, ('%o' % [File::Stat.new(path).mode])[-4, 4], mode
-    expect(('%o' % [File::Stat.new(path).mode])[-4, 4]).to match mode
+    ('%o' % [File::Stat.new(path).mode])[-4, 4]
   end
+end
+
+Then /^the remote file "([^"]+)" must have (\d+) mode$/ do |path, mode|
+  expect(stat_mode path).to eq mode
+end
+
+Then /^the remote directory "([^"]+)" must have (\d+) mode$/ do |path, mode|
+  expect(stat_mode path).to eq mode
 end

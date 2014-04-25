@@ -3,11 +3,20 @@ module Producer
     module Actions
       class Mkdir < Action
         def apply
-          fs.mkdir path
+          case arguments.size
+          when 1
+            fs.mkdir path
+          when 2
+            fs.mkdir path, mode
+          end
         end
 
         def path
           arguments.first
+        end
+
+        def mode
+          arguments[1]
         end
       end
     end

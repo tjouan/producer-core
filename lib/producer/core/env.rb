@@ -1,7 +1,7 @@
 module Producer
   module Core
     class Env
-      attr_reader   :input, :output, :registry
+      attr_reader   :input, :output, :registry, :logger
       attr_accessor :target
 
       def initialize(input: $stdin, output: $stdout, remote: nil, registry: {})
@@ -9,7 +9,9 @@ module Producer
         @output   = output
         @registry = registry
         @remote   = remote
-        @target   = nil
+        @logger   = Logger.new(output)
+
+        self.log_level = Logger::ERROR
       end
 
       def remote
@@ -22,6 +24,18 @@ module Producer
 
       def []=(key, value)
         @registry[key] = value
+      end
+
+      def log(message)
+        logger.info message
+      end
+
+      def log_level
+        logger.level
+      end
+
+      def log_level=(level)
+        logger.level = level
       end
     end
   end

@@ -44,10 +44,16 @@ module Producer::Core
     end
 
     describe '#initialize' do
-      subject(:cli) { CLI.new(arguments) }
+      it 'assigns the env with CLI output' do
+        expect(cli.env.output).to be stdout
+      end
 
-      it 'assigns $stdout as the default standard output' do
-        expect(cli.stdout).to be $stdout
+      context 'without options' do
+        subject(:cli) { CLI.new(arguments) }
+
+        it 'assigns $stdout as the default standard output' do
+          expect(cli.stdout).to be $stdout
+        end
       end
 
       context 'without arguments' do
@@ -84,16 +90,32 @@ module Producer::Core
       end
     end
 
+    describe '#env' do
+      it 'returns an env' do
+        expect(cli.env).to be_an Env
+      end
+    end
+
     describe '#load_recipe' do
-      it 'evaluates the recipe file with an env' do
+      it 'evaluates the recipe file with the CLI env' do
         expect(Recipe)
-          .to receive(:evaluate_from_file).with(recipe_file, kind_of(Env))
+          .to receive(:evaluate_from_file).with(recipe_file, cli.env)
         cli.load_recipe
       end
 
       it 'assigns the evaluated recipe' do
         cli.load_recipe
         expect(cli.recipe.tasks.count).to be 2
+      end
+    end
+
+    describe '#build_worker' do
+      it 'returns a worker' do
+        expect(cli.build_worker).to be_a Worker
+      end
+
+      it 'assigns the CLI env' do
+        expect(cli.build_worker.env).to eq cli.env
       end
     end
   end

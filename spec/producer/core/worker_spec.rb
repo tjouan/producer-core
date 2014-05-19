@@ -2,7 +2,8 @@ require 'spec_helper'
 
 module Producer::Core
   describe Worker do
-    subject(:worker) { described_class.new }
+    let(:env)         { Env.new }
+    subject(:worker)  { described_class.new(env) }
 
     describe '#process' do
       it 'processes each task' do
@@ -29,6 +30,12 @@ module Producer::Core
           expect(action).not_to receive :apply
           worker.process_task task
         end
+      end
+    end
+
+    describe '#env' do
+      it 'returns the assigned env' do
+        expect(worker.env).to be env
       end
     end
   end

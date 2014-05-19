@@ -19,21 +19,26 @@ module Producer
         end
       end
 
-      attr_reader :arguments, :stdout, :recipe
+      attr_reader :arguments, :stdout, :env, :recipe
 
-      def initialize(arguments, stdout: $stdout)
-        raise ArgumentError unless arguments.any?
-        @arguments  = arguments
+      def initialize(args, stdout: $stdout)
+        @arguments  = args
         @stdout     = stdout
+        @env        = Env.new(output: stdout)
+        raise ArgumentError unless arguments.any?
       end
 
-      def run(worker: Worker.new)
+      def run(worker: build_worker)
         load_recipe
         worker.process recipe.tasks
       end
 
       def load_recipe
-        @recipe = Recipe.evaluate_from_file(@arguments.first, Env.new)
+        @recipe = Recipe.evaluate_from_file(@arguments.first, env)
+      end
+
+      def build_worker
+        Worker.new(env)
       end
     end
   end

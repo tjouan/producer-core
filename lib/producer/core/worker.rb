@@ -1,6 +1,12 @@
 module Producer
   module Core
     class Worker
+      attr_accessor :env
+
+      def initialize(env)
+        @env = env
+      end
+
       def process(tasks)
         tasks.each { |t| process_task t }
       end

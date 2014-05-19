@@ -2,6 +2,10 @@ module Producer
   module Core
     module Actions
       class Mkdir < Action
+        def name
+          'mkdir'
+        end
+
         def apply
           case arguments.size
           when 1

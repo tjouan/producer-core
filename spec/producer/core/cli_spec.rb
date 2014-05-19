@@ -12,23 +12,34 @@ module Producer::Core
     subject(:cli)     { CLI.new(arguments, stdout: stdout) }
 
     describe '.run!' do
+      let(:cli)       { double('cli').as_null_object }
       let(:output)    { StringIO.new }
       subject(:run)   { described_class.run! arguments, output: output }
 
       it 'builds a new CLI with given arguments' do
-        expect(CLI).to receive(:new).with(arguments).and_call_original
+        expect(described_class)
+          .to receive(:new).with(arguments).and_call_original
         run
       end
 
       it 'runs the CLI' do
-        cli = double 'cli'
-        allow(CLI).to receive(:new) { cli }
+        allow(described_class).to receive(:new) { cli }
         expect(cli).to receive :run
         run
       end
 
-      context 'when recipe argument is missing' do
-        let(:arguments) { [] }
+      it 'parses CLI arguments' do
+        allow(described_class).to receive(:new) { cli }
+        expect(cli).to receive :parse_arguments!
+        run
+      end
+
+      context 'when an argument error is raised' do
+        before do
+          allow(CLI).to receive(:new) { cli }
+          allow(cli).to receive(:parse_arguments!)
+            .and_raise described_class::ArgumentError
+        end
 
         it 'exits with a return status of 64' do
           expect { run }.to raise_error(SystemExit) { |e|
@@ -55,14 +66,6 @@ module Producer::Core
           expect(cli.stdout).to be $stdout
         end
       end
-
-      context 'without arguments' do
-        let(:arguments) { [] }
-
-        it 'raises our ArgumentError exception' do
-          expect { cli }.to raise_error described_class::ArgumentError
-        end
-      end
     end
 
     describe '#arguments' do
@@ -74,6 +77,32 @@ module Producer::Core
     describe '#stdout' do
       it 'returns the assigned standard output' do
         expect(cli.stdout).to be stdout
+      end
+    end
+
+    describe '#parse_arguments!' do
+      context 'with options' do
+        let(:arguments) { ['-v', recipe_file] }
+
+        before { cli.parse_arguments! }
+
+        it 'removes options from arguments' do
+          expect(cli.arguments).to eq [recipe_file]
+        end
+
+        context 'verbose' do
+          it 'sets env logger level to INFO' do
+            expect(cli.env.log_level).to eq Logger::INFO
+          end
+        end
+      end
+
+      context 'without arguments' do
+        let(:arguments) { [] }
+
+        it 'raises the argument error exception' do
+          expect { cli.parse_arguments! }.to raise_error described_class::ArgumentError
+        end
       end
     end
 

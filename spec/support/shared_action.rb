@@ -40,5 +40,17 @@ module Producer::Core
         expect(action.fs).to be env.remote.fs
       end
     end
+
+    describe '#name' do
+      it 'returns a word' do
+        expect(action.name).to match /\A\w+\z/
+      end
+    end
+
+    describe '#to_s' do
+      it 'returns a word' do
+        expect(action.to_s).to eq action.name
+      end
+    end
   end
 end

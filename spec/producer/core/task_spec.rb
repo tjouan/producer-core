@@ -61,6 +61,12 @@ module Producer::Core
       end
     end
 
+    describe '#to_s' do
+      it 'includes the task name' do
+        expect(task.to_s).to include name.to_s
+      end
+    end
+
     describe '#condition_met?' do
       context 'when condition is truthy' do
         let(:condition) { Condition.new([], true) }

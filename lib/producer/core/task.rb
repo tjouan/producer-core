@@ -17,6 +17,10 @@ module Producer
         @condition  = condition
       end
 
+      def to_s
+        name.to_s
+      end
+
       def condition_met?
         !!@condition
       end

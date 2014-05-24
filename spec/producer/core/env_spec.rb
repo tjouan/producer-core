@@ -75,6 +75,10 @@ module Producer::Core
       it 'has a log level of ERROR' do
         expect(env.log_level).to eq Logger::ERROR
       end
+
+      it 'uses our formatter' do
+        expect(env.logger.formatter).to be_a LoggerFormatter
+      end
     end
 
     describe '#remote' do

@@ -31,3 +31,12 @@ Feature: CLI verbose option
       """
     When I successfully execute the recipe with option -v
     Then the output must match /say_hello.+ action: echo/
+
+  Scenario: formats message with our simple logger
+    Given a recipe with:
+      """
+      task :say_hello do
+      end
+      """
+    When I successfully execute the recipe with option -v
+    Then the output must match /\ATask:.+say_hello.*\n.*condition/

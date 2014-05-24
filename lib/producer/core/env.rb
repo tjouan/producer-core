@@ -9,9 +9,6 @@ module Producer
         @output   = output
         @registry = registry
         @remote   = remote
-        @logger   = Logger.new(output)
-
-        self.log_level = Logger::ERROR
       end
 
       def remote
@@ -24,6 +21,15 @@ module Producer
 
       def []=(key, value)
         @registry[key] = value
+      end
+
+      def logger
+        @logger ||= begin
+          logger = Logger.new(output)
+          logger.level = Logger::ERROR
+          logger.formatter = LoggerFormatter.new
+          logger
+        end
       end
 
       def log(message)

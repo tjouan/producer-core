@@ -3,7 +3,7 @@ module Producer
     class CLI
       ArgumentError = Class.new(::ArgumentError)
 
-      USAGE = "Usage: #{File.basename $0} [-v] recipe_file"
+      USAGE = "Usage: #{File.basename $0} [-v] [-n] recipe_file"
 
       EX_USAGE = 64
 
@@ -33,6 +33,8 @@ module Producer
           case e
           when '-v'
             env.log_level = Logger::INFO
+          when '-n'
+            env.dry_run = true
           else
             m << e
           end

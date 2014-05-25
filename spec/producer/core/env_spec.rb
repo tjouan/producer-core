@@ -18,6 +18,10 @@ module Producer::Core
         expect(env.registry).to be_empty
       end
 
+      it 'assigns dry run as false' do
+        expect(env.dry_run).to be false
+      end
+
       context 'when output is not given as argument' do
         subject(:env) { Env.new }
 
@@ -131,6 +135,14 @@ module Producer::Core
       it 'sets the logger level' do
         env.log_level = Logger::DEBUG
         expect(env.logger.level).to eq Logger::DEBUG
+      end
+    end
+
+    describe '#dry_run?' do
+      before { env.dry_run = true }
+
+      it 'returns true when dry run is enabled' do
+        expect(env.dry_run?).to be true
       end
     end
   end

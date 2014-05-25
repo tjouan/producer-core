@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Worker do
-    let(:env)         { double 'env', log: nil }
+    let(:env)         { double 'env', log: nil, dry_run?: false }
     subject(:worker)  { described_class.new(env) }
 
     describe '#process' do
@@ -36,6 +36,15 @@ module Producer::Core
         it 'logs action info' do
           expect(env).to receive(:log).with /\A action: echo/
           worker.process_task task
+        end
+
+        context 'when dry run is enabled' do
+          before { allow(env).to receive(:dry_run?) { true } }
+
+          it 'does not apply the actions' do
+            expect(action).not_to receive :apply
+            worker.process_task task
+          end
         end
       end
 

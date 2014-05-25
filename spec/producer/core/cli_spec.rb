@@ -6,7 +6,8 @@ module Producer::Core
     include FixturesHelpers
 
     let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
-    let(:arguments)   { [recipe_file] }
+    let(:options)     { [] }
+    let(:arguments)   { [*options, recipe_file] }
     let(:stdout)      { StringIO.new }
 
     subject(:cli)     { CLI.new(arguments, stdout: stdout) }
@@ -36,7 +37,7 @@ module Producer::Core
 
       context 'when an argument error is raised' do
         before do
-          allow(CLI).to receive(:new) { cli }
+          allow(described_class).to receive(:new) { cli }
           allow(cli).to receive(:parse_arguments!)
             .and_raise described_class::ArgumentError
         end
@@ -60,7 +61,7 @@ module Producer::Core
       end
 
       context 'without options' do
-        subject(:cli) { CLI.new(arguments) }
+        subject(:cli) { described_class.new(arguments) }
 
         it 'assigns $stdout as the default standard output' do
           expect(cli.stdout).to be $stdout
@@ -82,7 +83,7 @@ module Producer::Core
 
     describe '#parse_arguments!' do
       context 'with options' do
-        let(:arguments) { ['-v', recipe_file] }
+        let(:options) { %w[-v] }
 
         before { cli.parse_arguments! }
 
@@ -93,6 +94,14 @@ module Producer::Core
         context 'verbose' do
           it 'sets env logger level to INFO' do
             expect(cli.env.log_level).to eq Logger::INFO
+          end
+        end
+
+        context 'dry run' do
+          let(:options) { %w[-n] }
+
+          it 'enables env dry run' do
+            expect(cli.env).to be_dry_run
           end
         end
       end

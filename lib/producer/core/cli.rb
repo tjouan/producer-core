@@ -5,18 +5,22 @@ module Producer
 
       USAGE = "Usage: #{File.basename $0} [-v] [-n] recipe_file".freeze
 
-      EX_USAGE = 64
+      EX_USAGE    = 64
+      EX_SOFTWARE = 70
 
       class << self
         def run!(arguments, output: $stderr)
+          cli = new(arguments)
           begin
-            cli = new(arguments)
             cli.parse_arguments!
+            cli.run
           rescue ArgumentError
             output.puts USAGE
             exit EX_USAGE
+          rescue RuntimeError => e
+            output.puts "#{e.class.name.split('::').last}: #{e.message}"
+            exit EX_SOFTWARE
           end
-          cli.run
         end
       end
 

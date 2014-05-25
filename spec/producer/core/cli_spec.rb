@@ -17,40 +17,56 @@ module Producer::Core
       let(:output)    { StringIO.new }
       subject(:run)   { described_class.run! arguments, output: output }
 
+      before { allow(described_class).to receive(:new) { cli } }
+
       it 'builds a new CLI with given arguments' do
-        expect(described_class)
-          .to receive(:new).with(arguments).and_call_original
+        expect(described_class).to receive(:new).with(arguments)
         run
       end
 
       it 'runs the CLI' do
-        allow(described_class).to receive(:new) { cli }
         expect(cli).to receive :run
         run
       end
 
       it 'parses CLI arguments' do
-        allow(described_class).to receive(:new) { cli }
         expect(cli).to receive :parse_arguments!
         run
       end
 
       context 'when an argument error is raised' do
         before do
-          allow(described_class).to receive(:new) { cli }
           allow(cli).to receive(:parse_arguments!)
             .and_raise described_class::ArgumentError
         end
 
         it 'exits with a return status of 64' do
-          expect { run }.to raise_error(SystemExit) { |e|
+          expect { run }.to raise_error(SystemExit) do |e|
             expect(e.status).to eq 64
-          }
+          end
         end
 
         it 'prints the usage' do
           trap_exit { run }
           expect(output.string).to match /\AUsage: .+/
+        end
+      end
+
+      context 'when a runtime error is raised' do
+        before do
+          allow(cli).to receive(:run)
+            .and_raise RuntimeError, 'some message'
+        end
+
+        it 'exits with a return status of 70' do
+          expect { run }.to raise_error(SystemExit) do |e|
+            expect(e.status).to eq 70
+          end
+        end
+
+        it 'prints exception name and message' do
+          trap_exit { run }
+          expect(output.string).to match /\ARuntimeError: some message/
         end
       end
     end

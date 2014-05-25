@@ -106,14 +106,23 @@ module Producer::Core
         expect(output.string).to eq arguments
       end
 
-      it 'raises an exception when the exit status code is not 0' do
-        story_with_new_channel do |ch|
-          ch.sends_exec command
-          ch.gets_data arguments
-          ch.gets_exit_status 1
+      context 'when command execution fails' do
+        before do
+          story_with_new_channel do |ch|
+            ch.sends_exec command
+            ch.gets_data arguments
+            ch.gets_exit_status 1
+          end
         end
-        expect { remote.execute command }
-          .to raise_error(RemoteCommandExecutionError)
+
+        it 'raises an exception' do
+          expect { remote.execute command }
+            .to raise_error(RemoteCommandExecutionError)
+        end
+
+        it 'includes the command in the exception message' do
+          expect { remote.execute command }.to raise_error /#{command}/
+        end
       end
     end
 

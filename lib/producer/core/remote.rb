@@ -32,7 +32,7 @@ module Producer
 
             ch.on_request 'exit-status' do |c, data|
               exit_status = data.read_long
-              raise RemoteCommandExecutionError if exit_status != 0
+              raise RemoteCommandExecutionError, command if exit_status != 0
             end
           end
         end

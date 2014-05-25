@@ -36,7 +36,7 @@ module Producer
         @arguments = arguments.inject([]) do |m, e|
           case e
           when '-v'
-            env.log_level = Logger::INFO
+            env.verbose = true
           when '-n'
             env.dry_run = true
           else

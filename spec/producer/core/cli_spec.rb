@@ -108,15 +108,15 @@ module Producer::Core
         end
 
         context 'verbose' do
-          it 'sets env logger level to INFO' do
-            expect(cli.env.log_level).to eq Logger::INFO
+          it 'enables env verbose mode' do
+            expect(cli.env).to be_verbose
           end
         end
 
         context 'dry run' do
           let(:options) { %w[-n] }
 
-          it 'enables env dry run' do
+          it 'enables env dry run mode' do
             expect(cli.env).to be_dry_run
           end
         end

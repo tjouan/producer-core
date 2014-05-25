@@ -3,10 +3,10 @@ require 'spec_helper'
 module Producer::Core
   describe Env do
     let(:output)  { StringIO.new }
-    subject(:env) { Env.new(output: output) }
+    subject(:env) { described_class.new(output: output) }
 
     describe '#initialize' do
-      it 'assigns $stdin as the default output' do
+      it 'assigns $stdin as the default input' do
         expect(env.input).to be $stdin
       end
 
@@ -18,12 +18,16 @@ module Producer::Core
         expect(env.registry).to be_empty
       end
 
+      it 'assigns verbose as false' do
+        expect(env.verbose).to be false
+      end
+
       it 'assigns dry run as false' do
         expect(env.dry_run).to be false
       end
 
       context 'when output is not given as argument' do
-        subject(:env) { Env.new }
+        subject(:env) { described_class.new }
 
         it 'assigns $stdout as the default output' do
           expect(env.output).to be $stdout
@@ -60,28 +64,9 @@ module Producer::Core
     describe '#target' do
       let(:target) { double 'target' }
 
-      it 'returns the defined target' do
+      it 'returns the assigned target' do
         env.target = target
         expect(env.target).to be target
-      end
-    end
-
-    describe '#logger' do
-      it 'returns a logger' do
-        expect(env.logger).to be_a Logger
-      end
-
-      it 'uses env output' do
-        env.logger.error 'some message'
-        expect(output.string).to include 'some message'
-      end
-
-      it 'has a log level of ERROR' do
-        expect(env.log_level).to eq Logger::ERROR
-      end
-
-      it 'uses our formatter' do
-        expect(env.logger.formatter).to be_a LoggerFormatter
       end
     end
 
@@ -118,6 +103,33 @@ module Producer::Core
       end
     end
 
+    describe '#logger' do
+      it 'returns a logger' do
+        expect(env.logger).to be_a Logger
+      end
+
+      it 'uses env output' do
+        env.logger.error 'some message'
+        expect(output.string).to include 'some message'
+      end
+
+      it 'has a log level of ERROR' do
+        expect(env.logger.level).to eq Logger::ERROR
+      end
+
+      it 'uses our formatter' do
+        expect(env.logger.formatter).to be_a LoggerFormatter
+      end
+
+      context 'when verbose mode is enabled' do
+        before { env.verbose = true }
+
+        it 'has a log level of INFO' do
+          expect(env.logger.level).to eq Logger::INFO
+        end
+      end
+    end
+
     describe '#log' do
       it 'logs an info message through the assigned logger' do
         expect(env.logger).to receive(:info).with 'message'
@@ -125,24 +137,17 @@ module Producer::Core
       end
     end
 
-    describe '#log_level' do
-      it 'returns the logger level' do
-        expect(env.log_level).to eq env.logger.level
-      end
-    end
-
-    describe '#log_level=' do
-      it 'sets the logger level' do
-        env.log_level = Logger::DEBUG
-        expect(env.logger.level).to eq Logger::DEBUG
+    describe '#verbose?' do
+      it 'returns true when verbose is enabled' do
+        env.verbose = true
+        expect(env).to be_verbose
       end
     end
 
     describe '#dry_run?' do
-      before { env.dry_run = true }
-
       it 'returns true when dry run is enabled' do
-        expect(env.dry_run?).to be true
+        env.dry_run = true
+        expect(env).to be_dry_run
       end
     end
   end

@@ -2,14 +2,14 @@ module Producer
   module Core
     class Env
       attr_reader   :input, :output, :registry, :logger
-      attr_accessor :target, :dry_run
+      attr_accessor :target, :verbose, :dry_run
 
       def initialize(input: $stdin, output: $stdout, remote: nil, registry: {})
+        @verbose  = @dry_run = false
         @input    = input
         @output   = output
-        @registry = registry
         @remote   = remote
-        @dry_run  = false
+        @registry = registry
       end
 
       def remote
@@ -27,7 +27,7 @@ module Producer
       def logger
         @logger ||= begin
           logger = Logger.new(output)
-          logger.level = Logger::ERROR
+          logger.level = verbose? ? Logger::INFO : Logger::ERROR
           logger.formatter = LoggerFormatter.new
           logger
         end
@@ -37,12 +37,8 @@ module Producer
         logger.info message
       end
 
-      def log_level
-        logger.level
-      end
-
-      def log_level=(level)
-        logger.level = level
+      def verbose?
+        @verbose
       end
 
       def dry_run?

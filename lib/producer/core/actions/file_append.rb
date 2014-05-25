@@ -2,6 +2,10 @@ module Producer
   module Core
     module Actions
       class FileAppend < Action
+        def name
+          'file_append'
+        end
+
         def apply
           fs.file_write path, combined_content
         end

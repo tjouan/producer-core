@@ -2,6 +2,10 @@ module Producer
   module Core
     module Actions
       class FileReplaceContent < Action
+        def name
+          'file_replace_content'
+        end
+
         def apply
           fs.file_write path, replaced_content
         end

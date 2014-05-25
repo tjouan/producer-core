@@ -5,5 +5,5 @@ Feature: CLI usage
     Then the exit status must be 64
     And the output must contain exactly:
       """
-      Usage: producer recipe_file
+      Usage: producer [-v] [-n] recipe_file
       """

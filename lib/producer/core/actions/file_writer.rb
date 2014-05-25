@@ -2,6 +2,10 @@ module Producer
   module Core
     module Actions
       class FileWriter < Action
+        def name
+          'file_write'
+        end
+
         def apply
           case arguments.size
           when 2

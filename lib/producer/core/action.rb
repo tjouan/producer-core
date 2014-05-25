@@ -11,6 +11,14 @@ module Producer
         @env        = env
         @arguments  = args
       end
+
+      def name
+        self.class.name.split('::').last.downcase
+      end
+
+      def to_s
+        name
+      end
     end
   end
 end

@@ -11,6 +11,11 @@ When /^I successfully execute the recipe$/ do
   assert_exit_status 0
 end
 
+When /^I successfully execute the recipe with option (-\w)$/ do |option|
+  run_simple "producer #{option} recipe.rb", false
+  assert_exit_status 0
+end
+
 When /^I execute the recipe interactively$/ do
   run_interactive 'producer recipe.rb'
 end

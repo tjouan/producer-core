@@ -3,7 +3,7 @@ module Producer
     class CLI
       ArgumentError = Class.new(::ArgumentError)
 
-      USAGE = "Usage: #{File.basename $0} recipe_file"
+      USAGE = "Usage: #{File.basename $0} [-v] [-n] recipe_file"
 
       EX_USAGE = 64
 
@@ -11,6 +11,7 @@ module Producer
         def run!(arguments, output: $stderr)
           begin
             cli = new(arguments)
+            cli.parse_arguments!
           rescue ArgumentError
             output.puts USAGE
             exit EX_USAGE
@@ -19,21 +20,41 @@ module Producer
         end
       end
 
-      attr_reader :arguments, :stdout, :recipe
+      attr_reader :arguments, :stdout, :env, :recipe
 
-      def initialize(arguments, stdout: $stdout)
-        raise ArgumentError unless arguments.any?
-        @arguments  = arguments
+      def initialize(args, stdout: $stdout)
+        @arguments  = args
         @stdout     = stdout
+        @env        = Env.new(output: stdout)
       end
 
-      def run(worker: Worker.new)
+      def parse_arguments!
+        @arguments = arguments.inject([]) do |m, e|
+          case e
+          when '-v'
+            env.log_level = Logger::INFO
+          when '-n'
+            env.dry_run = true
+          else
+            m << e
+          end
+          m
+        end
+
+        raise ArgumentError unless arguments.any?
+      end
+
+      def run(worker: build_worker)
         load_recipe
         worker.process recipe.tasks
       end
 
       def load_recipe
-        @recipe = Recipe.evaluate_from_file(@arguments.first, Env.new)
+        @recipe = Recipe.evaluate_from_file(@arguments.first, env)
+      end
+
+      def build_worker
+        Worker.new(env)
       end
     end
   end

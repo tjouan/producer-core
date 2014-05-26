@@ -132,15 +132,12 @@ module Producer::Core
     end
 
     describe '#run' do
-      it 'loads the recipe' do
-        cli.run
-        expect(cli.recipe).to be_a Recipe
-      end
-
       it 'process recipe tasks with given worker' do
         worker = double 'worker'
-        expect(worker).to receive(:process).with [kind_of(Task), kind_of(Task)]
-        cli.run worker: worker
+        allow(cli).to receive(:worker) { worker }
+        expect(worker).to receive(:process)
+          .with([an_instance_of(Task), an_instance_of(Task)])
+        cli.run
       end
     end
 
@@ -157,19 +154,18 @@ module Producer::Core
         cli.load_recipe
       end
 
-      it 'assigns the evaluated recipe' do
-        cli.load_recipe
-        expect(cli.recipe.tasks.count).to be 2
+      it 'returns the recipe' do
+        expect(cli.load_recipe).to be_a Recipe
       end
     end
 
-    describe '#build_worker' do
+    describe '#worker' do
       it 'returns a worker' do
-        expect(cli.build_worker).to be_a Worker
+        expect(cli.worker).to be_a Worker
       end
 
       it 'assigns the CLI env' do
-        expect(cli.build_worker.env).to eq cli.env
+        expect(cli.worker.env).to eq cli.env
       end
     end
   end

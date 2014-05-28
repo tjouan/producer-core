@@ -1,5 +1,6 @@
 Feature: `ask' recipe keyword
 
+  @exec
   Scenario: prompts user with a list of choices on standard output
     Given a recipe with:
       """

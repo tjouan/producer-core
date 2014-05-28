@@ -8,19 +8,30 @@ module Producer::Core
     let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
     let(:options)     { [] }
     let(:arguments)   { [*options, recipe_file] }
+    let(:stdin)       { StringIO.new}
     let(:stdout)      { StringIO.new }
+    let(:stderr)      { StringIO.new }
 
-    subject(:cli)     { CLI.new(arguments, stdout: stdout) }
+    subject(:cli)     { CLI.new(arguments, stdin: stdin, stdout: stdout) }
 
     describe '.run!' do
-      let(:cli)       { double('cli').as_null_object }
-      let(:output)    { StringIO.new }
-      subject(:run)   { described_class.run! arguments, output: output }
+      let(:cli) { double('cli').as_null_object }
+
+      subject(:run) do
+        described_class.run! arguments,
+          stdin:  stdin,
+          stdout: stdout,
+          stderr: stderr
+      end
 
       before { allow(described_class).to receive(:new) { cli } }
 
-      it 'builds a new CLI with given arguments' do
-        expect(described_class).to receive(:new).with(arguments)
+      it 'builds a new CLI with given arguments and streams' do
+        expect(described_class).to receive(:new).with(arguments,
+          stdin:  stdin,
+          stdout: stdout,
+          stderr: stderr
+        )
         run
       end
 
@@ -46,9 +57,9 @@ module Producer::Core
           end
         end
 
-        it 'prints the usage' do
+        it 'prints the usage on the error stream' do
           trap_exit { run }
-          expect(output.string).to match /\AUsage: .+/
+          expect(stderr.string).to match /\AUsage: .+/
         end
       end
 
@@ -64,24 +75,22 @@ module Producer::Core
           end
         end
 
-        it 'prints exception name and message' do
+        it 'prints exception name and message and the error stream' do
           trap_exit { run }
-          expect(output.string).to match /\ARuntimeError: some message/
+          expect(stderr.string).to match /\ARuntimeError: some message/
         end
       end
     end
 
     describe '#initialize' do
-      it 'assigns the env with CLI output' do
-        expect(cli.env.output).to be stdout
+      subject(:cli) { described_class.new(arguments) }
+
+      it 'assigns $stdin as the default standard input' do
+        expect(cli.stdin).to be $stdin
       end
 
-      context 'without options' do
-        subject(:cli) { described_class.new(arguments) }
-
-        it 'assigns $stdout as the default standard output' do
-          expect(cli.stdout).to be $stdout
-        end
+      it 'assigns $stdout as the default standard output' do
+        expect(cli.stdout).to be $stdout
       end
     end
 
@@ -100,6 +109,14 @@ module Producer::Core
     describe '#env' do
       it 'returns the assigned env' do
         expect(cli.env).to be_an Env
+      end
+
+      it 'assigns CLI stdin as the env input' do
+        expect(cli.env.input).to be stdin
+      end
+
+      it 'assigns CLI stdout as the env output' do
+        expect(cli.env.output).to be stdout
       end
     end
 

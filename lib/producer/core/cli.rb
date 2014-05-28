@@ -9,27 +9,28 @@ module Producer
       EX_SOFTWARE = 70
 
       class << self
-        def run!(arguments, output: $stderr)
-          cli = new(arguments)
+        def run!(arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr)
+          cli = new(arguments, stdin: stdin, stdout: stdout, stderr: stderr)
           begin
             cli.parse_arguments!
             cli.run
           rescue ArgumentError
-            output.puts USAGE
+            stderr.puts USAGE
             exit EX_USAGE
           rescue RuntimeError => e
-            output.puts "#{e.class.name.split('::').last}: #{e.message}"
+            stderr.puts "#{e.class.name.split('::').last}: #{e.message}"
             exit EX_SOFTWARE
           end
         end
       end
 
-      attr_reader :arguments, :stdout, :env
+      attr_reader :arguments, :stdin, :stdout, :stderr, :env
 
-      def initialize(args, stdout: $stdout)
+      def initialize(args, stdin: $stdin, stdout: $stdout, stderr: $stderr)
         @arguments  = args
+        @stdin      = stdin
         @stdout     = stdout
-        @env        = Env.new(output: stdout)
+        @env        = Env.new(input: stdin, output: stdout)
       end
 
       def parse_arguments!

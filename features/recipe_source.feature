@@ -9,7 +9,9 @@ Feature: `source' recipe keyword
   Scenario: requires a recipe file
     Given a file named "sourced_recipe.rb" with:
       """
-      puts 'sourced recipe'
+      task :some_task do
+        echo 'sourced recipe'
+      end
       """
     When I successfully execute the recipe
     Then the output must contain "sourced recipe"

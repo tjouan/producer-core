@@ -9,7 +9,7 @@ Feature: `file_append' task action
       """
       target 'some_host.test'
 
-      task :append_content_to_file do
+      task :file_append_action do
         file_append 'some_file', ' added'
       end
       """

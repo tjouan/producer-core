@@ -6,7 +6,7 @@ Feature: `file?' condition keyword
       """
       target 'some_host.test'
 
-      task :testing_file_existence do
+      task :file_test do
         condition { file? 'some_file' }
 
         echo 'evaluated'

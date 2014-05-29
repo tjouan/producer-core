@@ -3,7 +3,7 @@ Feature: `echo' task action
   Scenario: prints text on standard output
     Given a recipe with:
       """
-      task :say_hello do
+      task :echo_action do
         echo 'hello'
       end
       """

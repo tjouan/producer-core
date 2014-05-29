@@ -5,7 +5,9 @@ Feature: SSH settings
       """
       target 'some_host.example'
 
-      puts env.remote.user_name
+      task :some_task do
+        echo env.remote.user_name
+      end
       """
 
   Scenario: uses current user login name as SSH user name by default

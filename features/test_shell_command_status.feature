@@ -1,58 +1,48 @@
 @sshd
-Feature: `` condition keyword
+Feature: `sh' and `` condition keyword
 
-  Scenario: succeeds when remote command execution is a success
+  Background:
     Given a recipe with:
       """
       target 'some_host.test'
 
-      task :testing_remote_command do
+      task :sh_test_ok do
+        condition { sh 'true' }
+
+        echo 'test_ok'
+      end
+
+      task :sh_test_ko do
+        condition { sh 'false' }
+
+        echo 'test_ko'
+      end
+
+      task :sh_test_backtick_ok do
         condition { `true` }
 
-        echo 'evaluated'
+        echo 'test_backtick_ok'
       end
-      """
-    When I successfully execute the recipe
-    Then the output must contain "evaluated"
 
-  Scenario: succeeds when remote executable is available
-    Given a recipe with:
-      """
-      target 'some_host.test'
-
-      task :testing_remote_command do
+      task :sh_test_backtick_ko do
         condition { `false` }
 
-        echo 'evaluated'
+        echo 'test_backtick_ko'
       end
       """
+
+  Scenario: succeeds when remote command execution is a success
     When I successfully execute the recipe
-    Then the output must not contain "evaluated"
+    Then the output must contain "test_ok"
 
-  Scenario: `sh' alias, succeeds when remote executable is available
-    Given a recipe with:
-      """
-      target 'some_host.test'
-
-      task :testing_remote_command do
-        condition { sh 'false' }
-
-        echo 'evaluated'
-      end
-      """
+  Scenario: fails when remote executable is not available
     When I successfully execute the recipe
-    Then the output must not contain "evaluated"
+    Then the output must not contain "test_ko"
 
-  Scenario: succeeds when remote executable is available
-    Given a recipe with:
-      """
-      target 'some_host.test'
-
-      task :testing_remote_command do
-        condition { sh 'false' }
-
-        echo 'evaluated'
-      end
-      """
+  Scenario: `` alias, succeeds when remote executable is available
     When I successfully execute the recipe
-    Then the output must not contain "evaluated"
+    Then the output must contain "test_backtick_ok"
+
+  Scenario: `` alias, fails when remote executable is not available
+    When I successfully execute the recipe
+    Then the output must not contain "test_backtick_ko"

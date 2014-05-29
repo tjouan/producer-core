@@ -5,7 +5,9 @@ Feature: `target' recipe keyword
       """
       target 'some_host.example'
 
-      puts env.target
+      task :some_task do
+        echo env.target
+      end
       """
     When I successfully execute the recipe
     Then the output must contain exactly "some_host.example\n"

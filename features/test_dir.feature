@@ -6,7 +6,7 @@ Feature: `dir?' condition keyword
       """
       target 'some_host.test'
 
-      task :testing_directory_existence do
+      task :dir_test do
         condition { dir? 'some_directory' }
 
         echo 'evaluated'

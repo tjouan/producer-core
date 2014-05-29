@@ -1,30 +1,28 @@
 @sshd
 Feature: `executable?' condition keyword
 
-  Scenario: succeeds when remote executable is available
+  Background:
     Given a recipe with:
       """
       target 'some_host.test'
 
-      task :testing_executable_availability do
+      task :executable_test_ok do
         condition { executable? 'true' }
 
-        echo 'evaluated'
+        echo 'test_ok'
       end
-      """
-    When I successfully execute the recipe
-    Then the output must contain "evaluated"
 
-  Scenario: succeeds when remote executable is available
-    Given a recipe with:
-      """
-      target 'some_host.test'
-
-      task :testing_executable_availability do
+      task :executable_test_ok do
         condition { executable? 'some_non_existent_executable' }
 
-        echo 'evaluated'
+        echo 'test_ko'
       end
       """
+
+  Scenario: succeeds when remote executable is available
     When I successfully execute the recipe
-    Then the output must not contain "evaluated"
+    Then the output must contain "test_ok"
+
+  Scenario: fails when remote executable is not available
+    When I successfully execute the recipe
+    Then the output must not contain "test_ko"

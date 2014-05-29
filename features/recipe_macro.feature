@@ -1,6 +1,6 @@
 Feature: `macro' recipe keyword
 
-  Scenario: declares new keyword accepting task code
+  Scenario: declares a new keyword accepting task code
     Given a recipe with:
       """
       macro :hello do
@@ -28,7 +28,7 @@ Feature: `macro' recipe keyword
     Given a recipe with:
       """
       macro :my_echo do |message|
-        condition { message =~ /bar/ }
+        condition { message =~ /foo/ }
 
         echo message
       end
@@ -36,5 +36,5 @@ Feature: `macro' recipe keyword
       %w[foo bar].each { |e| my_echo e }
       """
     When I successfully execute the recipe
-    Then the output must not contain "foo"
-    And the output must contain "bar"
+    Then the output must contain "foo"
+    And the output must not contain "bar"

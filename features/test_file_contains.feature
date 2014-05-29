@@ -6,7 +6,7 @@ Feature: `file_contains' condition keyword
       """
       target 'some_host.test'
 
-      task :testing_content_in_file_presense do
+      task :file_contains_test do
         condition { file_contains 'some_file', 'some_content' }
 
         echo 'evaluated'

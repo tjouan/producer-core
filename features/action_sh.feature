@@ -1,24 +1,12 @@
 @sshd
 Feature: `sh' task action
 
-  Scenario: executes command
-    Given a recipe with:
-      """
-      target 'some_host.test'
-
-      task :some_task do
-        sh '\true'
-      end
-      """
-    When I execute the recipe
-    Then the exit status must be 0
-
   Scenario: forwards standard ouput
     Given a recipe with:
       """
       target 'some_host.test'
 
-      task :some_task do
+      task :sh_action do
         sh '\echo hello from remote'
       end
       """
@@ -30,7 +18,7 @@ Feature: `sh' task action
       """
       target 'some_host.test'
 
-      task :some_task do
+      task :sh_action_aborting do
         sh '\false'
         sh '\echo after_fail'
       end
@@ -43,7 +31,7 @@ Feature: `sh' task action
       """
       target 'some_host.test'
 
-      task :some_task do
+      task :sh_action_command_error do
         sh '\false'
       end
       """

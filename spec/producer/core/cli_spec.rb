@@ -97,6 +97,12 @@ module Producer::Core
       end
     end
 
+    describe '#env' do
+      it 'returns the assigned env' do
+        expect(cli.env).to be_an Env
+      end
+    end
+
     describe '#parse_arguments!' do
       context 'with options' do
         let(:options) { %w[-v] }
@@ -138,12 +144,6 @@ module Producer::Core
         expect(worker).to receive(:process)
           .with([an_instance_of(Task), an_instance_of(Task)])
         cli.run
-      end
-    end
-
-    describe '#env' do
-      it 'returns an env' do
-        expect(cli.env).to be_an Env
       end
     end
 

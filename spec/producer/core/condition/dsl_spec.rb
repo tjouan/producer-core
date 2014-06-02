@@ -22,9 +22,9 @@ module Producer::Core
       end
 
       describe '.define_test' do
-        let(:some_test_class) { Test }
+        let(:some_test) { Test }
 
-        before { described_class.define_test(:some_test, some_test_class) }
+        before { described_class.define_test(:some_test, some_test) }
 
         it 'defines a new test keyword' do
           expect(dsl).to respond_to :some_test
@@ -41,19 +41,38 @@ module Producer::Core
 
           it 'registers the test with current env' do
             dsl.some_test
-            expect(dsl.tests.first.env).to be env
+            expect(dsl.tests.last.env).to be env
           end
 
           it 'registers the test with given arguments' do
             dsl.some_test :some, :args
-            expect(dsl.tests.first.arguments).to eq [:some, :args]
+            expect(dsl.tests.last.arguments).to eq [:some, :args]
+          end
+
+          context 'when given test is callable' do
+            let(:some_test) { proc {} }
+
+            before { dsl.some_test }
+
+            it 'registers a condition test' do
+              expect(dsl.tests.last).to be_a Tests::ConditionTest
+            end
+
+            it 'registers the test with given block' do
+              expect(dsl.tests.last.condition_block).to be some_test
+            end
+
+            it 'registers the test with given arguments' do
+              dsl.some_test :some, :args
+              expect(dsl.tests.last.condition_args).to eq [:some, :args]
+            end
           end
         end
 
         context 'when a negated test keyword is called' do
           it 'registers a negated test' do
             dsl.no_some_test
-            expect(dsl.tests.first).to be_negated
+            expect(dsl.tests.last).to be_negated
           end
         end
       end
@@ -80,6 +99,15 @@ module Producer::Core
 
         it 'returns the value returned by the assigned block' do
           expect(dsl.evaluate).to eq block.call
+        end
+
+        context 'when arguments are given' do
+          let(:block) { proc { |e| throw e } }
+
+          it 'passes arguments as block parameters' do
+            expect { dsl.evaluate :some_argument }
+              .to throw_symbol :some_argument
+          end
         end
       end
     end

@@ -38,6 +38,10 @@ module Producer
           end
         end
 
+        def test_macro(name, dsl: Condition::DSL, &block)
+          dsl.define_test(name, block)
+        end
+
         def set(key, value)
           env[key] = value
         end

@@ -3,12 +3,21 @@ module Producer
     class Condition
       class DSL
         class << self
-          def define_test(keyword, klass)
-            define_method(keyword) do |*args|
-              @tests << klass.new(@env, *args)
-            end
-            define_method("no_#{keyword}") do |*args|
-              @tests << klass.new(@env, *args, negated: true)
+          def define_test(keyword, test)
+            {
+              keyword         => false,
+              "no_#{keyword}" => true
+            }.each do |kw, negated|
+              define_method(kw) do |*args|
+                if test.respond_to? :call
+                  args  = [test, *args]
+                  klass = Tests::ConditionTest
+                else
+                  klass = test
+                end
+                t = klass.new(@env, *args, negated: negated)
+                @tests << t
+              end
             end
           end
         end
@@ -29,8 +38,8 @@ module Producer
           @tests  = []
         end
 
-        def evaluate
-          instance_eval &@block
+        def evaluate(*args)
+          instance_exec *args, &@block
         end
       end
     end

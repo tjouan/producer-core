@@ -102,6 +102,16 @@ module Producer::Core
         end
       end
 
+      describe '#test_macro' do
+        it 'defines the new test' do
+          condition_dsl = double 'condition dsl'
+          test_block = proc {}
+          expect(condition_dsl)
+            .to receive(:define_test).with(:some_test, test_block)
+          dsl.test_macro(:some_test, dsl: condition_dsl, &test_block)
+        end
+      end
+
       describe '#set' do
         it 'registers a key/value pair in env registry' do
           dsl.set :some_key, :some_value

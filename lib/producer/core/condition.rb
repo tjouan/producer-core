@@ -2,9 +2,9 @@ module Producer
   module Core
     class Condition
       class << self
-        def evaluate(env, &block)
+        def evaluate(env, *args, &block)
           dsl = DSL.new(env, &block)
-          return_value = dsl.evaluate
+          return_value = dsl.evaluate *args
           Condition.new(dsl.tests, return_value)
         end
       end

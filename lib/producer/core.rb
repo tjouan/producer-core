@@ -16,6 +16,7 @@ require 'producer/core/actions/file_writer'
 
 # condition tests (need to be defined before the condition DSL)
 require 'producer/core/test'
+require 'producer/core/tests/condition_test'
 require 'producer/core/tests/file_contains'
 require 'producer/core/tests/has_dir'
 require 'producer/core/tests/has_env'

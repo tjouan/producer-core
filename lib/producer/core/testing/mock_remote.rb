@@ -3,7 +3,7 @@ module Producer
     module Testing
       class MockRemote < Remote
         def session
-          raise 'no session for mock remote!'
+          fail 'no session for mock remote!'
         end
 
         def execute(command, output = '')
@@ -16,9 +16,9 @@ module Producer
           when 'true'
             output << ''
           when 'false'
-            raise RemoteCommandExecutionError
+            fail RemoteCommandExecutionError
           when 'type'
-            raise RemoteCommandExecutionError unless %w[
+            fail RemoteCommandExecutionError unless %w[
               echo
               true
               false

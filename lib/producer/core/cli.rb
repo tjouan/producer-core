@@ -46,7 +46,7 @@ module Producer
           m
         end
 
-        raise ArgumentError unless arguments.any?
+        fail ArgumentError unless arguments.any?
       end
 
       def run

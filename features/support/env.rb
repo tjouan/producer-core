@@ -1,6 +1,5 @@
 require 'aruba/cucumber'
 require 'aruba/in_process'
-require 'cucumber/sshd/cucumber'
 require 'producer/core'
 
 
@@ -23,6 +22,11 @@ class ArubaProgramWrapper
   end
 end
 
+
+Before do
+  @_sshd_fast = true
+end
+require 'cucumber/sshd/cucumber'
 
 Before('@exec') do
   Aruba.process = Aruba::SpawnProcess

@@ -15,7 +15,7 @@ module Producer::Core
       end
 
       it 'assigns negated as false by default' do
-        expect(test).to_not be_negated
+        expect(test).not_to be_negated
       end
 
       context 'when negated option is true' do

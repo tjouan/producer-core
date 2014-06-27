@@ -122,7 +122,7 @@ module Producer::Core
 
     describe '#parse_arguments!' do
       context 'with options' do
-        let(:options) { %w[-v] }
+        let(:options) { %w[-v -t some_host.example] }
 
         before { cli.parse_arguments! }
 
@@ -131,6 +131,8 @@ module Producer::Core
         end
 
         context 'verbose' do
+          let(:options) { %w[-v] }
+
           it 'enables env verbose mode' do
             expect(cli.env).to be_verbose
           end
@@ -141,6 +143,14 @@ module Producer::Core
 
           it 'enables env dry run mode' do
             expect(cli.env).to be_dry_run
+          end
+        end
+
+        context 'target' do
+          let(:options) { %w[-t some_host.example] }
+
+          it 'assigns the given target to the env' do
+            expect(cli.env.target).to eq 'some_host.example'
           end
         end
       end

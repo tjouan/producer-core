@@ -11,7 +11,7 @@ When /^I successfully execute the recipe$/ do
   assert_exit_status 0
 end
 
-When /^I successfully execute the recipe with option (-\w)$/ do |option|
+When /^I successfully execute the recipe with option (-.+)$/ do |option|
   run_simple "producer #{option} recipe.rb", false
   assert_exit_status 0
 end

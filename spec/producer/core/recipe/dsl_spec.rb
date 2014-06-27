@@ -65,9 +65,19 @@ module Producer::Core
       describe '#target' do
         let(:host) { 'some_host.example' }
 
-        it 'registers the target host in the env' do
-          dsl.target host
-          expect(env.target).to eq host
+        context 'when env has no assigned target' do
+          it 'registers the target host in the env' do
+            dsl.target host
+            expect(env.target).to eq host
+          end
+        end
+
+        context 'when env has an assigned target' do
+          before { env.target = 'already_assigned_host.example' }
+
+          it 'does not change env target' do
+            expect { dsl.target host }.not_to change { env.target }
+          end
         end
       end
 

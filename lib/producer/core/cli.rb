@@ -34,12 +34,14 @@ module Producer
       end
 
       def parse_arguments!
-        @arguments = arguments.inject([]) do |m, e|
+        @arguments = arguments.each_with_index.inject([]) do |m, (e, i)|
           case e
           when '-v'
             env.verbose = true
           when '-n'
             env.dry_run = true
+          when '-t'
+            env.target = arguments.delete_at i + 1
           else
             m << e
           end

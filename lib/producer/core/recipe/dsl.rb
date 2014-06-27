@@ -25,7 +25,7 @@ module Producer
         end
 
         def target(hostname)
-          env.target = hostname
+          env.target ||= hostname
         end
 
         def task(name, *args, &block)

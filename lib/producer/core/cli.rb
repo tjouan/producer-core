@@ -54,6 +54,7 @@ module Producer
 
       def run
         worker.process load_recipe.tasks
+        env.cleanup
       end
 
       def load_recipe

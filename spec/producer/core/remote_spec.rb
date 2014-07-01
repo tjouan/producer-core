@@ -136,5 +136,14 @@ module Producer::Core
         expect(remote.environment['FOO']).to eq 'bar'
       end
     end
+
+    describe '#cleanup' do
+      before { remote.session = double 'session' }
+
+      it 'closes the session' do
+        expect(remote.session).to receive :close
+        remote.cleanup
+      end
+    end
   end
 end

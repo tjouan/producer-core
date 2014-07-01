@@ -157,5 +157,12 @@ module Producer::Core
         expect(env).to be_dry_run
       end
     end
+
+    describe '#cleanup' do
+      it 'cleans up the remote' do
+        expect(env.remote).to receive :cleanup
+        env.cleanup
+      end
+    end
   end
 end

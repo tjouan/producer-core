@@ -172,6 +172,11 @@ module Producer::Core
           .with([an_instance_of(Task), an_instance_of(Task)])
         cli.run
       end
+
+      it 'cleans up the env' do
+        expect(cli.env).to receive :cleanup
+        cli.run
+      end
     end
 
     describe '#load_recipe' do

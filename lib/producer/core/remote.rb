@@ -2,6 +2,7 @@ module Producer
   module Core
     class Remote
       attr_reader :hostname
+      attr_writer :session
 
       def initialize(hostname)
         @hostname = hostname
@@ -42,6 +43,10 @@ module Producer
 
       def environment
         Environment.new_from_string(execute 'env')
+      end
+
+      def cleanup
+        session.close if @session
       end
     end
   end

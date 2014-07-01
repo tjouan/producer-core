@@ -44,6 +44,10 @@ module Producer
       def dry_run?
         @dry_run
       end
+
+      def cleanup
+        remote.cleanup
+      end
     end
   end
 end

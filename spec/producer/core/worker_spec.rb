@@ -18,7 +18,7 @@ module Producer::Core
       let(:task)      { Task.new(task_name, [action]) }
 
       it 'logs task info' do
-        expect(env).to receive(:log).with /\ATask: #{task_name}/
+        expect(env).to receive(:log).with /\ATask: `#{task_name}'/
         worker.process_task task
       end
 
@@ -28,8 +28,8 @@ module Producer::Core
           worker.process_task task
         end
 
-        it 'logs condition info' do
-          expect(env).to receive(:log).with(' condition: met')
+        it 'logs the task as beeing applied' do
+          expect(env).to receive(:log).with /#{task_name}.+applying\.\.\.\z/
           worker.process_task task
         end
 
@@ -56,8 +56,8 @@ module Producer::Core
           worker.process_task task
         end
 
-        it 'logs condition info' do
-          expect(env).to receive(:log).with(' condition: NOT met')
+        it 'logs the task as beeing skipped' do
+          expect(env).to receive(:log).with /#{task_name}.+skipped\z/
           worker.process_task task
         end
       end

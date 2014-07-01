@@ -12,15 +12,14 @@ module Producer
       end
 
       def process_task(task)
-        env.log "Task: #{task} applying"
         if task.condition_met?
-          env.log ' condition: met'
+          env.log "Task: `#{task}' applying..."
           task.actions.each do |e|
             env.log " action: #{e} applying"
             e.apply unless env.dry_run?
           end
         else
-          env.log ' condition: NOT met'
+          env.log "Task: `#{task}' skipped"
         end
       end
     end

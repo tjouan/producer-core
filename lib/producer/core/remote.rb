@@ -42,7 +42,7 @@ module Producer
       end
 
       def environment
-        Environment.new_from_string(execute 'env')
+        Environment.string_to_hash(execute 'env')
       end
 
       def cleanup

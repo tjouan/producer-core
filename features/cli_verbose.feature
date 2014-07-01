@@ -6,7 +6,7 @@ Feature: CLI verbose option
       task :task_ok do
         condition { true }
 
-        echo 'some mesasge'
+        echo 'some message'
       end
 
       task :task_ko do

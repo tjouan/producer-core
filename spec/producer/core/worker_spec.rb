@@ -10,6 +10,18 @@ module Producer::Core
         expect(worker).to receive(:process_task).with(:some_task)
         worker.process [:some_task]
       end
+
+      context 'when dry run is enabled' do
+        before { allow(env).to receive(:dry_run?) { true } }
+
+        it 'warns dry run is enabled' do
+          expect(env).to receive(:log).with(
+            /\Arunning in dry run mode, actions will NOT be applied\z/,
+            :warn
+          )
+          worker.process []
+        end
+      end
     end
 
     describe '#process_task' do

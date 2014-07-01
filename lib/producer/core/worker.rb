@@ -1,6 +1,9 @@
 module Producer
   module Core
     class Worker
+      DRY_RUN_WARNING =
+        'running in dry run mode, actions will NOT be applied'.freeze
+
       attr_accessor :env
 
       def initialize(env)
@@ -8,6 +11,8 @@ module Producer
       end
 
       def process(tasks)
+        env.log DRY_RUN_WARNING, :warn if env.dry_run?
+
         tasks.each { |t| process_task t }
       end
 

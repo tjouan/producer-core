@@ -27,14 +27,14 @@ module Producer
       def logger
         @logger ||= begin
           logger = Logger.new(output)
-          logger.level = verbose? ? Logger::INFO : Logger::ERROR
+          logger.level = verbose? ? Logger::INFO : Logger::WARN
           logger.formatter = LoggerFormatter.new
           logger
         end
       end
 
-      def log(message)
-        logger.info message
+      def log(message, severity = :info)
+        logger.send severity, message
       end
 
       def verbose?

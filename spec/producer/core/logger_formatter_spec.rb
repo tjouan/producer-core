@@ -13,6 +13,14 @@ module Producer::Core
       it 'returns the given message with a line separator' do
         expect(subject).to eq "#{message}\n"
       end
+
+      context 'when severity is WARN' do
+        let(:severity) { 'WARN' }
+
+        it 'prefix the message with `Warning:\'' do
+          expect(subject).to match /\AWarning: #{message}/
+        end
+      end
     end
   end
 end

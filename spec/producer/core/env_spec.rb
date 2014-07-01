@@ -113,8 +113,8 @@ module Producer::Core
         expect(output.string).to include 'some message'
       end
 
-      it 'has a log level of ERROR' do
-        expect(env.logger.level).to eq Logger::ERROR
+      it 'has a log level of WARN' do
+        expect(env.logger.level).to eq Logger::WARN
       end
 
       it 'uses our formatter' do
@@ -134,6 +134,13 @@ module Producer::Core
       it 'logs an info message through the assigned logger' do
         expect(env.logger).to receive(:info).with 'message'
         env.log 'message'
+      end
+
+      context 'when second argument is :warn' do
+        it 'logs a warning message through the assigned logger' do
+          expect(env.logger).to receive(:warn).with 'message'
+          env.log 'message', :warn
+        end
       end
     end
 

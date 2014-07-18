@@ -10,6 +10,6 @@ Feature: CLI target option
       end
       """
 
-  Scenario: prints tasks name
+  Scenario: override the recipe target
     When I successfully execute the recipe with option -t other_host.example
     Then the output must contain exactly "other_host.example\n"

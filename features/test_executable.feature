@@ -4,8 +4,6 @@ Feature: `executable?' condition keyword
   Background:
     Given a recipe with:
       """
-      target 'some_host.test'
-
       task :executable_test_ok do
         condition { executable? 'true' }
 
@@ -20,9 +18,9 @@ Feature: `executable?' condition keyword
       """
 
   Scenario: succeeds when remote executable is available
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must contain "test_ok"
 
   Scenario: fails when remote executable is not available
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must not contain "test_ko"

@@ -4,8 +4,6 @@ Feature: `env?' condition keyword
   Background:
     Given a recipe with:
       """
-      target 'some_host.test'
-
       task :env_test_definition_ok do
         condition { env? :shell }
 
@@ -32,17 +30,17 @@ Feature: `env?' condition keyword
       """
 
   Scenario: succeeds when remote environment variable is defined
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must contain "definition_ok"
 
   Scenario: fails when remote environment variable is not defined
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must not contain "definition_ko"
 
   Scenario: succeeds when remote environment variable value match
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must contain "value_ok"
 
   Scenario: fails when remote environment variable value does not match
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must not contain "value_ko"

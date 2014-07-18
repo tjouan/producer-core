@@ -7,11 +7,9 @@ Feature: `file_append' task action
   Scenario: appends given content to requested file
     Given a recipe with:
       """
-      target 'some_host.test'
-
       task :file_append_action do
         file_append 'some_file', ' added'
       end
       """
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the remote file "some_file" must contain exactly "some content added"

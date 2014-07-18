@@ -22,8 +22,6 @@ Feature: `test_macro' recipe keyword
   Scenario: has access to core tests
     Given a recipe with:
       """
-      target 'some_host.test'
-
       test_macro(:other_env?) { |k| env? k }
 
       [:shell, :non_existent_var].each do |k|
@@ -33,7 +31,7 @@ Feature: `test_macro' recipe keyword
         end
       end
       """
-    When I successfully execute the recipe
+    When I successfully execute the recipe on remote target
     Then the output must contain "shell_ok"
     Then the output must not contain "non_existent_var_ok"
 

@@ -2,7 +2,7 @@ module Producer
   module Core
     class Action
       extend Forwardable
-      def_delegators :@env, :input, :output, :remote
+      def_delegators :@env, :input, :output, :error_output, :remote
       def_delegators :remote, :fs
 
       attr_reader :env, :arguments

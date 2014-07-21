@@ -12,7 +12,9 @@ module Producer::Core
     let(:stdout)      { StringIO.new }
     let(:stderr)      { StringIO.new }
 
-    subject(:cli)     { CLI.new(arguments, stdin: stdin, stdout: stdout) }
+    subject(:cli)     { described_class.new(
+                          arguments,
+                          stdin: stdin, stdout: stdout, stderr: stderr) }
 
     describe '.run!' do
       let(:cli) { double('cli').as_null_object }
@@ -117,6 +119,10 @@ module Producer::Core
 
       it 'assigns CLI stdout as the env output' do
         expect(cli.env.output).to be stdout
+      end
+
+      it 'assigns CLI stderr as the env error output' do
+        expect(cli.env.error_output).to be stderr
       end
     end
 

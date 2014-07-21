@@ -19,6 +19,15 @@ module Producer::Core
           sh.apply
           expect(output).to eq "#{command_args}\n"
         end
+
+        context 'when content is written to standard error' do
+          let(:command) { "echo #{command_args} >&2" }
+
+          it 'writes errors to given error stream' do
+            sh.apply
+            expect(error_output).to eq "#{command_args}\n"
+          end
+        end
       end
     end
   end

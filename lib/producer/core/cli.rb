@@ -31,7 +31,7 @@ module Producer
         @arguments  = args
         @stdin      = stdin
         @stdout     = stdout
-        @env        = Env.new(input: stdin, output: stdout)
+        @env        = Env.new(input: stdin, output: stdout, error_output: stderr)
       end
 
       def parse_arguments!

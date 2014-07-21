@@ -29,6 +29,12 @@ module Producer::Core
       end
     end
 
+    describe '#error_output' do
+      it 'returns env error output' do
+        expect(action.error_output).to be env.error_output
+      end
+    end
+
     describe '#remote' do
       it 'returns env remote' do
         expect(action.remote).to be env.remote

@@ -106,6 +106,16 @@ module Producer::Core
         expect(output.string).to eq arguments
       end
 
+      it 'writes command error output to provided error output' do
+        error_output = StringIO.new
+        story_with_new_channel do |ch|
+          ch.sends_exec command
+          ch.gets_extended_data arguments
+        end
+        remote.execute command, output, error_output
+        expect(error_output.string).to eq arguments
+      end
+
       context 'when command execution fails' do
         before do
           story_with_new_channel do |ch|

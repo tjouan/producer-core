@@ -1,15 +1,16 @@
 module Producer
   module Core
     class Env
-      attr_reader   :input, :output, :registry, :logger
+      attr_reader   :input, :output, :error_output, :registry, :logger
       attr_accessor :target, :verbose, :dry_run
 
-      def initialize(input: $stdin, output: $stdout, remote: nil, registry: {})
-        @verbose  = @dry_run = false
-        @input    = input
-        @output   = output
-        @remote   = remote
-        @registry = registry
+      def initialize(input: $stdin, output: $stdout, error_output: $stderr, remote: nil, registry: {})
+        @verbose      = @dry_run = false
+        @input        = input
+        @output       = output
+        @error_output = error_output
+        @remote       = remote
+        @registry     = registry
       end
 
       def remote

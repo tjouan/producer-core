@@ -9,6 +9,10 @@ module TestEnvHelpers
     env.output.string
   end
 
+  def error_output
+    env.error_output.string
+  end
+
   def remote_fs
     env.remote.fs
   end
@@ -17,14 +21,18 @@ module TestEnvHelpers
     opts = { expected_from: caller.first }
     RSpec::Mocks
       .expect_message(env.remote, :execute, opts)
-      .with(command, env.output)
+      .with(command, env.output, env.error_output)
   end
 
 
   private
 
   def build_env
-    Producer::Core::Env.new(output: StringIO.new, remote: build_remote)
+    Producer::Core::Env.new(
+      output:       StringIO.new,
+      error_output: StringIO.new,
+      remote:       build_remote
+    )
   end
 
   def build_remote

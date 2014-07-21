@@ -21,3 +21,7 @@ end
 Then /^the output must contain exactly:$/ do |content|
   assert_exact_output content, all_output
 end
+
+Then /^the error output must contain exactly "([^"]+)"$/ do |content|
+  assert_exact_output content, all_stderr
+end

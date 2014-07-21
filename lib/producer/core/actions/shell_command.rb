@@ -7,7 +7,7 @@ module Producer
         end
 
         def apply
-          remote.execute(arguments.first, output)
+          remote.execute(arguments.first, output, error_output)
         end
       end
     end

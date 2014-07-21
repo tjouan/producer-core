@@ -10,6 +10,10 @@ module Producer::Core
         expect(env.input).to be $stdin
       end
 
+      it 'assigns $stderr as the default error output' do
+        expect(env.error_output).to be $stderr
+      end
+
       it 'assigns no default target' do
         expect(env.target).not_to be
       end
@@ -48,6 +52,15 @@ module Producer::Core
 
         it 'assigns the given output' do
           expect(env.output).to be output
+        end
+      end
+
+      context 'when error output is given as argument' do
+        let(:error_output)  { StringIO.new }
+        subject(:env)       { described_class.new(error_output: error_output) }
+
+        it 'assigns the given error output' do
+          expect(env.error_output).to be error_output
         end
       end
 

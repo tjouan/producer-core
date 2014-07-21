@@ -11,6 +11,16 @@ Feature: `sh' task action
     When I successfully execute the recipe on remote target
     Then the output must contain exactly "hello from remote\n"
 
+  Scenario: forwards error ouput
+    Given a recipe with:
+      """
+      task :sh_action do
+        sh '\echo error from remote >&2'
+      end
+      """
+    When I successfully execute the recipe on remote target
+    Then the error output must contain exactly "error from remote\n"
+
   Scenario: aborts on failed command execution
     Given a recipe with:
       """

@@ -24,11 +24,15 @@ module Producer
         @fs ||= Remote::FS.new(session.sftp.connect)
       end
 
-      def execute(command, output = '')
+      def execute(command, output = '', error_output = '')
         channel = session.open_channel do |channel|
           channel.exec command do |ch, success|
             ch.on_data do |c, data|
               output << data
+            end
+
+            ch.on_extended_data do |c, type, data|
+              error_output << data
             end
 
             ch.on_request 'exit-status' do |c, data|

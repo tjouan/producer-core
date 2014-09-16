@@ -71,7 +71,8 @@ module Producer::Core
       let(:sftp_session) { double 'sftp session' }
 
       it 'returns an FS instance built with a new sftp session' do
-        remote.stub_chain(:session, :sftp, :connect) { sftp_session }
+        allow(remote)
+          .to receive_message_chain(:session, :sftp, :connect) { sftp_session }
         expect(remote.fs.sftp).to be sftp_session
       end
     end

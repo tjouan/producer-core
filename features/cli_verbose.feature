@@ -16,8 +16,8 @@ Feature: CLI verbose option
 
   Scenario: prints tasks name
     When I successfully execute the recipe with option -v
-    Then the output must match /^Task:.+`task_ok'/
-    And  the output must match /^Task:.+`task_ko'/
+    Then the output must match /Task:.+`task_ok'/
+    And  the output must match /Task:.+`task_ko'/
 
   Scenario: appends `applying' or `skipped' after tasks name
     When I successfully execute the recipe with option -v
@@ -28,6 +28,16 @@ Feature: CLI verbose option
     When I successfully execute the recipe with option -v
     Then the output must match /^ action: echo/
 
-  Scenario: formats message with our simple logger
+  Scenario: prints actions arguments
     When I successfully execute the recipe with option -v
-    Then the output must match /\ATask:/
+    Then the output must match /echo \["some message"\]/
+
+  Scenario: summarizes printed actions arguments
+    Given a recipe with:
+      """
+      task :some_task do
+        echo 'long message ' * 32
+      end
+      """
+    When I successfully execute the recipe with option -v
+    Then the output must match /action: .{,70}$/

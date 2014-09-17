@@ -20,7 +20,7 @@ module Producer
         if task.condition_met?
           env.log "Task: `#{task}' applying..."
           task.actions.each do |e|
-            env.log " action: #{e} applying"
+            env.log " action: #{e}"
             e.apply unless env.dry_run?
           end
         else

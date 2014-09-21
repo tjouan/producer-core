@@ -2,6 +2,12 @@ module Producer
   module Core
     class Recipe
       class DSL
+        class << self
+          def define_macro(name, block)
+            define_method(name) { |*args| task name, *args, &block }
+          end
+        end
+
         attr_reader :env, :code, :block, :tasks
 
         def initialize(env, code = nil, &block)

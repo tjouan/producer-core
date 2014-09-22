@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Producer::Core
   describe Worker do
-    let(:env)         { double 'env', log: nil, dry_run?: false }
+    let(:env)         { Env.new }
     subject(:worker)  { described_class.new(env) }
 
     describe '#process' do
@@ -12,7 +12,7 @@ module Producer::Core
       end
 
       context 'when dry run is enabled' do
-        before { allow(env).to receive(:dry_run?) { true } }
+        before { env.dry_run = true }
 
         it 'warns dry run is enabled' do
           expect(env).to receive(:log).with(
@@ -25,12 +25,12 @@ module Producer::Core
     end
 
     describe '#process_task' do
+      let(:env)       { instance_spy Env, dry_run?: false }
       let(:action)    { double('action', to_s: 'echo').as_null_object }
-      let(:task_name) { 'some_task' }
-      let(:task)      { Task.new(task_name, [action]) }
+      let(:task)      { Task.new(env, :some_task, [action]) }
 
       it 'logs task info' do
-        expect(env).to receive(:log).with /\ATask: `#{task_name}'/
+        expect(env).to receive(:log).with /\ATask: `some_task'/
         worker.process_task task
       end
 
@@ -41,7 +41,7 @@ module Producer::Core
         end
 
         it 'logs the task as beeing applied' do
-          expect(env).to receive(:log).with /#{task_name}.+applying\.\.\.\z/
+          expect(env).to receive(:log).with /some_task.+applying\.\.\.\z/
           worker.process_task task
         end
 
@@ -61,7 +61,7 @@ module Producer::Core
       end
 
       context 'when task condition is not met' do
-        let(:task) { Task.new(task_name, [action], false) }
+        before { task.condition { false } }
 
         it 'does not apply the actions' do
           expect(action).not_to receive :apply
@@ -69,15 +69,9 @@ module Producer::Core
         end
 
         it 'logs the task as beeing skipped' do
-          expect(env).to receive(:log).with /#{task_name}.+skipped\z/
+          expect(env).to receive(:log).with /some_task.+skipped\z/
           worker.process_task task
         end
-      end
-    end
-
-    describe '#env' do
-      it 'returns the assigned env' do
-        expect(worker.env).to be env
       end
     end
   end

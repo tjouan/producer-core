@@ -23,7 +23,7 @@ module Producer
       end
 
       def task(name, *args, &block)
-        @tasks << Task.evaluate(name, env, *args, &block)
+        @tasks << Task.evaluate(env, name, *args, &block)
       end
 
       def macro(name, &block)

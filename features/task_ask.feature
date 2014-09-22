@@ -1,4 +1,4 @@
-Feature: `ask' recipe keyword
+Feature: `ask' task keyword
 
   @exec
   Scenario: prompts user with a list of choices on standard output

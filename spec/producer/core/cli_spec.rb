@@ -8,82 +8,52 @@ module Producer::Core
     let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
     let(:options)     { [] }
     let(:arguments)   { [*options, recipe_file] }
-    let(:stdin)       { StringIO.new }
-    let(:stdout)      { StringIO.new }
-    let(:stderr)      { StringIO.new }
 
-    subject(:cli)     { described_class.new(arguments,
-                        stdin: stdin, stdout: stdout, stderr: stderr) }
+    subject(:cli)     { described_class.new(arguments) }
 
     describe '.run!' do
-      let(:cli) { double('cli').as_null_object }
+      let(:stderr)    { StringIO.new }
+      subject(:run!)  { described_class.run! arguments, stderr: stderr }
 
-      subject(:run) do
-        described_class.run! arguments,
-          stdin:  stdin,
-          stdout: stdout,
-          stderr: stderr
-      end
-
-      before { allow(described_class).to receive(:new) { cli } }
-
-      it 'builds a new CLI with given arguments and streams' do
-        expect(described_class).to receive(:new).with(arguments,
-          stdin:  stdin,
-          stdout: stdout,
-          stderr: stderr
-        )
-        run
-      end
-
-      it 'runs the CLI' do
-        expect(cli).to receive :run
-        run
-      end
-
-      it 'parses CLI arguments' do
-        expect(cli).to receive :parse_arguments!
-        run
-      end
-
-      context 'when an argument error is raised' do
-        before do
-          allow(cli).to receive(:parse_arguments!)
-            .and_raise described_class::ArgumentError
-        end
+      context 'when given arguments are invalid' do
+        let(:arguments) { [] }
 
         it 'exits with a return status of 64' do
-          expect { run }.to raise_error(SystemExit) do |e|
+          expect { run! }.to raise_error(SystemExit) do |e|
             expect(e.status).to eq 64
           end
         end
 
         it 'prints the usage on the error stream' do
-          trap_exit { run }
+          trap_exit { run! }
           expect(stderr.string).to match /\AUsage: .+/
         end
       end
 
       context 'when a runtime error is raised' do
-        before do
-          allow(cli).to receive(:run)
-            .and_raise RuntimeError, 'some message'
-        end
+        let(:recipe_file) { fixture_path_for 'recipes/raise.rb' }
 
         it 'exits with a return status of 70' do
-          expect { run }.to raise_error(SystemExit) do |e|
+          expect { run! }.to raise_error(SystemExit) do |e|
             expect(e.status).to eq 70
           end
         end
 
         it 'prints exception name and message and the error stream' do
-          trap_exit { run }
-          expect(stderr.string).to match /\ARuntimeError: some message/
+          trap_exit { run! }
+          expect(stderr.string).to eq "RemoteCommandExecutionError: false\n"
         end
       end
     end
 
     describe '#env' do
+      let(:stdin)   { StringIO.new }
+      let(:stdout)  { StringIO.new }
+      let(:stderr)  { StringIO.new }
+
+      subject(:cli) { described_class.new(arguments,
+                        stdin: stdin, stdout: stdout, stderr: stderr) }
+
       it 'returns an env' do
         expect(cli.env).to be_an Env
       end

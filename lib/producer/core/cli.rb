@@ -25,7 +25,7 @@ module Producer
         end
       end
 
-      attr_reader :arguments, :stdin, :stdout, :stderr, :env
+      attr_reader :arguments, :env
 
       def initialize(args, stdin: $stdin, stdout: $stdout, stderr: $stderr)
         @arguments  = args
@@ -49,7 +49,7 @@ module Producer
           m
         end
 
-        fail ArgumentError unless arguments.any?
+        fail ArgumentError unless @arguments.any?
       end
 
       def run(worker: Worker.new(@env))

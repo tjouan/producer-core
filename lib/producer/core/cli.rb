@@ -58,7 +58,7 @@ module Producer
       end
 
       def recipe
-        @recipe ||= Recipe.evaluate_from_file(@arguments.first, env)
+        @recipe ||= Recipe::FileEvaluator.evaluate(@arguments.first, env)
       end
     end
   end

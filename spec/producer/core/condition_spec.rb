@@ -2,45 +2,128 @@ require 'spec_helper'
 
 module Producer::Core
   describe Condition do
-    let(:test_ok)       { double 'test', pass?: true }
-    let(:test_ko)       { double 'test', pass?: false }
-    let(:tests)         { [test_ok, test_ko] }
-    subject(:condition) { Condition.new(tests) }
+    subject(:condition) { described_class.new }
 
-    describe '.evaluate' do
-      let(:env)             { double 'env' }
-      let(:block)           { proc { some_test; :some_return_value } }
-      let(:some_test_class) { Class.new(Test) }
-      subject(:condition)   { described_class.evaluate(env, &block) }
-
-      before { Condition::DSL.define_test(:some_test, some_test_class) }
-
-      it 'returns an evaluated condition' do
-        expect(condition.tests.first).to be_a Test
-        expect(condition.return_value).to eq :some_return_value
+    %w[
+      `
+      sh
+      file_contains
+      file_eq
+      dir?
+      env?
+      executable?
+      file?
+    ].each do |test|
+      it "has `#{test}' test defined" do
+        expect(condition).to respond_to test.to_sym
       end
     end
 
-    describe '#initialize' do
-      it 'assigns the tests' do
-        expect(condition.tests).to eq tests
+    describe '.define_test' do
+      let(:some_test) { Test }
+
+      before { described_class.define_test(:some_test, some_test) }
+
+      it 'defines a new test keyword' do
+        expect(condition).to respond_to :some_test
       end
 
-      it 'assigns nil as a default return value' do
-        expect(condition.return_value).to be nil
+      it 'defines the negated test' do
+        expect(condition).to respond_to :no_some_test
       end
 
-      context 'when a return value is given as argument' do
-        let(:return_value)  { :some_return_value }
-        subject(:condition) { described_class.new(tests, return_value) }
+      context 'when a test keyword is called' do
+        it 'registers the test' do
+          expect { condition.some_test }.to change { condition.tests.count }.by 1
+        end
 
-        it 'assigns the return value' do
-          expect(condition.return_value).to eq return_value
+        it 'registers the test with assigned env' do
+          env = double 'env'
+          condition.instance_eval { @env = env }
+          condition.some_test
+          expect(condition.tests.last.env).to be env
+        end
+
+        it 'registers the test with given arguments' do
+          condition.some_test :foo, :bar
+          expect(condition.tests.last.arguments).to eq %i[foo bar]
+        end
+
+        context 'when given test is callable' do
+          let(:some_test) { proc { } }
+
+          before { condition.some_test }
+
+          it 'registers a condition test' do
+            expect(condition.tests.last).to be_a Tests::ConditionTest
+          end
+
+          it 'registers the test with given block' do
+            expect(condition.tests.last.condition_block).to be some_test
+          end
+
+          it 'registers the test with given arguments' do
+            condition.some_test :foo, :bar
+            expect(condition.tests.last.condition_args).to eq %i[foo bar]
+          end
+        end
+      end
+
+      context 'when a negated test keyword is called' do
+        it 'registers a negated test' do
+          condition.no_some_test
+          expect(condition.tests.last).to be_negated
         end
       end
     end
 
+    describe '.evaluate' do
+      let(:env)           { double 'env' }
+      let(:code)          { proc { some_test; :some_return_value } }
+      let(:some_test)     { Class.new(Test) }
+      let(:arguments)     { [] }
+      subject(:condition) { described_class.evaluate(env, *arguments, &code) }
+
+      before { described_class.define_test(:some_test, some_test) }
+
+      it 'returns an evaluated condition' do
+        expect(condition).to be_a Condition
+      end
+
+      it 'evaluates the condition tests' do
+        expect(condition.tests.first).to be_a Test
+      end
+
+      it 'evaluates the condition return value' do
+        expect(condition.return_value).to eq :some_return_value
+      end
+
+      context 'when arguments are given' do
+        let(:code)      { proc { |a, b| throw a } }
+        let(:arguments) { %i[foo bar] }
+
+        it 'passes arguments as block parameters' do
+          expect { condition }
+            .to throw_symbol :foo
+        end
+      end
+    end
+
+    describe '#initialize' do
+      it 'assigns no tests' do
+        expect(condition.tests).to be_empty
+      end
+
+      it 'assigns the return value as nil' do
+        expect(condition.return_value).to be nil
+      end
+    end
+
     describe '#met?' do
+      let(:test_ok)       { instance_spy Test, pass?: true }
+      let(:test_ko)       { instance_spy Test, pass?: false }
+      subject(:condition) { described_class.new(tests) }
+
       context 'when all tests are successful' do
         let(:tests) { [test_ok, test_ok] }
 
@@ -58,6 +141,7 @@ module Producer::Core
       end
 
       context 'when there are no test' do
+        let(:tests)         { [] }
         subject(:condition) { described_class.new([], return_value) }
 
         context 'and return value is truthy' do

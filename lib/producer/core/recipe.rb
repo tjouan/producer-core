@@ -32,7 +32,7 @@ module Producer
         end
       end
 
-      def test_macro(name, dsl: Condition::DSL, &block)
+      def test_macro(name, dsl: Condition, &block)
         dsl.define_test(name, block)
       end
 

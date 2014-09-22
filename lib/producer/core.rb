@@ -14,7 +14,7 @@ require 'producer/core/actions/file_append'
 require 'producer/core/actions/file_replace_content'
 require 'producer/core/actions/file_writer'
 
-# condition tests (need to be defined before the condition DSL)
+# condition tests
 require 'producer/core/test'
 require 'producer/core/tests/condition_test'
 require 'producer/core/tests/file_contains'
@@ -27,7 +27,6 @@ require 'producer/core/tests/shell_command_status'
 
 require 'producer/core/cli'
 require 'producer/core/condition'
-require 'producer/core/condition/dsl'
 require 'producer/core/env'
 require 'producer/core/errors'
 require 'producer/core/logger_formatter'

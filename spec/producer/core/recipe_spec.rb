@@ -74,7 +74,7 @@ module Producer::Core
     describe '#test_macro' do
       it 'defines the new test' do
         recipe.test_macro(:some_test) { }
-        expect(Condition::DSL.new(env)).to respond_to :some_test
+        expect(Condition.new).to respond_to :some_test
       end
     end
 

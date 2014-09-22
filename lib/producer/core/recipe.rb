@@ -32,8 +32,8 @@ module Producer
         end
       end
 
-      def test_macro(name, dsl: Condition, &block)
-        dsl.define_test(name, block)
+      def test_macro(name, &block)
+        Condition.define_test(name, block)
       end
 
       def set(key, value)

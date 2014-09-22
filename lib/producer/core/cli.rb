@@ -52,17 +52,13 @@ module Producer
         fail ArgumentError unless arguments.any?
       end
 
-      def run
-        worker.process load_recipe.tasks
-        env.cleanup
+      def run(worker: Worker.new(@env))
+        worker.process recipe.tasks
+        @env.cleanup
       end
 
-      def load_recipe
-        Recipe.evaluate_from_file(@arguments.first, env)
-      end
-
-      def worker
-        Worker.new(env)
+      def recipe
+        @recipe ||= Recipe.evaluate_from_file(@arguments.first, env)
       end
     end
   end

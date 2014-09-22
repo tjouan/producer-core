@@ -8,13 +8,12 @@ module Producer::Core
     let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
     let(:options)     { [] }
     let(:arguments)   { [*options, recipe_file] }
-    let(:stdin)       { StringIO.new}
+    let(:stdin)       { StringIO.new }
     let(:stdout)      { StringIO.new }
     let(:stderr)      { StringIO.new }
 
-    subject(:cli)     { described_class.new(
-                          arguments,
-                          stdin: stdin, stdout: stdout, stderr: stderr) }
+    subject(:cli)     { described_class.new(arguments,
+                        stdin: stdin, stdout: stdout, stderr: stderr) }
 
     describe '.run!' do
       let(:cli) { double('cli').as_null_object }
@@ -84,32 +83,8 @@ module Producer::Core
       end
     end
 
-    describe '#initialize' do
-      subject(:cli) { described_class.new(arguments) }
-
-      it 'assigns $stdin as the default standard input' do
-        expect(cli.stdin).to be $stdin
-      end
-
-      it 'assigns $stdout as the default standard output' do
-        expect(cli.stdout).to be $stdout
-      end
-    end
-
-    describe '#arguments' do
-      it 'returns the assigned arguments' do
-        expect(cli.arguments).to eq arguments
-      end
-    end
-
-    describe '#stdout' do
-      it 'returns the assigned standard output' do
-        expect(cli.stdout).to be stdout
-      end
-    end
-
     describe '#env' do
-      it 'returns the assigned env' do
+      it 'returns an env' do
         expect(cli.env).to be_an Env
       end
 
@@ -171,12 +146,10 @@ module Producer::Core
     end
 
     describe '#run' do
-      it 'process recipe tasks with given worker' do
-        worker = double 'worker'
-        allow(cli).to receive(:worker) { worker }
-        expect(worker).to receive(:process)
-          .with([an_instance_of(Task), an_instance_of(Task)])
-        cli.run
+      it 'processes recipe tasks with a worker' do
+        worker = instance_spy Worker
+        cli.run worker: worker
+        expect(worker).to have_received(:process).with cli.recipe.tasks
       end
 
       it 'cleans up the env' do
@@ -185,25 +158,12 @@ module Producer::Core
       end
     end
 
-    describe '#load_recipe' do
-      it 'evaluates the recipe file with the CLI env' do
-        expect(Recipe)
-          .to receive(:evaluate_from_file).with(recipe_file, cli.env)
-        cli.load_recipe
-      end
-
-      it 'returns the recipe' do
-        expect(cli.load_recipe).to be_a Recipe
-      end
-    end
-
-    describe '#worker' do
-      it 'returns a worker' do
-        expect(cli.worker).to be_a Worker
-      end
-
-      it 'assigns the CLI env' do
-        expect(cli.worker.env).to eq cli.env
+    describe '#recipe' do
+      it 'returns the evaluated recipe' do
+        expect(cli.recipe.tasks).to match [
+          an_object_having_attributes(name: :some_task),
+          an_object_having_attributes(name: :another_task)
+        ]
       end
     end
   end

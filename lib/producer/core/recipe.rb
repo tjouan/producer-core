@@ -5,6 +5,10 @@ module Producer
         def define_macro(name, block)
           define_method(name) { |*args| task name, *args, &block }
         end
+
+        def compose_macro(name, meth, *base_args)
+          define_method(name) { |*args| send meth, *(base_args + args) }
+        end
       end
 
       attr_reader :env, :tasks
@@ -27,8 +31,14 @@ module Producer
       end
 
       def macro(name, &block)
-        define_singleton_method(name) do |*args|
+        define_singleton_method name do |*args|
           task "#{name}", *args, &block
+        end
+      end
+
+      def compose_macro(name, meth, *base_args)
+        define_singleton_method name do |*args|
+          send meth, *(base_args + args)
         end
       end
 

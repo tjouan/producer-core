@@ -11,6 +11,7 @@ module Producer::Core
         `
         sh
         file_contains
+        file_eq
         dir?
         env?
         executable?

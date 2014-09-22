@@ -25,6 +25,7 @@ module Producer
         define_test :`,               Tests::ShellCommandStatus
         define_test :sh,              Tests::ShellCommandStatus
         define_test :file_contains,   Tests::FileContains
+        define_test :file_eq,         Tests::FileEq
         define_test :env?,            Tests::HasEnv
         define_test :executable?,     Tests::HasExecutable
         define_test :dir?,            Tests::HasDir

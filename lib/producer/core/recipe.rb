@@ -28,7 +28,7 @@ module Producer
 
       def macro(name, &block)
         define_singleton_method(name) do |*args|
-          task("#{name}", *args, &block)
+          task "#{name}", *args, &block
         end
       end
 

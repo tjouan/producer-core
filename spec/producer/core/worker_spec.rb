@@ -25,9 +25,9 @@ module Producer::Core
     end
 
     describe '#process_task' do
-      let(:env)       { instance_spy Env, dry_run?: false }
-      let(:action)    { double('action', to_s: 'echo').as_null_object }
-      let(:task)      { Task.new(env, :some_task, [action]) }
+      let(:env)     { instance_spy Env, dry_run?: false }
+      let(:action)  { double('action', to_s: 'echo').as_null_object }
+      let(:task)    { Task.new(env, :some_task, [action]) }
 
       it 'logs task info' do
         expect(env).to receive(:log).with /\ATask: `some_task'/
@@ -68,9 +68,19 @@ module Producer::Core
           worker.process_task task
         end
 
-        it 'logs the task as beeing skipped' do
+        it 'logs the task as being skipped' do
           expect(env).to receive(:log).with /some_task.+skipped\z/
           worker.process_task task
+        end
+      end
+
+      context 'when a task contains nested tasks' do
+        let(:inner_task)  { Task.new(env, :inner, [action]) }
+        let(:outer_task)  { Task.new(env, :outer, [inner_task]) }
+
+        it 'processes nested tasks' do
+          expect(action).to receive :apply
+          worker.process [outer_task]
         end
       end
     end

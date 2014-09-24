@@ -126,6 +126,15 @@ module Producer::Core
       end
     end
 
+    describe '#task' do
+      before { described_class.define_action(:some_action, SomeAction) }
+
+      it 'registers a nested task as an action' do
+        task.task(:nested_task) { some_action }
+        expect(task.actions).to match [an_instance_of(Task)]
+      end
+    end
+
     describe '#ask' do
       let(:question)  { 'Which letter?' }
       let(:choices)   { [[:a, ?A], [:b, ?B]] }

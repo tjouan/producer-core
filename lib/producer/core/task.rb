@@ -43,6 +43,10 @@ module Producer
         @condition
       end
 
+      def task(name, *args, &block)
+        @actions << self.class.evaluate(@env, name, *args, &block)
+      end
+
       def ask(question, choices, prompter: Prompter.new(@env.input, @env.output))
         prompter.prompt(question, choices)
       end

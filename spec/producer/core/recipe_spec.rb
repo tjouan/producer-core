@@ -49,8 +49,13 @@ module Producer::Core
 
     describe '#macro' do
       it 'defines the new recipe keyword' do
-        recipe.macro :hello
+        recipe.macro(:hello) { }
         expect(recipe).to respond_to(:hello)
+      end
+
+      it 'defines the new task keyword' do
+        recipe.macro(:hello) { }
+        expect { recipe.task(:some_task) { hello } }.not_to raise_error
       end
 
       context 'when a defined macro is called' do

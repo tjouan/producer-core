@@ -1,6 +1,6 @@
 Feature: `macro' recipe keyword
 
-  Scenario: declares a new keyword accepting task code
+  Scenario: declares a new recipe keyword accepting task code
     Given a recipe with:
       """
       macro :hello do
@@ -8,6 +8,16 @@ Feature: `macro' recipe keyword
       end
 
       hello
+      """
+    When I successfully execute the recipe
+    Then the output must contain "hello macro"
+
+  Scenario: declares a new task keyword
+    Given a recipe with:
+      """
+      macro(:hello) { echo 'hello macro' }
+
+      task(:some_task) { hello }
       """
     When I successfully execute the recipe
     Then the output must contain "hello macro"

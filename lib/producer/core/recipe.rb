@@ -3,7 +3,11 @@ module Producer
     class Recipe
       class << self
         def define_macro(name, block)
-          define_method(name) { |*args| task name, *args, &block }
+          [self, Task].each do |klass|
+            klass.class_eval do
+              define_method(name) { |*args| task name, *args, &block }
+            end
+          end
         end
 
         def compose_macro(name, macro, *base_args)

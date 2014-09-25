@@ -9,10 +9,8 @@ module Producer
         def apply
           Pathname.new(path).descend do |p|
             next if fs.dir? p
-            case arguments.size
-            when 1 then fs.mkdir p.to_s
-            when 2 then fs.mkdir p.to_s, mode
-            end
+            fs.mkdir p.to_s
+            fs.chmod p.to_s, mode if mode
           end
         end
 

@@ -20,6 +20,10 @@ module Producer
           false
         end
 
+        def chmod(path, mode)
+          sftp.setstat! path, permissions: mode
+        end
+
         def mkdir(path, mode = nil)
           options = mode ? { permissions: mode } : {}
           sftp.mkdir! path, options

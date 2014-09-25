@@ -19,8 +19,8 @@ module Producer::Core
         context 'when a mode was given' do
           subject(:mkdir) { Mkdir.new(env, path, 0700) }
 
-          it 'creates the directory with given mode' do
-            expect(remote_fs).to receive(:mkdir).with(anything, 0700)
+          it 'changes the directory with given mode' do
+            expect(remote_fs).to receive(:chmod).with(path, 0700)
             mkdir.apply
           end
         end

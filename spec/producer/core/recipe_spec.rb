@@ -38,6 +38,13 @@ module Producer::Core
           expect { recipe.target host }.not_to change { env.target }
         end
       end
+
+      context 'when no arguments are provided' do
+        it 'returns current target' do
+          recipe.target host
+          expect(recipe.target).to eq host
+        end
+      end
     end
 
     describe '#task' do

@@ -10,4 +10,14 @@ Feature: `target' recipe keyword
       end
       """
     When I successfully execute the recipe
-    Then the output must contain exactly "some_host.example\n"
+    Then the output must contain "some_host.example"
+
+  Scenario: returns current target when no arguments are provided
+    Given a recipe with:
+      """
+      target 'some_host.example'
+
+      env.output.puts target
+      """
+    When I successfully execute the recipe
+    Then the output must contain "some_host.example"

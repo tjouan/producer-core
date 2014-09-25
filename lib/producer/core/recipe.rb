@@ -26,8 +26,8 @@ module Producer
         instance_eval File.read("./#{filepath}.rb"), "#{filepath}.rb"
       end
 
-      def target(hostname)
-        env.target ||= hostname
+      def target(hostname = nil)
+        if hostname then env.target ||= hostname else env.target end
       end
 
       def task(name, *args, &block)

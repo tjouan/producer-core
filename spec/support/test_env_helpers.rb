@@ -36,7 +36,7 @@ module TestEnvHelpers
   end
 
   def build_remote
-    fs = RSpec::Mocks::Double.new('remote fs')
+    fs = instance_spy Producer::Core::Remote::FS
     remote = Producer::Core::Testing::MockRemote.new('some_host.test')
     remote.define_singleton_method(:fs) { fs }
     remote

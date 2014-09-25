@@ -6,8 +6,8 @@ module Producer
           define_method(name) { |*args| task name, *args, &block }
         end
 
-        def compose_macro(name, meth, *base_args)
-          define_method(name) { |*args| send meth, *(base_args + args) }
+        def compose_macro(name, macro, *base_args)
+          define_method(name) { |*args| send macro, *(base_args + args) }
         end
       end
 
@@ -31,15 +31,11 @@ module Producer
       end
 
       def macro(name, &block)
-        define_singleton_method name do |*args|
-          task "#{name}", *args, &block
-        end
+        self.class.class_eval { define_macro name, block }
       end
 
-      def compose_macro(name, meth, *base_args)
-        define_singleton_method name do |*args|
-          send meth, *(base_args + args)
-        end
+      def compose_macro(name, macro, *base_args)
+        self.class.class_eval { compose_macro name, macro, *base_args}
       end
 
       def test_macro(name, &block)

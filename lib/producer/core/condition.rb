@@ -30,7 +30,7 @@ module Producer
       end
 
       extend Forwardable
-      def_delegators :@env, :get
+      def_delegators :@env, :get, :target
 
       define_test :`,               Tests::ShellCommandStatus
       define_test :sh,              Tests::ShellCommandStatus

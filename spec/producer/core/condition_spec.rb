@@ -182,5 +182,16 @@ module Producer::Core
         described_class.evaluate(env, []) { get :some_key }
       end
     end
+
+    describe '#target' do
+      let(:env) { Env.new }
+
+      before { env.target = :some_target }
+
+      it 'returns current env target' do
+        condition = described_class.evaluate(env, []) { target == :some_target }
+        expect(condition).to be_met
+      end
+    end
   end
 end

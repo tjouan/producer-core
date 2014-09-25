@@ -1,6 +1,7 @@
-require 'forwardable'
-
 require 'etc'
+require 'forwardable'
+require 'pathname'
+
 require 'net/ssh'
 require 'net/sftp'
 

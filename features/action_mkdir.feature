@@ -19,3 +19,13 @@ Feature: `mkdir' task action
     When I successfully execute the recipe on remote target
     Then the remote directory "some_directory_0700" must have 0700 mode
     And  the remote directory "some_directory_0500" must have 0500 mode
+
+  Scenario: creates directories recursively
+    Given a recipe with:
+      """
+      task :mkdir_action do
+        mkdir 'some/directory'
+      end
+      """
+    When I successfully execute the recipe on remote target
+    Then the remote directory "some/directory" must exists

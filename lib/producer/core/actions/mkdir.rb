@@ -7,11 +7,12 @@ module Producer
         end
 
         def apply
-          case arguments.size
-          when 1
-            fs.mkdir path
-          when 2
-            fs.mkdir path, mode
+          Pathname.new(path).descend do |p|
+            next if fs.dir? p
+            case arguments.size
+            when 1 then fs.mkdir p.to_s
+            when 2 then fs.mkdir p.to_s, mode
+            end
           end
         end
 

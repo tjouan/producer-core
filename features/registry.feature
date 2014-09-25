@@ -24,3 +24,13 @@ Feature: key/value registry
       """
     When I successfully execute the recipe
     Then the output must contain "some_value"
+
+  Scenario: `get' keyword fetches a value from a condition
+    Given a recipe with:
+      """
+      set :some_key, 'some_value'
+
+      task(:ok) { condition { get :some_key }; echo get :some_key }
+      """
+    When I successfully execute the recipe
+    Then the output must contain "some_value"

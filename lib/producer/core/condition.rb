@@ -29,6 +29,9 @@ module Producer
         end
       end
 
+      extend Forwardable
+      def_delegators :@env, :get
+
       define_test :`,               Tests::ShellCommandStatus
       define_test :sh,              Tests::ShellCommandStatus
       define_test :file_contains,   Tests::FileContains

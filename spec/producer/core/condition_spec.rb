@@ -173,5 +173,14 @@ module Producer::Core
         end
       end
     end
+
+    describe '#get' do
+      let(:env) { Env.new }
+
+      it 'delegates to env registry' do
+        expect(env).to receive(:get).with :some_key
+        described_class.evaluate(env, []) { get :some_key }
+      end
+    end
   end
 end

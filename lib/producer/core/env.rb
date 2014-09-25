@@ -20,6 +20,7 @@ module Producer
       def [](key)
         @registry[key]
       end
+      alias get []
 
       def []=(key, value)
         @registry[key] = value

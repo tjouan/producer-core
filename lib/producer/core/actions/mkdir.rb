@@ -15,6 +15,9 @@ module Producer
           end
         end
 
+
+        private
+
         def path
           arguments.first
         end

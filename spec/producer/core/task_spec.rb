@@ -159,5 +159,13 @@ module Producer::Core
         expect(task.get :some_key).to eq :some_value
       end
     end
+
+    describe '#target' do
+      before { env.target = :some_target }
+
+      it 'returns current env target' do
+        expect(task.target).to eq :some_target
+      end
+    end
   end
 end

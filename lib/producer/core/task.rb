@@ -13,6 +13,9 @@ module Producer
         end
       end
 
+      extend Forwardable
+      def_delegators :@env, :target
+
       define_action :echo,                  Actions::Echo
       define_action :sh,                    Actions::ShellCommand
 

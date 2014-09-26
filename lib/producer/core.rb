@@ -1,5 +1,6 @@
 require 'etc'
 require 'forwardable'
+require 'optparse'
 require 'pathname'
 
 require 'net/ssh'

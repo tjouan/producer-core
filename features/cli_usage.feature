@@ -6,5 +6,10 @@ Feature: CLI usage
     Then the exit status must be 64
     And the output must contain exactly:
       """
-      Usage: producer [-v] [-n] [-t host.example] recipe_file
+      Usage: producer [options] [recipes]
+
+      options:
+          -v, --verbose                    enable verbose mode
+          -n, --dry-run                    enable dry run mode
+          -t, --target HOST                target host
       """

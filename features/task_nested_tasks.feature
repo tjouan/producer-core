@@ -13,3 +13,8 @@ Feature: nested tasks
     Scenario: applies nested tasks
       When I successfully execute the recipe
       Then the output must match /\AOK/
+
+    Scenario: indents logging from nested tasks
+      When I successfully execute the recipe with option -v
+      Then the output must match /^  Task:.+/
+      And the output must match /^   action:.+/

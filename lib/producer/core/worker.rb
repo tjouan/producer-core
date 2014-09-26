@@ -14,20 +14,28 @@ module Producer
         tasks.each { |t| process_task t }
       end
 
-      def process_task(task)
+      def process_task(task, indent_level = 0)
         if task.condition_met?
-          @env.log "Task: `#{task}' applying..."
+          log "Task: `#{task}' applying...", indent_level
           task.actions.each do |e|
             case e
-            when Task then process_task e
+            when Task then process_task e, indent_level + 2
             else
-              @env.log " action: #{e}"
+              log " action: #{e}", indent_level
               e.apply unless @env.dry_run?
             end
           end
         else
-          @env.log "Task: `#{task}' skipped"
+          log "Task: `#{task}' skipped", indent_level
         end
+      end
+
+
+      private
+
+      def log(message, indent_level)
+        message = [' ' * indent_level, message].join
+        @env.log message
       end
     end
   end

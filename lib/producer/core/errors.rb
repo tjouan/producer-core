@@ -4,5 +4,6 @@ module Producer
     RuntimeError                = Class.new(RuntimeError)
     ConditionNotMetError        = Class.new(Error)
     RemoteCommandExecutionError = Class.new(RuntimeError)
+    RegistryKeyError            = Class.new(RuntimeError)
   end
 end

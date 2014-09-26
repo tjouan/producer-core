@@ -34,3 +34,15 @@ Feature: key/value registry
       """
     When I successfully execute the recipe
     Then the output must contain "some_value"
+
+  Scenario: `get' keyword should trigger an error when given invalid key
+    Given a recipe with:
+      """
+      task :some_task do
+        echo get :no_key
+        echo 'after_fail'
+      end
+      """
+    When I execute the recipe
+    Then the output must not contain "after_fail"
+    And the output must match /\A\w+Error:\s+:no_key/

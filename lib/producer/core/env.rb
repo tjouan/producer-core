@@ -18,7 +18,9 @@ module Producer
       end
 
       def [](key)
-        @registry[key]
+        @registry.fetch key
+      rescue KeyError
+        fail RegistryKeyError, key.inspect
       end
       alias get []
 

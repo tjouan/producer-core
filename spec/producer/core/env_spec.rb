@@ -107,6 +107,10 @@ module Producer::Core
       it 'returns the value indexed by given key from the registry' do
         expect(env[:some_key]).to eq :some_value
       end
+
+      it 'raises an error when given invalid key' do
+        expect { env[:no_key] }.to raise_error RegistryKeyError
+      end
     end
 
     describe '#[]=' do

@@ -25,7 +25,7 @@ module Producer
       end
 
       def execute(command, output = '', error_output = '')
-        channel = session.open_channel do |channel|
+        session.open_channel do |channel|
           channel.exec command do |ch, success|
             ch.on_data do |c, data|
               output << data
@@ -40,8 +40,7 @@ module Producer
               fail RemoteCommandExecutionError, command if exit_status != 0
             end
           end
-        end
-        channel.wait
+        end.wait
         output
       end
 

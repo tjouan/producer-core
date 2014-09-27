@@ -9,6 +9,7 @@ module Producer::Core
       sh
       file_contains
       file_eq
+      file_match
       dir?
       env?
       executable?

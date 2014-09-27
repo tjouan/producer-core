@@ -11,6 +11,7 @@ module Producer
           end
         end
 
+
         private
 
         def key

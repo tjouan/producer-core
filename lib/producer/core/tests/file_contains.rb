@@ -7,6 +7,7 @@ module Producer
           content ? content.include?(arguments[1]) : false
         end
 
+
         private
 
         def file_content

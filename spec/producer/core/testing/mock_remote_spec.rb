@@ -4,7 +4,7 @@ require 'producer/core/testing'
 module Producer::Core
   module Testing
     describe MockRemote do
-      subject(:remote) { MockRemote.new('some_host.example') }
+      subject(:remote) { described_class.new('some_host.example') }
 
       it 'is a remote' do
         expect(remote).to be_a Remote

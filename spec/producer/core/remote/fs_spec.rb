@@ -5,7 +5,7 @@ module Producer::Core
     describe FS do
       let(:sftp_file) { double 'sftp_file' }
       let(:sftp)      { double('sftp', file: sftp_file) }
-      subject(:fs)    { FS.new(sftp) }
+      subject(:fs)    { described_class.new(sftp) }
 
       describe '#initialize' do
         it 'assigns the sftp session' do

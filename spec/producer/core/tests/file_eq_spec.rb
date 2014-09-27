@@ -5,7 +5,7 @@ module Producer::Core
     describe FileEq, :env do
       let(:filepath)  { 'some_file' }
       let(:content)   { 'some content' }
-      subject(:test)  { FileEq.new(env, filepath, content) }
+      subject(:test)  { described_class.new(env, filepath, content) }
 
       it_behaves_like 'test'
 

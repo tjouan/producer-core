@@ -6,7 +6,7 @@ module Producer::Core
       let(:path)          { 'some_path' }
       let(:content)       { 'some content' }
       let(:added_content) { ' added' }
-      subject(:action)    { FileAppend.new(env, path, added_content) }
+      subject(:action)    { described_class.new(env, path, added_content) }
 
       it_behaves_like 'action'
 

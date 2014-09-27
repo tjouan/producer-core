@@ -7,7 +7,7 @@ module Producer::Core
       let(:var_name)    { 'SOME_VAR' }
       let(:var_value)   { 'SOME_VALUE' }
       let(:remote_env)  { { 'SOME_VAR' => 'SOME_VALUE' } }
-      subject(:has_env) { HasEnv.new(env, var_name) }
+      subject(:has_env) { described_class.new(env, var_name) }
 
       it_behaves_like 'test'
 
@@ -42,7 +42,7 @@ module Producer::Core
       end
 
       context 'when var name and value are provided' do
-        subject(:has_env) { HasEnv.new(env, var_name, var_value) }
+        subject(:has_env) { described_class.new(env, var_name, var_value) }
 
         describe '#verify' do
           context 'when remote environment var is defined' do

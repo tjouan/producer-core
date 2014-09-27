@@ -4,7 +4,7 @@ module Producer::Core
   module Tests
     describe HasDir, :env do
       let(:path)        { 'some_directory' }
-      subject(:has_dir) { HasDir.new(env, path) }
+      subject(:has_dir) { described_class.new(env, path) }
 
       it_behaves_like 'test'
 

@@ -4,7 +4,7 @@ module Producer::Core
   module Actions
     describe Echo, :env do
       let(:text)      { 'hello' }
-      subject(:echo)  { Echo.new(env, text) }
+      subject(:echo)  { described_class.new(env, text) }
 
       it_behaves_like 'action'
 

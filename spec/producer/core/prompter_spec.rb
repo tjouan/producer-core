@@ -4,7 +4,7 @@ module Producer::Core
   describe Prompter do
     let(:input)         { StringIO.new }
     let(:output)        { StringIO.new }
-    subject(:prompter)  { Prompter.new(input, output) }
+    subject(:prompter)  { described_class.new(input, output) }
 
     describe '#initialize' do
       it 'assigns the given input' do

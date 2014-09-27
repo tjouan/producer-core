@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   module Tests
     describe HasExecutable, :env do
-      subject(:test) { HasExecutable.new(env, executable) }
+      subject(:test) { described_class.new(env, executable) }
 
       it_behaves_like 'test'
 

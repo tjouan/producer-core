@@ -88,7 +88,7 @@ module Producer::Core
       before { described_class.define_test(:some_test, some_test) }
 
       it 'returns an evaluated condition' do
-        expect(condition).to be_a Condition
+        expect(condition).to be_a described_class
       end
 
       it 'evaluates the condition tests' do

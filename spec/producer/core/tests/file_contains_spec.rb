@@ -5,7 +5,7 @@ module Producer::Core
     describe FileContains, :env do
       let(:filepath)  { 'some_file' }
       let(:content)   { 'some_content' }
-      subject(:test)  { FileContains.new(env, filepath, content) }
+      subject(:test)  { described_class.new(env, filepath, content) }
 
       it_behaves_like 'test'
 

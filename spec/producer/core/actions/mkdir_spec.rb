@@ -4,7 +4,7 @@ module Producer::Core
   module Actions
     describe Mkdir, :env do
       let(:path)      { 'some_path' }
-      subject(:mkdir) { Mkdir.new(env, path) }
+      subject(:mkdir) { described_class.new(env, path) }
 
       it_behaves_like 'action'
 
@@ -17,7 +17,7 @@ module Producer::Core
         end
 
         context 'when a mode was given' do
-          subject(:mkdir) { Mkdir.new(env, path, 0700) }
+          subject(:mkdir) { described_class.new(env, path, 0700) }
 
           it 'changes the directory with given mode' do
             expect(remote_fs).to receive(:chmod).with(path, 0700)

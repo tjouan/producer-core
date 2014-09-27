@@ -5,7 +5,7 @@ module Producer::Core
     describe FileWriter, :env do
       let(:path)        { 'some_path' }
       let(:content)     { 'some_content' }
-      subject(:writer)  { FileWriter.new(env, path, content) }
+      subject(:writer)  { described_class.new(env, path, content) }
 
       it_behaves_like 'action'
 
@@ -16,7 +16,7 @@ module Producer::Core
         end
 
         context 'when a mode was given' do
-          subject(:writer) { FileWriter.new(env, path, content, 0600) }
+          subject(:writer) { described_class.new(env, path, content, 0600) }
 
           it 'specifies the given mode' do
             expect(remote_fs)
@@ -44,7 +44,7 @@ module Producer::Core
         end
 
         context 'when a mode was given' do
-          subject(:writer) { FileWriter.new(env, path, content, 0600) }
+          subject(:writer) { described_class.new(env, path, content, 0600) }
 
           it 'returns the mode' do
             expect(writer.mode).to eq 0600

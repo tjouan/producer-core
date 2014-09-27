@@ -5,7 +5,7 @@ module Producer::Core
     describe ShellCommand, :env do
       let(:command_args)  { 'hello from remote host' }
       let(:command)       { "echo #{command_args}" }
-      subject(:sh)        { ShellCommand.new(env, command) }
+      subject(:sh)        { described_class.new(env, command) }
 
       it_behaves_like 'action'
 

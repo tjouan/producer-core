@@ -3,7 +3,7 @@ require 'spec_helper'
 module Producer::Core
   describe Remote do
     let(:hostname)    { 'some_host.example' }
-    subject(:remote)  { Remote.new(hostname) }
+    subject(:remote)  { described_class.new(hostname) }
 
     describe '#initialize' do
       it 'assigns the given hostname' do

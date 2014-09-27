@@ -7,7 +7,7 @@ module Producer::Core
       let(:pattern)     { 'content' }
       let(:replacement) { 'other content' }
       let(:content)     { 'some content' }
-      subject(:action)  { FileReplaceContent.new(env, path, pattern, replacement) }
+      subject(:action)  { described_class.new(env, path, pattern, replacement) }
 
       it_behaves_like 'action'
 

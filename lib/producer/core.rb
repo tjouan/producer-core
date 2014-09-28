@@ -1,3 +1,4 @@
+require 'erb'
 require 'etc'
 require 'forwardable'
 require 'optparse'

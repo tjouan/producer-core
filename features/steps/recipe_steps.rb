@@ -2,6 +2,10 @@ Given /^a recipe with:$/ do |recipe_body|
   write_file 'recipe.rb', recipe_body
 end
 
+Given /^a recipe named "([^"]+)" with:$/ do |recipe_path, recipe_body|
+  write_file recipe_path, recipe_body
+end
+
 When /^I execute the recipe$/ do
   run_simple 'producer recipe.rb', false
 end

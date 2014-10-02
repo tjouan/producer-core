@@ -52,6 +52,10 @@ module Producer::Core
         expect { recipe.task(:some_task) { :some_task_code } }
           .to change { recipe.tasks.count }.by 1
       end
+
+      it 'returns the task' do
+        expect(recipe.task(:some_task) { }).to be_a Task
+      end
     end
 
     describe '#macro' do
@@ -80,6 +84,21 @@ module Producer::Core
           recipe.hello :foo, :bar
           expect(recipe.tasks.first.actions.first.arguments).to eq %i[foo bar]
         end
+      end
+    end
+
+    describe '#compose_macro' do
+      before do
+        recipe.macro(:hello) { }
+        recipe.compose_macro :hello_composed, :some_arg
+      end
+
+      it 'defines the new recipe keyword' do
+        expect(recipe).to respond_to(:hello_composed)
+      end
+
+      it 'defines the new task keyword' do
+        expect(recipe.task(:some_task) { }).to respond_to(:hello_composed)
       end
     end
 

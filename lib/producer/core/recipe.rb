@@ -11,7 +11,11 @@ module Producer
         end
 
         def compose_macro(name, macro, *base_args)
-          define_method(name) { |*args| send macro, *(base_args + args) }
+          [self, Task].each do |klass|
+            klass.class_eval do
+              define_method(name) { |*args| send macro, *(base_args + args) }
+            end
+          end
         end
       end
 
@@ -31,7 +35,7 @@ module Producer
       end
 
       def task(name, *args, &block)
-        @tasks << Task.evaluate(env, name, *args, &block)
+        Task.evaluate(env, name, *args, &block).tap { |o| @tasks << o }
       end
 
       def macro(name, &block)

@@ -2,29 +2,20 @@ module Producer
   module Core
     module Actions
       class FileWriter < Action
+        def initialize(env, *args, **options)
+          super
+          @path, @content = arguments
+          @options[:permissions]  = @options.delete :mode if @options.key? :mode
+          @options[:owner]        = @options.delete :user if @options.key? :user
+        end
+
         def name
           'file_write'
         end
 
         def apply
-          case arguments.size
-          when 2
-            fs.file_write path, content
-          when 3
-            fs.file_write path, content, mode
-          end
-        end
-
-        def path
-          arguments[0]
-        end
-
-        def content
-          arguments[1]
-        end
-
-        def mode
-          arguments[2]
+          fs.file_write @path, @content
+          fs.setstat @path, @options unless @options.empty?
         end
       end
     end

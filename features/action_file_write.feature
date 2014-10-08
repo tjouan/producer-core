@@ -6,8 +6,8 @@ Feature: `file_write' task action
       """
       task :file_write_action do
         file_write 'some_file',       'some_content'
-        file_write 'some_file_0600',  'some_content', 0600
-        file_write 'some_file_0700',  'some_content', 0700
+        file_write 'some_file_0600',  'some_content', mode: 0600
+        file_write 'some_file_0700',  'some_content', mode: 0700
       end
       """
 

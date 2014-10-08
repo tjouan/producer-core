@@ -127,7 +127,7 @@ module Producer::Core
         let(:content) { 'some_content' }
 
         it 'opens the file' do
-          expect(sftp_file).to receive(:open).with(path, 'w', anything)
+          expect(sftp_file).to receive(:open).with(path, 'w')
           fs.file_write path, content
         end
 
@@ -137,11 +137,6 @@ module Producer::Core
             b.call sftp_file
           end
           fs.file_write path, content
-        end
-
-        it 'accepts an optional mode argument' do
-          expect(sftp_file).to receive(:open).with(anything, anything, 0600)
-          fs.file_write path, content, 0600
         end
       end
     end

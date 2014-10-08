@@ -7,11 +7,12 @@ module Producer
       def_delegators :@env, :input, :output, :error_output, :remote
       def_delegators :remote, :fs
 
-      attr_reader :env, :arguments
+      attr_reader :env, :arguments, :options
 
-      def initialize(env, *args)
+      def initialize(env, *args, **options)
         @env        = env
         @arguments  = args
+        @options    = options
       end
 
       def name

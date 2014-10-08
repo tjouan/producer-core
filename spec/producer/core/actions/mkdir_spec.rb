@@ -4,9 +4,22 @@ module Producer::Core
   module Actions
     describe Mkdir, :env do
       let(:path)      { 'some_path' }
-      subject(:mkdir) { described_class.new(env, path) }
+      let(:options)   { { } }
+      subject(:mkdir) { described_class.new(env, path, options) }
 
       it_behaves_like 'action'
+
+      describe '#initialize' do
+        let(:options) { { mode: 0700, user: 'root' } }
+
+        it 'translates mode option as permissions' do
+          expect(mkdir.options[:permissions]).to eq 0700
+        end
+
+        it 'translates user option as owner' do
+          expect(mkdir.options[:owner]).to eq 'root'
+        end
+      end
 
       describe '#apply' do
         before { allow(remote_fs).to receive(:dir?) { false } }
@@ -16,11 +29,11 @@ module Producer::Core
           mkdir.apply
         end
 
-        context 'when a mode was given' do
-          subject(:mkdir) { described_class.new(env, path, 0700) }
+        context 'when status options are given' do
+          let(:options) { { group: 'wheel' } }
 
-          it 'changes the directory with given mode' do
-            expect(remote_fs).to receive(:chmod).with(path, 0700)
+          it 'changes the directory status with given options' do
+            expect(remote_fs).to receive(:setstat).with(path, options)
             mkdir.apply
           end
         end
@@ -38,7 +51,7 @@ module Producer::Core
         context 'when directory already exists' do
           before { allow(remote_fs).to receive(:dir?) { true } }
 
-          it 'creates directory on remote filesystem' do
+          it 'does not create any directory' do
             expect(remote_fs).not_to receive(:mkdir)
             mkdir.apply
           end

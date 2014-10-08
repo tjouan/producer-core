@@ -3,7 +3,8 @@ module Producer::Core
     include TestEnvHelpers
 
     let(:arguments)   { [:some, :arguments] }
-    subject(:action)  { described_class.new(env, *arguments) }
+    let(:options)     { { foo: :bar } }
+    subject(:action)  { described_class.new(env, *arguments, options) }
 
     describe '#env' do
       it 'returns the assigned env' do
@@ -14,6 +15,12 @@ module Producer::Core
     describe '#arguments' do
       it 'returns the assigned arguments' do
         expect(action.arguments).to eq arguments
+      end
+    end
+
+    describe '#options' do
+      it 'returns the assigned options' do
+        expect(action.options).to eq options
       end
     end
 

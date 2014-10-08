@@ -2,6 +2,12 @@ module Producer
   module Core
     module Actions
       class Mkdir < Action
+        def initialize(env, *args, **options)
+          super
+          @options[:permissions]  = @options.delete :mode if @options.key? :mode
+          @options[:owner]        = @options.delete :user if @options.key? :user
+        end
+
         def name
           'mkdir'
         end
@@ -10,7 +16,7 @@ module Producer
           path.descend do |p|
             next if fs.dir? p
             fs.mkdir p.to_s
-            fs.chmod p.to_s, mode if mode
+            fs.setstat p.to_s, @options unless @options.empty?
           end
         end
 
@@ -19,10 +25,6 @@ module Producer
 
         def path
           Pathname.new(arguments.first)
-        end
-
-        def mode
-          arguments[1]
         end
       end
     end

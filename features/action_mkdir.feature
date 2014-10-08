@@ -6,8 +6,8 @@ Feature: `mkdir' task action
       """
       task :mkdir_action do
         mkdir 'some_directory'
-        mkdir 'some_directory_0700', 0700
-        mkdir 'some_directory_0500', 0500
+        mkdir 'some_directory_0700', mode: 0700
+        mkdir 'some_directory_0711', mode: 0711
       end
       """
 
@@ -15,10 +15,10 @@ Feature: `mkdir' task action
     When I successfully execute the recipe on remote target
     Then the remote directory "some_directory" must exists
 
-  Scenario: creates directory with given permissions
+  Scenario: creates directory with given attributes
     When I successfully execute the recipe on remote target
     Then the remote directory "some_directory_0700" must have 0700 mode
-    And  the remote directory "some_directory_0500" must have 0500 mode
+    And  the remote directory "some_directory_0711" must have 0711 mode
 
   Scenario: creates directories recursively
     Given a recipe with:

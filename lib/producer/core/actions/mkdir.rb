@@ -7,7 +7,7 @@ module Producer
         end
 
         def apply
-          Pathname.new(path).descend do |p|
+          path.descend do |p|
             next if fs.dir? p
             fs.mkdir p.to_s
             fs.chmod p.to_s, mode if mode
@@ -18,7 +18,7 @@ module Producer
         private
 
         def path
-          arguments.first
+          Pathname.new(arguments.first)
         end
 
         def mode

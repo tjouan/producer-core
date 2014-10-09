@@ -15,7 +15,7 @@ module Producer::Core
       before { allow(remote_fs).to receive(:file_read).with(path) { content } }
 
       describe '#setup' do
-        context 'when content is missing' do
+        context 'when replacement is missing' do
           let(:replacement) { nil }
 
           it 'raises ArgumentError' do

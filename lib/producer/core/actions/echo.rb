@@ -7,7 +7,7 @@ module Producer
         end
 
         def apply
-          output.puts arguments.first
+          output.puts arguments
         end
       end
     end

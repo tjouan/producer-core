@@ -13,6 +13,7 @@ module Producer
         @env        = env
         @arguments  = args
         @options    = options
+        setup if respond_to? :setup
       end
 
       def name

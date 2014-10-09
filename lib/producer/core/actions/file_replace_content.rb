@@ -3,6 +3,7 @@ module Producer
     module Actions
       class FileReplaceContent < Action
         def setup
+          check_arguments_size! 3
           @path, @pattern, @replacement = arguments
         end
 

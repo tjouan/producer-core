@@ -12,6 +12,16 @@ module Producer::Core
 
       before { allow(remote_fs).to receive(:file_read).with(path) { content } }
 
+      describe '#setup' do
+        context 'when content is missing' do
+          let(:added_content) { nil }
+
+          it 'raises ArgumentError' do
+            expect { action }.to raise_error ArgumentError
+          end
+        end
+      end
+
       describe '#apply' do
         it 'appends given content to requested file on remote filesystem' do
           expect(remote_fs)

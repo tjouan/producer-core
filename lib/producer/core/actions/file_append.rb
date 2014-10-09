@@ -3,6 +3,10 @@ module Producer
     module Actions
       class FileAppend < Action
         def setup
+          if arguments.compact.size != 2
+            fail ArgumentError, '`%s\' action requires 2 arguments' % name
+          end
+
           @path, @content = arguments
         end
 

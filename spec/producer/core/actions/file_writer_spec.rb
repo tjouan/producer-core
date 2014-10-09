@@ -20,6 +20,14 @@ module Producer::Core
         it 'translates user option as owner' do
           expect(writer.options[:owner]).to eq 'root'
         end
+
+        context 'when content is missing' do
+          let(:content) { nil }
+
+          it 'raises ArgumentError' do
+            expect { writer }.to raise_error ArgumentError
+          end
+        end
       end
 
       describe '#apply' do

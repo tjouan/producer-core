@@ -5,8 +5,9 @@ module Producer::Core
     describe FileWriter, :env do
       let(:path)        { 'some_path' }
       let(:content)     { 'some_content' }
+      let(:arguments)   { [path, content] }
       let(:options)     { { } }
-      subject(:writer)  { described_class.new(env, path, content, options) }
+      subject(:writer)  { described_class.new(env, *arguments, options) }
 
       it_behaves_like 'action'
 

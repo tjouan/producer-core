@@ -5,7 +5,8 @@ module Producer::Core
     describe Mkdir, :env do
       let(:path)      { 'some_path' }
       let(:options)   { { } }
-      subject(:mkdir) { described_class.new(env, path, options) }
+      let(:arguments) { [path, options] }
+      subject(:mkdir) { described_class.new(env, *arguments) }
 
       it_behaves_like 'action'
 

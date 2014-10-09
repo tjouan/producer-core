@@ -2,7 +2,6 @@ module Producer::Core
   shared_examples 'action' do
     include TestEnvHelpers
 
-    let(:arguments)   { [:some, :arguments] }
     let(:options)     { { foo: :bar } }
     subject(:action)  { described_class.new(env, *arguments, options) }
 

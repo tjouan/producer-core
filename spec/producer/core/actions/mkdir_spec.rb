@@ -5,8 +5,8 @@ module Producer::Core
     describe Mkdir, :env do
       let(:path)      { 'some_path' }
       let(:options)   { { } }
-      let(:arguments) { [path, options] }
-      subject(:mkdir) { described_class.new(env, *arguments) }
+      let(:arguments) { [path] }
+      subject(:mkdir) { described_class.new(env, *arguments, options) }
 
       it_behaves_like 'action'
 
@@ -19,6 +19,14 @@ module Producer::Core
 
         it 'translates user option as owner' do
           expect(mkdir.options[:owner]).to eq 'root'
+        end
+
+        context 'when path is missing' do
+          let(:path) { nil }
+
+          it 'raises ArgumentError' do
+            expect { mkdir }.to raise_error ArgumentError
+          end
         end
       end
 

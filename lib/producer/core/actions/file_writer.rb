@@ -3,10 +3,7 @@ module Producer
     module Actions
       class FileWriter < Action
         def setup
-          if arguments.compact.size != 2
-            fail ArgumentError, '`%s\' action requires 2 arguments' % name
-          end
-
+          check_arguments_size! 2
           @path, @content         = arguments
           @options[:permissions]  = @options.delete :mode if options.key? :mode
           @options[:owner]        = @options.delete :user if options.key? :user

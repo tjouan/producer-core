@@ -30,6 +30,12 @@ module Producer
       def inspect_arguments
         @arguments.inspect[0, INSPECT_ARGUMENTS_SUM_LEN - name.length]
       end
+
+      def check_arguments_size!(size)
+        if arguments.compact.size != size
+          fail ArgumentError, '`%s\' action requires %d arguments' % [name, size]
+        end
+      end
     end
   end
 end

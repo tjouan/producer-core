@@ -3,7 +3,9 @@ require 'spec_helper'
 module Producer::Core
   describe Action do
     let(:env)         { double 'env'}
-    subject(:action)  { described_class.new(env) }
+    let(:arguments)   { [:some, :arguments] }
+    let(:options)     { { foo: :bar } }
+    subject(:action)  { described_class.new(env, *arguments, options) }
 
     it_behaves_like 'action'
 
@@ -20,6 +22,24 @@ module Producer::Core
     describe '#name' do
       it 'infers action name from class name' do
         expect(action.name).to eq 'action'
+      end
+    end
+
+    describe '#to_s' do
+      it 'includes action name' do
+        expect(action.to_s).to match /\A#{action.name}/
+      end
+
+      it 'includes arguments inspection' do
+        expect(action.to_s).to match /#{Regexp.quote(arguments.inspect)}\z/
+      end
+
+      context 'when arguments inspection is very long' do
+        let(:arguments)   { [:some, :arguments] * 32 }
+
+        it 'summarizes arguments inspection' do
+          expect(action.to_s.length).to be < 70
+        end
       end
     end
   end

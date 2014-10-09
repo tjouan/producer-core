@@ -41,23 +41,5 @@ module Producer::Core
         expect(action.name).to match /\A\w+\z/
       end
     end
-
-    describe '#to_s' do
-      it 'includes action name' do
-        expect(action.to_s).to match /\A#{action.name}/
-      end
-
-      it 'includes arguments inspection' do
-        expect(action.to_s).to match /#{Regexp.quote(arguments.inspect)}\z/
-      end
-
-      context 'when arguments inspection is very long' do
-        let(:arguments)   { [:some, :arguments] * 32 }
-
-        it 'summarizes arguments inspection' do
-          expect(action.to_s.length).to be < 70
-        end
-      end
-    end
   end
 end

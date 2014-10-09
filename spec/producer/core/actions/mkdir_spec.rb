@@ -9,7 +9,7 @@ module Producer::Core
 
       it_behaves_like 'action'
 
-      describe '#initialize' do
+      describe '#setup' do
         let(:options) { { mode: 0700, user: 'root' } }
 
         it 'translates mode option as permissions' do

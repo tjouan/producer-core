@@ -21,24 +21,6 @@ module Producer::Core
         end
       end
 
-      describe '#path' do
-        it 'returns the file path' do
-          expect(action.path).to eq path
-        end
-      end
-
-      describe '#pattern' do
-        it 'returns the pattern' do
-          expect(action.pattern).to eq pattern
-        end
-      end
-
-      describe '#replacement' do
-        it 'returns the replacement' do
-          expect(action.replacement).to eq replacement
-        end
-      end
-
       describe '#replaced_content' do
         it 'returns content with pattern occurrences pattern replaced' do
           expect(action.replaced_content).to eq 'some other content'

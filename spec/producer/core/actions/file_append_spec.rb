@@ -20,18 +20,6 @@ module Producer::Core
         end
       end
 
-      describe '#path' do
-        it 'returns the file path' do
-          expect(action.path).to eq path
-        end
-      end
-
-      describe '#content' do
-        it 'returns the content to append' do
-          expect(action.content).to eq added_content
-        end
-      end
-
       describe '#combined_content' do
         it 'returns original content and added content combined' do
           expect(action.combined_content).to eq 'some content added'

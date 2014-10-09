@@ -2,11 +2,10 @@ module Producer
   module Core
     module Actions
       class FileWriter < Action
-        def initialize(env, *args, **options)
-          super
-          @path, @content = arguments
-          @options[:permissions]  = @options.delete :mode if @options.key? :mode
-          @options[:owner]        = @options.delete :user if @options.key? :user
+        def setup
+          @path, @content         = arguments
+          @options[:permissions]  = @options.delete :mode if options.key? :mode
+          @options[:owner]        = @options.delete :user if options.key? :user
         end
 
         def name

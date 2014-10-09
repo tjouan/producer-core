@@ -2,8 +2,7 @@ module Producer
   module Core
     module Actions
       class Mkdir < Action
-        def initialize(env, *args, **options)
-          super
+        def setup
           @options[:permissions]  = @options.delete :mode if @options.key? :mode
           @options[:owner]        = @options.delete :user if @options.key? :user
         end

@@ -2,12 +2,17 @@ module Producer
   module Core
     module Actions
       class ShellCommand < Action
+        def setup
+          check_arguments_size! 1
+          @command = arguments.first
+        end
+
         def name
           'sh'
         end
 
         def apply
-          remote.execute(arguments.first, output, error_output)
+          remote.execute(@command, output, error_output)
         end
       end
     end

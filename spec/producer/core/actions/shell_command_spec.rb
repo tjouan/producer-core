@@ -10,6 +10,16 @@ module Producer::Core
 
       it_behaves_like 'action'
 
+      describe '#setup' do
+        context 'when command is missing' do
+          let(:command) { nil }
+
+          it 'raises ArgumentError' do
+            expect { sh }.to raise_error ArgumentError
+          end
+        end
+      end
+
       describe '#apply' do
         it 'executes the remote command' do
           expect_execution(command)

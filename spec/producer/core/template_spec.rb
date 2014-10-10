@@ -13,6 +13,14 @@ module Producer::Core
         expect(template.render).to eq "basic template\n"
       end
 
+      context 'yaml templates' do
+        let(:path) { 'basic_yaml' }
+
+        it 'renders yaml templates' do
+          expect(template.render).to eq({ 'foo' => 'bar' })
+        end
+      end
+
       context 'when variables are given' do
         let(:path) { 'variables' }
 

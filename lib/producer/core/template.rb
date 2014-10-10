@@ -4,21 +4,40 @@ module Producer
       SEARCH_PATH = 'templates'.freeze
 
       def initialize(path, search_path: SEARCH_PATH)
-        @path         = Pathname.new("#{path}.erb")
+        @path         = Pathname.new(path)
         @search_path  = Pathname.new(search_path)
       end
 
       def render(variables = {})
-        tpl = ERB.new(File.read(resolve_path), nil, '-')
-        tpl.filename = resolve_path.to_s
-        tpl.result build_erb_binding variables
+        case (file_path = resolve_path).extname
+        when '.yaml'  then render_yaml file_path
+        when '.erb'   then render_erb file_path, variables
+        end
       end
 
 
       private
 
+      def render_erb(file_path, variables = {})
+        tpl = ERB.new(File.read(file_path), nil, '-')
+        tpl.filename = file_path.to_s
+        tpl.result build_erb_binding variables
+      end
+
+      def render_yaml(file_path)
+        YAML.load(File.read(file_path))
+      end
+
       def resolve_path
-        if @path.to_s =~ /\A\.\// then @path else @search_path + @path end
+        if @path.to_s =~ /\A\.\//
+          resolve_suffix @path
+        else
+          resolve_suffix @search_path + @path
+        end
+      end
+
+      def resolve_suffix(path)
+        Pathname.glob("#{path}.{erb,yaml}").first
       end
 
       def build_erb_binding(variables)

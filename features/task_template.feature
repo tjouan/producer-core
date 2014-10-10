@@ -35,3 +35,15 @@ Feature: `template' task keyword
       """
     When I execute the recipe
     Then the output must contain "basic template"
+
+  Scenario: parses a yaml file
+    Given a file named "templates/basic.yaml" with:
+      """
+      foo: bar
+      """
+    And a recipe with:
+      """
+      task(:echo_template) { echo template('basic')['foo'] }
+      """
+    When I execute the recipe
+    Then the output must match /^bar$/

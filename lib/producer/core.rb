@@ -3,6 +3,7 @@ require 'etc'
 require 'forwardable'
 require 'optparse'
 require 'pathname'
+require 'yaml'
 
 require 'net/ssh'
 require 'net/sftp'

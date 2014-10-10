@@ -1,17 +1,11 @@
 Feature: `template' task keyword
 
-  Background:
-    Given a file named "basic.erb" with:
+  Scenario: renders an ERB template file
+    Given a file named "templates/basic.erb" with:
       """
       basic template
       """
-    Given a file named "variables.erb" with:
-      """
-      <%= @foo %>
-      """
-
-  Scenario: renders an ERB template file
-    Given a recipe with:
+    And a recipe with:
       """
       task(:echo_template) { echo template 'basic' }
       """
@@ -19,9 +13,25 @@ Feature: `template' task keyword
     Then the output must contain "basic template"
 
   Scenario: renders ERB with given attributes as member data
-    Given a recipe with:
+    Given a file named "templates/variables.erb" with:
+      """
+      <%= @foo %>
+      """
+    And a recipe with:
       """
       task(:echo_template) { echo template('variables', foo: 'bar') }
       """
     When I execute the recipe
     Then the output must contain "bar"
+
+  Scenario: renders without `templates' search path
+    Given a file named "templates/basic.erb" with:
+      """
+      basic template
+      """
+    And a recipe with:
+      """
+      task(:echo_template) { echo template './templates/basic' }
+      """
+    When I execute the recipe
+    Then the output must contain "basic template"

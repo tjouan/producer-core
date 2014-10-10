@@ -59,22 +59,7 @@ module Producer
       end
 
       def template(path, variables = {})
-        path = "#{path}.erb"
-        tpl = ERB.new(File.read(path), nil, '-')
-        tpl.filename = path
-        tpl.result build_erb_binding variables
-      end
-
-
-      private
-
-      def build_erb_binding(variables)
-        Object.new.instance_eval do |o|
-          variables.each do |k, v|
-            o.instance_variable_set "@#{k}", v
-          end
-          binding
-        end
+        Template.new(path).render variables
       end
     end
   end

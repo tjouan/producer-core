@@ -23,6 +23,7 @@ module Producer
       define_action :file_append,           Actions::FileAppend
       define_action :file_replace_content,  Actions::FileReplaceContent
       define_action :file_write,            Actions::FileWriter
+      define_action :yaml_write,            Actions::YAMLWriter
 
       attr_reader :name, :actions, :condition
 

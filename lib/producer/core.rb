@@ -17,6 +17,7 @@ require 'producer/core/actions/mkdir'
 require 'producer/core/actions/file_append'
 require 'producer/core/actions/file_replace_content'
 require 'producer/core/actions/file_writer'
+require 'producer/core/actions/yaml_writer'
 
 # condition tests
 require 'producer/core/test'

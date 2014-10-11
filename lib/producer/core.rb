@@ -32,10 +32,12 @@ require 'producer/core/tests/has_file'
 require 'producer/core/tests/shell_command_status'
 require 'producer/core/tests/yaml_eq'
 
+require 'producer/core/errors'
+
 require 'producer/core/cli'
 require 'producer/core/condition'
 require 'producer/core/env'
-require 'producer/core/errors'
+require 'producer/core/error_formatter'
 require 'producer/core/logger_formatter'
 require 'producer/core/prompter'
 require 'producer/core/recipe'

@@ -44,7 +44,7 @@ module Producer::Core
         end
       end
 
-      context 'when a runtime error is raised' do
+      context 'when an error is raised' do
         let(:recipe_file) { fixture_path_for 'recipes/raise.rb' }
 
         it 'exits with a return status of 70' do
@@ -52,9 +52,9 @@ module Producer::Core
             .to raise_error(SystemExit) { |e| expect(e.status).to eq 70 }
         end
 
-        it 'prints exception name and message and the error stream' do
+        it 'prints a report to the error stream' do
           expect { trap_exit { run! } }
-            .to output("RemoteCommandExecutionError: false\n").to_stderr
+            .to output(/\ARemoteCommandExecutionError: false$/).to_stderr
         end
       end
     end

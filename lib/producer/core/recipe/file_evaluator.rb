@@ -5,7 +5,14 @@ module Producer
         class << self
           def evaluate(file_path, env)
             content = File.read(file_path)
-            Recipe.new(env).tap { |o| o.instance_eval content, file_path }
+            begin
+              Recipe.new(env).tap { |o| o.instance_eval content, file_path }
+            rescue Exception => e
+              fail RecipeEvaluationError, e.message, [
+                '%s (recipe)' % file_path,
+                *e.backtrace
+              ]
+            end
           end
         end
       end

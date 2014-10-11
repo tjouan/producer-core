@@ -17,8 +17,9 @@ module Producer
           rescue ArgumentError => e
             stderr.puts e.message
             exit EX_USAGE
-          rescue RuntimeError => e
-            stderr.puts "#{e.class.name.split('::').last}: #{e.message}"
+          rescue Exception => e
+            ef = ErrorFormatter.new(force_cause: [RecipeEvaluationError])
+            stderr.puts ef.format e
             exit EX_SOFTWARE
           end
         end

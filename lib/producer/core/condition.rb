@@ -41,6 +41,7 @@ module Producer
       define_test :executable?,     Tests::HasExecutable
       define_test :dir?,            Tests::HasDir
       define_test :file?,           Tests::HasFile
+      define_test :yaml_eq,         Tests::YAMLEq
 
       attr_reader :tests, :return_value
 

@@ -30,6 +30,7 @@ require 'producer/core/tests/has_env'
 require 'producer/core/tests/has_executable'
 require 'producer/core/tests/has_file'
 require 'producer/core/tests/shell_command_status'
+require 'producer/core/tests/yaml_eq'
 
 require 'producer/core/cli'
 require 'producer/core/condition'

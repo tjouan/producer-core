@@ -23,14 +23,15 @@ module Producer
       end
 
       describe '#format' do
-        let(:message)   { 'some exception' }
-        let(:exception) { Exception.new(message) }
-
-        before { exception.set_backtrace %w[back trace] }
+        def exception
+          begin fail 'original exception' rescue fail 'some exception' end
+        rescue
+          $!.tap { |o| o.set_backtrace %w[back trace] }
+        end
 
         it 'formats the message' do
           expect(formatter.format exception)
-            .to match /^Exception: some exception$/
+            .to match /^RuntimeError: some exception$/
         end
 
         it 'indents the backtrace' do
@@ -42,6 +43,14 @@ module Producer
 
           it 'excludes producer code from the backtrace' do
             expect(formatter.format exception).not_to include 'producer-core'
+          end
+
+          context 'when debug is enabled' do
+            let(:debug) { true }
+
+            it 'does not exclude producer code from the backtrace' do
+              expect(formatter.format exception).to include 'producer-core'
+            end
           end
         end
       end

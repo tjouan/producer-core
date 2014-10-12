@@ -24,6 +24,10 @@ When /^I successfully execute the recipe on remote target$/ do
   assert_exit_status 0
 end
 
+When /^I execute the recipe with option (-.+)$/ do |option|
+  run_simple "producer #{option} recipe.rb", false
+end
+
 When /^I successfully execute the recipe with option (-.+)$/ do |option|
   run_simple "producer #{option} recipe.rb", false
   assert_exit_status 0

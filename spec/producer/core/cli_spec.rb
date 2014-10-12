@@ -112,6 +112,15 @@ module Producer::Core
         end
       end
 
+      context 'with debug option' do
+        let(:options) { %w[-d] }
+
+        it 'assigns the given target to the env' do
+          cli.parse_arguments!
+          expect(cli.env).to be_debug
+        end
+      end
+
       context 'with combined options' do
         let(:options) { %w[-vn]}
 

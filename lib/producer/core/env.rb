@@ -2,10 +2,10 @@ module Producer
   module Core
     class Env
       attr_reader   :input, :output, :error_output, :registry, :logger
-      attr_accessor :target, :verbose, :dry_run
+      attr_accessor :target, :verbose, :debug, :dry_run
 
       def initialize(input: $stdin, output: $stdout, error_output: $stderr, remote: nil, registry: {})
-        @verbose      = @dry_run = false
+        @verbose = @debug = @dry_run = false
         @input        = input
         @output       = output
         @error_output = error_output
@@ -43,6 +43,10 @@ module Producer
 
       def verbose?
         @verbose
+      end
+
+      def debug?
+        @debug
       end
 
       def dry_run?

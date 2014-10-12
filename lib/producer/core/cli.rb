@@ -18,7 +18,10 @@ module Producer
             stderr.puts e.message
             exit EX_USAGE
           rescue Exception => e
-            ef = ErrorFormatter.new(force_cause: [RecipeEvaluationError])
+            ef = ErrorFormatter.new(
+              debug:        cli.env.debug?,
+              force_cause:  [RecipeEvaluationError]
+            )
             stderr.puts ef.format e
             exit EX_SOFTWARE
           end
@@ -64,6 +67,10 @@ module Producer
 
           opts.on '-v', '--verbose', 'enable verbose mode' do |e|
             env.verbose = true
+          end
+
+          opts.on '-d', '--debug', 'enable debug mode' do |e|
+            env.debug = true
           end
 
           opts.on '-n', '--dry-run', 'enable dry run mode' do |e|

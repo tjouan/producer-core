@@ -26,6 +26,10 @@ module Producer::Core
         expect(env.verbose).to be false
       end
 
+      it 'assigns debug as false' do
+        expect(env.debug).to be false
+      end
+
       it 'assigns dry run as false' do
         expect(env.dry_run).to be false
       end
@@ -165,6 +169,13 @@ module Producer::Core
       it 'returns true when verbose is enabled' do
         env.verbose = true
         expect(env).to be_verbose
+      end
+    end
+
+    describe '#debug?' do
+      it 'returns true when debug is enabled' do
+        env.debug = true
+        expect(env).to be_debug
       end
     end
 

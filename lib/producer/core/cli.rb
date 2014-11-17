@@ -17,7 +17,7 @@ module Producer
           rescue ArgumentError => e
             stderr.puts e.message
             exit EX_USAGE
-          rescue Exception => e
+          rescue StandardError => e
             ef = ErrorFormatter.new(
               debug:        cli.env.debug?,
               force_cause:  [RecipeEvaluationError]

@@ -22,6 +22,7 @@ module Producer
         lines.join("\n")
       end
 
+
       private
 
       def format_exception(exception, filter: true)

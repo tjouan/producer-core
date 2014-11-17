@@ -1,6 +1,9 @@
 module Producer
   module Core
     class Env
+      extend Forwardable
+      def_delegators :@registry, :[]=
+
       attr_reader   :input, :output, :error_output, :registry, :logger
       attr_accessor :target, :verbose, :debug, :dry_run
 
@@ -23,10 +26,6 @@ module Producer
         fail RegistryKeyError, key.inspect
       end
       alias get []
-
-      def []=(key, value)
-        @registry[key] = value
-      end
 
       def logger
         @logger ||= begin

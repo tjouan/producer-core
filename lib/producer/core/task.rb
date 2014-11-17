@@ -14,7 +14,9 @@ module Producer
       end
 
       extend Forwardable
-      def_delegators :@env, :target
+      def_delegators  :@name, :to_s
+      def_delegators  :@env,  :target
+      def_delegator   :@env,  :[], :get
 
       define_action :echo,                  Actions::Echo
       define_action :sh,                    Actions::ShellCommand
@@ -34,10 +36,6 @@ module Producer
         @condition  = condition
       end
 
-      def to_s
-        @name.to_s
-      end
-
       def condition_met?
         !!@condition
       end
@@ -53,10 +51,6 @@ module Producer
 
       def ask(question, choices, prompter: Prompter.new(@env.input, @env.output))
         prompter.prompt(question, choices)
-      end
-
-      def get(key)
-        @env[key]
       end
 
       def template(path, variables = {})

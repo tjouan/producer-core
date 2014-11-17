@@ -19,6 +19,9 @@ module Producer
         end
       end
 
+      extend Forwardable
+      def_delegator :@env, :[]=,  :set
+      def_delegator :@env, :[],   :get
       attr_reader :env, :tasks
 
       def initialize(env)
@@ -48,14 +51,6 @@ module Producer
 
       def test_macro(name, &block)
         Condition.define_test(name, block)
-      end
-
-      def set(key, value)
-        env[key] = value
-      end
-
-      def get(key)
-        env[key]
       end
     end
   end

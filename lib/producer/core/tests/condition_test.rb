@@ -2,9 +2,9 @@ module Producer
   module Core
     module Tests
       class ConditionTest < Test
-        def verify
-          condition.met?
-        end
+        extend Forwardable
+        def_delegator :@arguments,  :first,  :condition_block
+        def_delegator :condition,   :met?,   :verify
 
         def condition
           Condition.evaluate(env, *condition_args, &condition_block)
@@ -12,10 +12,6 @@ module Producer
 
         def condition_args
           arguments.drop 1
-        end
-
-        def condition_block
-          arguments.first
         end
       end
     end

@@ -20,10 +20,10 @@ module Producer
         @remote ||= Remote.new(target)
       end
 
-      def [](key)
-        @registry.fetch key
+      def [](*args)
+        @registry.fetch *args
       rescue KeyError
-        fail RegistryKeyError, key.inspect
+        fail RegistryKeyError, args.first.inspect
       end
       alias get []
 

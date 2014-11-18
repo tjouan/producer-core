@@ -46,3 +46,13 @@ Feature: key/value registry
     When I execute the recipe
     Then the output must not contain "after_fail"
     And the output must match /\A\w+Error:\s+:no_key/
+
+  Scenario: `get' keyword accepts a default value
+    Given a recipe with:
+      """
+      task :registry_testing do
+        echo get(:some_key, 'some_value')
+      end
+      """
+    When I successfully execute the recipe
+    Then the output must contain "some_value"

@@ -152,6 +152,15 @@ module Producer::Core
         expect(cli.env).to receive :cleanup
         cli.run
       end
+
+      context 'on error' do
+        let(:recipe_file) { fixture_path_for 'recipes/raise.rb' }
+
+        it 'cleans up the env' do
+          expect(cli.env).to receive :cleanup
+          cli.run rescue nil
+        end
+      end
     end
 
     describe '#evaluate_recipes' do

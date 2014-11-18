@@ -45,6 +45,7 @@ module Producer
 
       def run(worker: Worker.new(@env))
         evaluate_recipes.each { |recipe| worker.process recipe.tasks }
+      ensure
         @env.cleanup
       end
 

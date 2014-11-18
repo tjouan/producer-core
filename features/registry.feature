@@ -56,3 +56,16 @@ Feature: key/value registry
       """
     When I successfully execute the recipe
     Then the output must contain "some_value"
+
+  Scenario: `set?' keyword tests wether given key is defined
+    Given a recipe with:
+      """
+      set :some_key, 'some_value'
+      task :registry_testing do
+        echo 'some_value_set' if set? :some_key
+        echo 'other_value' if set? :other_key
+      end
+      """
+    When I execute the recipe
+    Then the output must contain "some_value_set"
+    And the output must not contain "other_value"

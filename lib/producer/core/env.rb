@@ -2,7 +2,7 @@ module Producer
   module Core
     class Env
       extend Forwardable
-      def_delegators :@registry, :[]=
+      def_delegators :@registry, :[]=, :key?
 
       attr_reader   :input, :output, :error_output, :registry, :logger
       attr_accessor :target, :verbose, :debug, :dry_run

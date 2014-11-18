@@ -160,6 +160,18 @@ module Producer::Core
       end
     end
 
+    describe '#set?' do
+      before { env[:some_key] = :some_value }
+
+      it 'returns true when given key exists' do
+        expect(task.set? :some_key).to be true
+      end
+
+      it 'returns false when given key does not exist' do
+        expect(task.set? :other_key).to be false
+      end
+    end
+
     describe '#target' do
       before { env.target = :some_target }
 

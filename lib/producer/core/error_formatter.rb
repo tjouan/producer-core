@@ -1,6 +1,12 @@
 module Producer
   module Core
     class ErrorFormatter
+      FILTERS = [
+        /\/producer-\w+\/(?:bin|lib)\//,
+        /\/net\/ssh\//,
+        /\/net\/sftp\//
+      ].freeze
+
       def initialize(debug: false, force_cause: [])
         @debug        = debug
         @force_cause  = force_cause
@@ -43,7 +49,9 @@ module Producer
       end
 
       def filter_backtrace(backtrace)
-        backtrace.reject { |l| l =~ /\/producer-\w+\/(?:bin|lib)\// }
+        backtrace.reject do |line|
+          FILTERS.any? { |filter| line =~ filter }
+        end
       end
 
       def indent_backtrace(backtrace)

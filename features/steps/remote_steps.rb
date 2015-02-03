@@ -19,7 +19,7 @@ Then /^the remote file "([^"]+)" must contain "([^"]+)"$/ do |path, content|
 end
 
 Then /^the remote file "([^"]+)" must contain exactly "([^"]+)"$/ do |path, content|
-  check_exact_file_content path, content
+  check_file_content path, content
 end
 
 Then /^the remote file "([^"]+)" must match \/([^\/]+)\/$/ do |path, pattern|

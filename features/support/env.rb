@@ -18,7 +18,7 @@ class ArubaProgramWrapper
       @argv.dup, stdin: @stdin, stdout: @stdout, stderr: @stderr
     )
   rescue SystemExit => e
-    @kernel.exit(e.status)
+    @kernel.exit e.status
   end
 end
 

@@ -132,7 +132,13 @@ end
 Usage
 -----
 
-FIXME
+    Usage: producer [options] [recipes]
+    
+    options:
+        -v, --verbose                    enable verbose mode
+        -d, --debug                      enable debug mode
+        -n, --dry-run                    enable dry run mode
+        -t, --target HOST                target host
 
 
 Actions

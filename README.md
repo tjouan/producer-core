@@ -158,7 +158,38 @@ https://github.com/tjouan/producer-core/tree/master/features/tests
 Templates
 ---------
 
-FIXME
+  The following example can setup jails on a FreeBSD host.
+
+  In `templates/freebsd/jail.conf.erb`:
+
+    exec.start = "/bin/sh /etc/rc";
+    exec.stop = "/bin/sh /etc/rc.shutdown";
+    exec.clean;
+    mount.devfs;
+    allow.chflags;
+
+    path = "/var/jails/$name";
+
+    <% @jails.each do |jail| -%>
+    <%= jail[:name] %> {
+      interface "<%= @if %>";
+      ip4.addr = <%= jail[:addr4] %>;
+    }
+    <% end -%>
+
+  Simple usage:
+
+    INTERFACE   = 're0'.freeze
+    JAILS       = [{
+      name:   'freebsd-10r1',
+      src:    true,
+      addr4:  '10.0.0.1'
+    }]
+
+    task :jails_conf do
+      conf = template 'freebsd/jail.conf', if: INTERFACE, jails: JAILS
+      file_write_once '/etc/jail.conf', conf
+    end
 
 
 Macros

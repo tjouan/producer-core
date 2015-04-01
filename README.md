@@ -187,7 +187,7 @@ JAILS       = [{
   name:   'freebsd-10r1',
   src:    true,
   addr4:  '10.0.0.1'
-}]
+}].freeze
 
 task :jails_conf do
   conf = template 'freebsd/jail.conf', if: INTERFACE, jails: JAILS

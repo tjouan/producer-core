@@ -162,7 +162,7 @@ Templates
 
   In `templates/freebsd/jail.conf.erb`:
 
-```ruby
+```erb
 exec.start = "/bin/sh /etc/rc";
 exec.stop = "/bin/sh /etc/rc.shutdown";
 exec.clean;
@@ -177,9 +177,11 @@ path = "/var/jails/$name";
   ip4.addr = <%= jail[:addr4] %>;
 }
 <% end -%>
+```
 
 Simple usage:
 
+```ruby
 INTERFACE   = 're0'.freeze
 JAILS       = [{
   name:   'freebsd-10r1',

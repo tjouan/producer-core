@@ -1,7 +1,7 @@
 producer
 ========
 
-  Software provisioning and configuration management tool, based on a
+  Software provisioning and configuration management tool, providing a
 DSL to write "recipes".
 
 

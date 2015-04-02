@@ -367,8 +367,7 @@ Similar or related code and tools
 ### BDD
 
 * https://github.com/hedgehog/cuken (Cucumber)
-* https://github.com/serverspec/serverspec (RSpec, Net::SSH)
-  https://github.com/serverspec/specinfra
+* http://serverspec.org/ (RSpec, Net::SSH)
 * https://github.com/auxesis/cucumber-nagios (Cucumber, Net::SSH,
   Webrat)
 * http://larsyencken.github.io/marelle/ (Prolog, babushka inspired)

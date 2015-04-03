@@ -23,10 +23,12 @@ module Producer
       end
 
       describe '#format' do
+        let(:bt) { %W[backtrace /producer-core /net-ssh] }
+
         def exception
           begin fail 'original exception' rescue fail 'some exception' end
-        rescue
-          $!.tap { |o| o.set_backtrace %w[back trace] }
+        rescue => e
+          e.tap { |o| o.set_backtrace bt }
         end
 
         it 'formats the message' do
@@ -35,14 +37,10 @@ module Producer
         end
 
         it 'indents the backtrace' do
-          expect(formatter.format exception).to match /^\s+back$/
+          expect(formatter.format exception).to match /^\s+backtrace$/
         end
 
         context 'filtering' do
-          let(:bt) { %w[back trace producer-core net-ssh net-sftp] }
-
-          before { exception.set_backtrace bt }
-
           it 'excludes producer code from the backtrace' do
             expect(formatter.format exception).not_to include 'producer-core'
           end

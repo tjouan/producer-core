@@ -2,7 +2,7 @@ module Producer
   module Core
     class ErrorFormatter
       FILTERS = [
-        /\/producer-\w+\/(?:bin|lib)\//,
+        /\/producer-\w+/,
         /\/net-ssh/,
         /\/net-sftp/
       ].freeze

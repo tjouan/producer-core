@@ -13,4 +13,5 @@ Feature: CLI usage
           -d, --debug                      enable debug mode
           -n, --dry-run                    enable dry run mode
           -t, --target HOST                target host
+
       """

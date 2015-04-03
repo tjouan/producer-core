@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'net-sftp',  '~> 2.1'
 
   s.add_development_dependency 'rspec',         '~> 3.1'
-  s.add_development_dependency 'cucumber',      '~> 1.3'
+  s.add_development_dependency 'cucumber',      '~> 2.0'
   s.add_development_dependency 'aruba',         '~> 0.5'
   s.add_development_dependency 'cucumber-sshd', '~> 0.1'
   s.add_development_dependency 'rake',          '~> 10.1'

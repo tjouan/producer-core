@@ -4,6 +4,10 @@ producer
   Software provisioning and configuration management tool, providing a
 DSL to write "recipes".
 
+[![Version      ][badge-version-img]][badge-version-uri]
+[![Build status ][badge-build-img]][badge-build-uri]
+[![Code Climate ][badge-cclimate-img]][badge-cclimate-uri]
+
 
 Getting started
 ---------------
@@ -371,3 +375,12 @@ Similar or related code and tools
 * https://github.com/auxesis/cucumber-nagios (Cucumber, Net::SSH,
   Webrat)
 * http://larsyencken.github.io/marelle/ (Prolog, babushka inspired)
+
+
+
+[badge-version-img]:  https://img.shields.io/gem/v/producer-core.svg?style=flat
+[badge-version-uri]:  https://rubygems.org/gems/producer-core
+[badge-build-img]:    https://img.shields.io/travis/tjouan/producer-core/master.svg?style=flat
+[badge-build-uri]:    https://travis-ci.org/tjouan/producer-core
+[badge-cclimate-img]: https://img.shields.io/codeclimate/github/tjouan/producer-core.svg
+[badge-cclimate-uri]: https://codeclimate.com/github/tjouan/producer-core

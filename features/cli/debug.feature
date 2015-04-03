@@ -1,11 +1,13 @@
 Feature: CLI debug option
 
-  Background:
-    Given a recipe with:
-      """
-      task(:trigger_error) { fail 'some error' }
-      """
-
-  Scenario: reports recipe errors
+  Scenario: reports recipe errors with their cause
+    Given a recipe with an error
     When I execute the recipe with option -d
     Then the output must match /\ARuntimeError:.*\n\ncause:\nRuntimeError:/
+
+  Scenario: does not exclude anything from backtrace
+    Given a recipe using a remote
+    When I execute the recipe on unknown remote target with option -d
+    Then the output must contain "producer-core"
+    And the output must contain "net-ssh"
+    And the output must contain ruby lib directory

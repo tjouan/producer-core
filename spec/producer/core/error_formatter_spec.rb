@@ -25,9 +25,10 @@ module Producer
       describe '#format' do
         let(:rubylibdir)  { RbConfig::CONFIG['rubylibdir'] }
         let(:bt)          { %W[backtrace /producer-core /net-ssh #{rubylibdir}] }
+        let(:exception)   { RuntimeError.new('some exception').tap { |o| o.set_backtrace bt } }
 
-        def exception
-          begin fail 'original exception' rescue fail 'some exception' end
+        def exception_with_cause
+          begin fail 'exception cause' rescue fail 'some exception' end
         rescue => e
           e.tap { |o| o.set_backtrace bt }
         end
@@ -41,24 +42,41 @@ module Producer
           expect(formatter.format exception).to match /^\s+backtrace$/
         end
 
-        context 'filtering' do
-          it 'excludes producer code from the backtrace' do
-            expect(formatter.format exception).not_to include 'producer-core'
+        it 'excludes producer code from the backtrace' do
+          expect(formatter.format exception).not_to include 'producer-core'
+        end
+
+        it 'excludes net-ssh from the backtrace' do
+          expect(formatter.format exception).not_to include 'net-ssh'
+        end
+
+        it 'excludes ruby lib directory from the backtrace' do
+          expect(formatter.format exception).not_to include rubylibdir
+        end
+
+        context 'when exception has a cause' do
+          it 'does not include the cause' do
+            expect(formatter.format exception_with_cause)
+              .not_to include 'exception cause'
+          end
+        end
+
+        context 'when debug is enabled' do
+          let(:debug) { true }
+
+          it 'does not filter the backtrace' do
+            expect(formatter.format exception).to include 'producer-core'
           end
 
-          it 'excludes net-ssh from the backtrace' do
-            expect(formatter.format exception).not_to include 'net-ssh'
-          end
+          context 'when exception has a cause' do
+            it 'includes the exception cause' do
+              expect(formatter.format exception_with_cause)
+                .to include 'exception cause'
+            end
 
-          it 'excludes ruby lib directory from the backtrace' do
-            expect(formatter.format exception).not_to include rubylibdir
-          end
-
-          context 'when debug is enabled' do
-            let(:debug) { true }
-
-            it 'does not exclude producer code from the backtrace' do
-              expect(formatter.format exception).to include 'producer-core'
+            it 'formats the cause' do
+              expect(formatter.format exception_with_cause)
+                .to match /^cause:\nRuntimeError: exception cause/
             end
           end
         end

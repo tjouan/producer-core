@@ -18,7 +18,7 @@ module Producer
       end
 
       def format(exception)
-        lines = format_exception exception
+        lines = format_exception exception, filter: !debug?
 
         if debug? && exception.cause
           lines << ''

@@ -27,6 +27,11 @@ When /^I execute the recipe on unknown remote target$/ do
   assert_matching_output '\ASocketError', all_output
 end
 
+When /^I execute the recipe on unknown remote target with option (-.+)$/ do |option|
+  run_simple "producer recipe.rb #{option} -t #unknown_host.test", false
+  assert_matching_output '\ASocketError', all_output
+end
+
 When /^I successfully execute the recipe$/ do
   step 'I execute the recipe'
   assert_exit_status 0

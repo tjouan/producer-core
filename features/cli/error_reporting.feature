@@ -25,3 +25,8 @@ Feature: CLI error reporting
     Given a recipe using a remote
     When I execute the recipe on unknown remote target
     Then the output must not contain "net-ssh"
+
+  Scenario: excludes ruby standard library from backtrace
+    Given a recipe using a remote
+    When I execute the recipe on unknown remote target
+    Then the output must not contain ruby lib directory

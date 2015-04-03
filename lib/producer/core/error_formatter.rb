@@ -3,6 +3,7 @@ module Producer
     class ErrorFormatter
       FILTERS = [
         /\/producer-\w+/,
+        Regexp.new(RbConfig::CONFIG['rubylibdir']),
         /\/net-ssh/,
         /\/net-sftp/
       ].freeze

@@ -23,7 +23,8 @@ module Producer
       end
 
       describe '#format' do
-        let(:bt) { %W[backtrace /producer-core /net-ssh] }
+        let(:rubylibdir)  { RbConfig::CONFIG['rubylibdir'] }
+        let(:bt)          { %W[backtrace /producer-core /net-ssh #{rubylibdir}] }
 
         def exception
           begin fail 'original exception' rescue fail 'some exception' end
@@ -47,6 +48,10 @@ module Producer
 
           it 'excludes net-ssh from the backtrace' do
             expect(formatter.format exception).not_to include 'net-ssh'
+          end
+
+          it 'excludes ruby lib directory from the backtrace' do
+            expect(formatter.format exception).not_to include rubylibdir
           end
 
           context 'when debug is enabled' do

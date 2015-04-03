@@ -25,3 +25,7 @@ end
 Then /^the error output must contain exactly "([^"]+)"$/ do |content|
   assert_exact_output content, all_stderr
 end
+
+Then /^the output must not contain ruby lib directory$/ do
+  assert_no_partial_output RbConfig::CONFIG['rubylibdir'], all_output
+end

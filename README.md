@@ -8,7 +8,7 @@ DSL to write "recipes".
 Getting started
 ---------------
 
-### Installation (requires ruby and rubygems)
+### Installation (requires ruby ~> 2.1 and rubygems)
 
     $ gem install producer-core
 

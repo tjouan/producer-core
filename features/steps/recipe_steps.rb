@@ -14,6 +14,10 @@ When /^I execute the recipe on remote target$/ do
   run_simple 'producer recipe.rb -t some_host.test', false
 end
 
+When /^I execute the recipe on unknown remote target$/ do
+  run_simple 'producer recipe.rb -t #unknown_host.test', false
+end
+
 When /^I successfully execute the recipe$/ do
   step 'I execute the recipe'
   assert_exit_status 0

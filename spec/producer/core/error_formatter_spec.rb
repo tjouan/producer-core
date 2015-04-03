@@ -39,10 +39,16 @@ module Producer
         end
 
         context 'filtering' do
-          before { exception.set_backtrace %w[back trace /producer-core/lib/] }
+          let(:bt) { %w[back trace producer-core net-ssh net-sftp] }
+
+          before { exception.set_backtrace bt }
 
           it 'excludes producer code from the backtrace' do
             expect(formatter.format exception).not_to include 'producer-core'
+          end
+
+          it 'excludes net-ssh from the backtrace' do
+            expect(formatter.format exception).not_to include 'net-ssh'
           end
 
           context 'when debug is enabled' do

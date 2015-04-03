@@ -378,9 +378,9 @@ Similar or related code and tools
 
 
 
-[badge-version-img]:  https://img.shields.io/gem/v/producer-core.svg
+[badge-version-img]:  https://img.shields.io/gem/v/producer-core.svg?style=flat-square
 [badge-version-uri]:  https://rubygems.org/gems/producer-core
-[badge-build-img]:    https://img.shields.io/travis/tjouan/producer-core/master.svg
+[badge-build-img]:    https://img.shields.io/travis/tjouan/producer-core/master.svg?style=flat-square
 [badge-build-uri]:    https://travis-ci.org/tjouan/producer-core
-[badge-cclimate-img]: https://img.shields.io/codeclimate/github/tjouan/producer-core.svg
+[badge-cclimate-img]: https://img.shields.io/codeclimate/github/tjouan/producer-core.svg?style=flat-square
 [badge-cclimate-uri]: https://codeclimate.com/github/tjouan/producer-core

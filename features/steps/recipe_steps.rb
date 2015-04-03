@@ -2,6 +2,14 @@ Given /^a recipe with:$/ do |recipe_body|
   write_file 'recipe.rb', recipe_body
 end
 
+Given /^a recipe with an error$/ do
+  write_file 'recipe.rb', "task(:trigger_error) { fail 'some error' }\n"
+end
+
+Given /^a recipe using a remote$/ do
+  write_file 'recipe.rb', "task(:some_task) { sh 'echo hello' }\n"
+end
+
 Given /^a recipe named "([^"]+)" with:$/ do |recipe_path, recipe_body|
   write_file recipe_path, recipe_body
 end
@@ -16,6 +24,7 @@ end
 
 When /^I execute the recipe on unknown remote target$/ do
   run_simple 'producer recipe.rb -t #unknown_host.test', false
+  assert_matching_output '\ASocketError', all_output
 end
 
 When /^I successfully execute the recipe$/ do

@@ -3,8 +3,8 @@ module Producer
     class ErrorFormatter
       FILTERS = [
         /\/producer-\w+\/(?:bin|lib)\//,
-        /\/net\/ssh\//,
-        /\/net\/sftp\//
+        /\/net-ssh/,
+        /\/net-sftp/
       ].freeze
 
       def initialize(debug: false, force_cause: [])

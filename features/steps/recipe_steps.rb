@@ -1,9 +1,25 @@
+def run_recipe(remote: false, options: nil, check: false, rargv: nil)
+  command = %w[producer recipe.rb]
+  case remote
+  when :unknown then command += %w[-t unknown_host.test]
+  when true     then command += %w[-t some_host.test]
+  end
+  command << options if options
+  command << ['--', *rargv] if rargv
+
+  p command.join(' ')
+  run_simple command.join(' '), false
+
+  assert_exit_status 0 if check
+  assert_matching_output '\ASocketError', all_output if remote == :unknown
+end
+
 Given /^a recipe with:$/ do |recipe_body|
   write_file 'recipe.rb', recipe_body
 end
 
 Given /^a recipe with an error$/ do
-  write_file 'recipe.rb', "task(:trigger_error) { fail 'some error' }\n"
+  write_file 'recipe.rb', "fail 'some error'\n"
 end
 
 Given /^a recipe using a remote$/ do
@@ -15,45 +31,39 @@ Given /^a recipe named "([^"]+)" with:$/ do |recipe_path, recipe_body|
 end
 
 When /^I execute the recipe$/ do
-  run_simple 'producer recipe.rb', false
+  run_recipe
 end
 
 When /^I execute the recipe on remote target$/ do
-  run_simple 'producer recipe.rb -t some_host.test', false
+  run_recipe remote: true
 end
 
 When /^I execute the recipe on unknown remote target$/ do
-  run_simple 'producer recipe.rb -t #unknown_host.test', false
-  assert_matching_output '\ASocketError', all_output
+  run_recipe remote: :unknown
 end
 
-When /^I execute the recipe on unknown remote target with option (-.+)$/ do |option|
-  run_simple "producer recipe.rb #{option} -t #unknown_host.test", false
-  assert_matching_output '\ASocketError', all_output
+When /^I execute the recipe with options? (-.+)$/ do |options|
+  run_recipe options: options
+end
+
+When /^I execute the recipe on unknown remote target with options? (-.+)$/ do |options|
+  run_recipe remote: :unknown, options: options
 end
 
 When /^I successfully execute the recipe$/ do
-  step 'I execute the recipe'
-  assert_exit_status 0
+  run_recipe check: true
 end
 
 When /^I successfully execute the recipe on remote target$/ do
-  step 'I execute the recipe on remote target'
-  assert_exit_status 0
+  run_recipe remote: true, check: true
 end
 
-When /^I execute the recipe with option (-.+)$/ do |option|
-  run_simple "producer #{option} recipe.rb", false
+When /^I successfully execute the recipe with option? (-.+)$/ do |options|
+  run_recipe options: options, check: true
 end
 
-When /^I successfully execute the recipe with option (-.+)$/ do |option|
-  run_simple "producer #{option} recipe.rb", false
-  assert_exit_status 0
-end
-
-When /^I successfully execute the recipe with arguments "([^"]+)"$/ do |arguments|
-  run_simple "producer recipe.rb -- #{arguments}", false
-  assert_exit_status 0
+When /^I successfully execute the recipe with arguments "([^"]+)"$/ do |rargv|
+  run_recipe rargv: rargv, check: true
 end
 
 When /^I execute the recipe interactively$/ do

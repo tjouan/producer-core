@@ -130,6 +130,20 @@ module Producer::Core
         end
       end
 
+      context 'with recipe arguments' do
+        let(:arguments) { %w[recipe.rb -- foo] }
+
+        it 'removes recipe arguments' do
+          cli.parse_arguments!
+          expect(cli.arguments).to eq %w[recipe.rb]
+        end
+
+        it 'assigns env recipe arguments' do
+          cli.parse_arguments!
+          expect(cli.env.recipe_argv).to eq %w[foo]
+        end
+      end
+
       context 'when no arguments remains after parsing' do
         let(:arguments) { [] }
 

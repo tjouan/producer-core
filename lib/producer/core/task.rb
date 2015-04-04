@@ -18,6 +18,7 @@ module Producer
       def_delegators  :@env,  :target
       def_delegator   :@env,  :[], :get
       def_delegator   :@env,  :key?, :set?
+      def_delegator   :@env,  :recipe_argv
 
       define_action :echo,                  Actions::Echo
       define_action :sh,                    Actions::ShellCommand

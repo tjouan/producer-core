@@ -8,6 +8,8 @@ module Producer
       EX_USAGE    = 64
       EX_SOFTWARE = 70
 
+      ARGUMENTS_SEPARATOR = '--'.freeze
+
       class << self
         def run!(arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr)
           cli = new(arguments, stdin: stdin, stdout: stdout, stderr: stderr)
@@ -39,6 +41,9 @@ module Producer
       end
 
       def parse_arguments!
+        if @arguments.include? ARGUMENTS_SEPARATOR
+          @arguments, @env.recipe_argv = split_arguments_lists @arguments
+        end
         option_parser.parse!(@arguments)
         fail ArgumentError, option_parser if @arguments.empty?
       end
@@ -58,6 +63,13 @@ module Producer
 
       def build_env
         Env.new(input: @stdin, output: @stdout, error_output: @stderr)
+      end
+
+      def split_arguments_lists(arguments)
+        arguments
+          .chunk  { |e| e == ARGUMENTS_SEPARATOR }
+          .reject { |b, a| b }
+          .map    &:last
       end
 
       def option_parser

@@ -179,5 +179,13 @@ module Producer::Core
         expect(task.target).to eq :some_target
       end
     end
+
+    describe '#recipe_argv' do
+      before { env.recipe_argv = %w[foo bar] }
+
+      it 'returns recipe arguments' do
+        expect(task.recipe_argv).to eq %w[foo bar]
+      end
+    end
   end
 end

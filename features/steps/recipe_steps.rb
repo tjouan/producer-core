@@ -51,6 +51,11 @@ When /^I successfully execute the recipe with option (-.+)$/ do |option|
   assert_exit_status 0
 end
 
+When /^I successfully execute the recipe with arguments "([^"]+)"$/ do |arguments|
+  run_simple "producer recipe.rb -- #{arguments}", false
+  assert_exit_status 0
+end
+
 When /^I execute the recipe interactively$/ do
   run_interactive 'producer recipe.rb'
 end

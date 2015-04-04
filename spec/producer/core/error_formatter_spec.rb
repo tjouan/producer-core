@@ -24,7 +24,7 @@ module Producer
 
       describe '#format' do
         let(:rubylibdir)  { RbConfig::CONFIG['rubylibdir'] }
-        let(:bt)          { %W[backtrace /producer-core /net-ssh #{rubylibdir}] }
+        let(:bt)          { %W[backtrace /producer /net-ssh #{rubylibdir}] }
         let(:exception)   { RuntimeError.new('some exception').tap { |o| o.set_backtrace bt } }
 
         def exception_with_cause
@@ -43,7 +43,7 @@ module Producer
         end
 
         it 'excludes producer code from the backtrace' do
-          expect(formatter.format exception).not_to include 'producer-core'
+          expect(formatter.format exception).not_to include 'producer'
         end
 
         it 'excludes net-ssh from the backtrace' do
@@ -65,7 +65,7 @@ module Producer
           let(:debug) { true }
 
           it 'does not filter the backtrace' do
-            expect(formatter.format exception).to include 'producer-core'
+            expect(formatter.format exception).to include 'producer'
           end
 
           context 'when exception has a cause' do

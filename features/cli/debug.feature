@@ -8,6 +8,6 @@ Feature: CLI debug option
   Scenario: does not exclude anything from backtrace
     Given a recipe using a remote
     When I execute the recipe on unknown remote target with option -d
-    Then the output must contain "producer-core"
+    Then the output must contain "producer"
     And the output must contain "net-ssh"
     And the output must contain ruby lib directory

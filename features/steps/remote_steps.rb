@@ -16,7 +16,7 @@ Given /^a remote file named "([^"]+)" with "([^"]+)"$/ do |file_name, content|
   write_file file_name, content
 end
 
-Then /^the remote directory "([^"]+)" must exists$/ do |path|
+Then /^the remote directory "([^"]+)" must exist$/ do |path|
   check_directory_presence [path], true
 end
 

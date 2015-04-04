@@ -47,7 +47,7 @@ module Producer::Core
           end
         end
 
-        context 'when parent directories does not exists' do
+        context 'when parent directories does not exist' do
           let(:path) { 'some/path' }
 
           it 'creates parent directories' do

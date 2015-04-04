@@ -13,7 +13,7 @@ Feature: `mkdir' task action
 
   Scenario: creates directory given as argument
     When I successfully execute the recipe on remote target
-    Then the remote directory "some_directory" must exists
+    Then the remote directory "some_directory" must exist
 
   Scenario: creates directory with given attributes
     When I successfully execute the recipe on remote target
@@ -28,4 +28,4 @@ Feature: `mkdir' task action
       end
       """
     When I successfully execute the recipe on remote target
-    Then the remote directory "some/directory" must exists
+    Then the remote directory "some/directory" must exist

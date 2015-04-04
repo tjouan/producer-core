@@ -7,7 +7,6 @@ def run_recipe(remote: false, options: nil, check: false, rargv: nil)
   command << options if options
   command << ['--', *rargv] if rargv
 
-  p command.join(' ')
   run_simple command.join(' '), false
 
   assert_exit_status 0 if check

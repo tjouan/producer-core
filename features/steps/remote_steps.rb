@@ -1,3 +1,9 @@
+def stat_mode(path)
+  in_current_dir do
+    ('%o' % [File::Stat.new(path).mode])[-4, 4]
+  end
+end
+
 Given /^a remote directory named "([^"]+)"$/ do |path|
   create_dir path
 end
@@ -24,12 +30,6 @@ end
 
 Then /^the remote file "([^"]+)" must match \/([^\/]+)\/$/ do |path, pattern|
   check_file_content path, /#{pattern}/, true
-end
-
-def stat_mode(path)
-  in_current_dir do
-    ('%o' % [File::Stat.new(path).mode])[-4, 4]
-  end
 end
 
 Then /^the remote file "([^"]+)" must have (\d+) mode$/ do |path, mode|

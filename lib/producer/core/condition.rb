@@ -14,8 +14,7 @@ module Producer
               else
                 klass = test
               end
-              t = klass.new(@env, *args, negated: negated)
-              @tests << t
+              @tests << klass.new(@env, *args, negated: negated)
             end
           end
         end

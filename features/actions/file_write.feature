@@ -1,4 +1,4 @@
-@sshd
+@sshd @mocked_home_directory
 Feature: `file_write' task action
 
   Background:

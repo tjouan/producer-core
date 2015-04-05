@@ -1,4 +1,4 @@
-@sshd
+@sshd @mocked_home_directory
 Feature: `mkdir' task action
 
   Background:

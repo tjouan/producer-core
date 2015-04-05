@@ -1,4 +1,4 @@
-@sshd
+@sshd @mocked_home_directory
 Feature: `file_replace_content' task action
 
   Background:

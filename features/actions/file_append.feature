@@ -1,4 +1,4 @@
-@sshd
+@sshd @mocked_home_directory
 Feature: `file_append' task action
 
   Background:

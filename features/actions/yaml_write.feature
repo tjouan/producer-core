@@ -1,4 +1,4 @@
-@sshd
+@sshd @mocked_home_directory
 Feature: `yaml_write' task action
 
   Background:

@@ -20,11 +20,19 @@ Then /^the remote directory "([^"]+)" must exist$/ do |path|
   check_directory_presence [path], true
 end
 
+Then /^the remote file "([^"]+)" must exist$/ do |path|
+  check_file_presence [path], true
+end
+
 Then /^the remote file "([^"]+)" must contain "([^"]+)"$/ do |path, content|
   check_file_content path, content, true
 end
 
 Then /^the remote file "([^"]+)" must contain exactly "([^"]+)"$/ do |path, content|
+  check_file_content path, content
+end
+
+Then /^the remote file "([^"]+)" must contain exactly:$/ do |path, content|
   check_file_content path, content
 end
 

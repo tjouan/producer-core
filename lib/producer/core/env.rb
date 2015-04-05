@@ -28,11 +28,9 @@ module Producer
       alias get []
 
       def logger
-        @logger ||= begin
-          logger = Logger.new(output)
-          logger.level = verbose? ? Logger::INFO : Logger::WARN
-          logger.formatter = LoggerFormatter.new
-          logger
+        @logger ||= Logger.new(output).tap do |o|
+          o.level     = verbose? ? Logger::INFO : Logger::WARN
+          o.formatter = LoggerFormatter.new
         end
       end
 

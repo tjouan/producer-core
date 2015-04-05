@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec',         '~> 3.1'
   s.add_development_dependency 'cucumber',      '~> 2.0'
   s.add_development_dependency 'aruba',         '~> 0.5'
-  s.add_development_dependency 'cucumber-sshd', '~> 1.0'
+  s.add_development_dependency 'cucumber-sshd', '~> 1.1'
   s.add_development_dependency 'rake',          '~> 10.1'
 end

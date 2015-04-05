@@ -57,6 +57,10 @@ When /^I successfully execute the recipe on remote target$/ do
   run_recipe remote: true, check: true
 end
 
+When /^I successfully execute the recipe on remote target with option? (-.+)$/ do |options|
+  run_recipe remote: true, options: options, check: true
+end
+
 When /^I successfully execute the recipe with option? (-.+)$/ do |options|
   run_recipe options: options, check: true
 end

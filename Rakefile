@@ -6,8 +6,8 @@ task default: %i[features spec]
 Cucumber::Rake::Task.new(:features)
 
 Cucumber::Rake::Task.new(:features_no_sshd) do |t|
-  t.instance_eval { @desc << ' excluding @sshd'}
-  t.cucumber_opts = '--tags ~@sshd'
+  t.instance_eval { @desc << ' excluding @ci_skip' }
+  t.cucumber_opts = '--tags ~@ci_skip'
 end
 
 RSpec::Core::RakeTask.new(:spec)

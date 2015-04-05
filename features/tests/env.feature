@@ -37,6 +37,7 @@ Feature: `env?' condition keyword
     When I successfully execute the recipe on remote target
     Then the output must not contain "definition_ko"
 
+  @ci_skip
   Scenario: succeeds when remote environment variable value match
     When I successfully execute the recipe on remote target
     Then the output must contain "value_ok"

@@ -26,11 +26,6 @@ Before('~@exec') do
   Aruba.process = Aruba::InProcess
 end
 
-# Fake home directory for @fake_home tagged scenarios.
-Before('@fake_home') do
-  ENV['HOME'] = File.expand_path(current_dir)
-end
-
 # Enable cucumber-sshd "fast" mode (persists sshd across scenarios), and
 # register hooks for @sshd tagged scenarios.
 Before do

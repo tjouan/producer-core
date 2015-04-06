@@ -8,15 +8,16 @@ module Producer::Core
     let(:options)     { [] }
     let(:recipe_file) { fixture_path_for 'recipes/some_recipe.rb' }
     let(:arguments)   { [*options, recipe_file] }
+    let(:environment) { {} }
 
-    subject(:cli)     { described_class.new(arguments) }
+    subject(:cli)     { described_class.new(arguments, environment) }
 
     describe '.run!' do
       subject(:run!) { described_class.run! arguments }
 
-      it 'builds a new CLI instance with given arguments' do
+      it 'builds a new CLI instance with given arguments and environment' do
         expect(described_class)
-          .to receive(:new).with(arguments, anything).and_call_original
+          .to receive(:new).with(arguments, ENV, anything).and_call_original
         run!
       end
 
@@ -74,6 +75,14 @@ module Producer::Core
 
       it 'assigns CLI stderr as the env error output' do
         expect(cli.env.error_output).to be cli.stderr
+      end
+
+      context 'when PRODUCER_VERBOSE environment variable is set' do
+        before { environment['PRODUCER_VERBOSE'] = 'yes' }
+
+        it 'enables env verbose mode' do
+          expect(cli.env).to be_verbose
+        end
       end
     end
 

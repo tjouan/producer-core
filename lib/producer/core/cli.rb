@@ -10,9 +10,13 @@ module Producer
 
       ARGUMENTS_SEPARATOR = '--'.freeze
 
+      ENV_VERBOSE_KEY = 'PRODUCER_VERBOSE'.freeze
+
       class << self
         def run!(arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr)
-          cli = new(arguments, stdin: stdin, stdout: stdout, stderr: stderr)
+          cli = new(
+            arguments, ENV, stdin: stdin, stdout: stdout, stderr: stderr
+          )
           begin
             cli.parse_arguments!
             cli.run
@@ -32,12 +36,14 @@ module Producer
 
       attr_reader :arguments, :stdin, :stdout, :stderr, :env
 
-      def initialize(args, stdin: $stdin, stdout: $stdout, stderr: $stderr)
+      def initialize(args, environment, stdin: $stdin, stdout: $stdout, stderr: $stderr)
         @arguments  = args
         @stdin      = stdin
         @stdout     = stdout
         @stderr     = stderr
         @env        = build_env
+
+        configure_environment! environment
       end
 
       def parse_arguments!
@@ -63,6 +69,10 @@ module Producer
 
       def build_env
         Env.new(input: @stdin, output: @stdout, error_output: @stderr)
+      end
+
+      def configure_environment!(environment)
+        @env.verbose = true if environment.key? ENV_VERBOSE_KEY
       end
 
       def split_arguments_lists(arguments)

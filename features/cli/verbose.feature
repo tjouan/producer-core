@@ -41,3 +41,8 @@ Feature: CLI verbose option
       """
     When I successfully execute the recipe with option -v
     Then the output must match /action: .{,70}$/
+
+  Scenario: enables verbose mode from the environment
+    Given I set the environment variable "PRODUCER_VERBOSE"
+    When I successfully execute the recipe
+    Then the output must contain "Task"

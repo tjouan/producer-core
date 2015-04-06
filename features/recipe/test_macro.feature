@@ -18,7 +18,7 @@ Feature: `test_macro' recipe keyword
     Then the output must contain "2"
     And the output must not contain "1"
 
-  @sshd @mocked_home_directory
+  @sshd
   Scenario: has access to core tests
     Given a recipe with:
       """

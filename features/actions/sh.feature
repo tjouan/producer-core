@@ -1,4 +1,4 @@
-@sshd @mocked_home_directory
+@sshd
 Feature: `sh' task action
 
   Scenario: forwards standard ouput

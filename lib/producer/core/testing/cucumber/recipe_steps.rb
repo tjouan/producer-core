@@ -7,7 +7,9 @@ def run_recipe(remote: false, options: nil, check: false, rargv: nil)
   command << options if options
   command << ['--', *rargv] if rargv
 
-  run_simple command.join(' '), false
+  with_env 'HOME' => File.expand_path(current_dir) do
+    run_simple command.join(' '), false
+  end
 
   assert_exit_status 0 if check
   assert_matching_output '\ASocketError', all_output if remote == :unknown

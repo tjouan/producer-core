@@ -92,6 +92,14 @@ module Producer::Core
           expect(cli.env).to be_debug
         end
       end
+
+      context 'when PRODUCER_DRYRUN environment variable is set' do
+        before { environment['PRODUCER_DRYRUN'] = 'yes' }
+
+        it 'enables env dry run mode' do
+          expect(cli.env).to be_dry_run
+        end
+      end
     end
 
     describe '#parse_arguments!' do

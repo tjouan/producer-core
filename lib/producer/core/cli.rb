@@ -12,6 +12,7 @@ module Producer
 
       ENV_VERBOSE_KEY = 'PRODUCER_VERBOSE'.freeze
       ENV_DEBUG_KEY   = 'PRODUCER_DEBUG'.freeze
+      ENV_DRYRUN_KEY  = 'PRODUCER_DRYRUN'.freeze
 
       class << self
         def run!(arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr)
@@ -73,8 +74,9 @@ module Producer
       end
 
       def configure_environment!(environment)
-        @env.verbose = true if environment.key? ENV_VERBOSE_KEY
-        @env.debug = true   if environment.key? ENV_DEBUG_KEY
+        @env.verbose  = true if environment.key? ENV_VERBOSE_KEY
+        @env.debug    = true if environment.key? ENV_DEBUG_KEY
+        @env.dry_run  = true if environment.key? ENV_DRYRUN_KEY
       end
 
       def split_arguments_lists(arguments)

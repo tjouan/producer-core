@@ -16,6 +16,7 @@ module Producer
       extend Forwardable
       def_delegators  :@name, :to_s
       def_delegators  :@env,  :target
+      def_delegator   :@env,  :[]=, :set
       def_delegator   :@env,  :[], :get
       def_delegator   :@env,  :key?, :set?
       def_delegator   :@env,  :recipe_argv

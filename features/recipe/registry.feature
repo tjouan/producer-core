@@ -57,6 +57,17 @@ Feature: key/value registry
     When I successfully execute the recipe
     Then the output must contain "some_value"
 
+  Scenario: `set' keyword sets a value from a task
+    Given a recipe with:
+      """
+      task :registry_testing do
+        set :some_key, 'some_value'
+        echo get :some_key
+      end
+      """
+    When I successfully execute the recipe
+    Then the output must contain "some_value"
+
   Scenario: `set?' keyword tests wether given key is defined
     Given a recipe with:
       """

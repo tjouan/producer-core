@@ -152,6 +152,13 @@ module Producer::Core
       end
     end
 
+    describe '#set' do
+      it 'sets a value in the registry' do
+        task.set :some_key, :some_value
+        expect(task.get :some_key).to eq :some_value
+      end
+    end
+
     describe '#get' do
       before { env[:some_key] = :some_value }
 

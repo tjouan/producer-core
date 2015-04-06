@@ -11,3 +11,9 @@ Feature: CLI debug option
     Then the output must contain "producer"
     And the output must contain "net-ssh"
     And the output must contain ruby lib directory
+
+  Scenario: enables debug mode from the environment
+    Given a recipe with an error
+    And I set the environment variable "PRODUCER_DEBUG"
+    When I execute the recipe
+    Then the output must contain "producer"

@@ -84,6 +84,14 @@ module Producer::Core
           expect(cli.env).to be_verbose
         end
       end
+
+      context 'when PRODUCER_DEBUG environment variable is set' do
+        before { environment['PRODUCER_DEBUG'] = 'yes' }
+
+        it 'enables env debug mode' do
+          expect(cli.env).to be_debug
+        end
+      end
     end
 
     describe '#parse_arguments!' do

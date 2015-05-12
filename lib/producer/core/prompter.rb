@@ -9,8 +9,8 @@ module Producer
       end
 
       def prompt(question, choices)
-        cs = choices.each_with_index.inject('') do |m, (c, i)|
-          m += "#{i}: #{c.last}\n"
+        cs = choices.each_with_index.inject '' do |m, (c, i)|
+          m + "#{i}: #{c.last}\n"
         end
         output.puts "#{question}\n#{cs}Choice:"
         choice = input.gets

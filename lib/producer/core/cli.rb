@@ -93,15 +93,15 @@ module Producer
           opts.separator ''
           opts.separator 'options:'
 
-          opts.on '-v', '--verbose', 'enable verbose mode' do |e|
+          opts.on '-v', '--verbose', 'enable verbose mode' do
             env.verbose = true
           end
 
-          opts.on '-d', '--debug', 'enable debug mode' do |e|
+          opts.on '-d', '--debug', 'enable debug mode' do
             env.debug = true
           end
 
-          opts.on '-n', '--dry-run', 'enable dry run mode' do |e|
+          opts.on '-n', '--dry-run', 'enable dry run mode' do
             env.dry_run = true
           end
 

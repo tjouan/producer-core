@@ -24,7 +24,7 @@ module Producer
       def [](*args)
         @registry.fetch *args
       rescue KeyError
-        fail RegistryKeyError, args.first.inspect
+        raise RegistryKeyError, args.first.inspect
       end
       alias get []
 

@@ -7,7 +7,8 @@ module Producer
       attr_reader   :input, :output, :error_output, :registry, :logger
       attr_accessor :target, :verbose, :debug, :dry_run, :recipe_argv
 
-      def initialize(input: $stdin, output: $stdout, error_output: $stderr, remote: nil, registry: {})
+      def initialize(input: $stdin, output: $stdout, error_output: $stderr,
+          remote: nil, registry: {})
         @verbose = @debug = @dry_run = false
         @input        = input
         @output       = output

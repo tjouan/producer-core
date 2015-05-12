@@ -46,7 +46,7 @@ module Producer
       end
 
       def compose_macro(name, macro, *base_args)
-        self.class.class_eval { compose_macro name, macro, *base_args}
+        self.class.class_eval { compose_macro name, macro, *base_args }
       end
 
       def test_macro(name, &block)

@@ -52,12 +52,19 @@ module Producer
         @actions << self.class.evaluate(@env, name, *args, &block)
       end
 
-      def ask(question, choices, prompter: Prompter.new(@env.input, @env.output))
+      def ask(question, choices, prompter: build_prompter)
         prompter.prompt(question, choices)
       end
 
       def template(path, variables = {})
         Template.new(path).render variables
+      end
+
+
+      private
+
+      def build_prompter
+        Prompter.new(@env.input, @env.output)
       end
     end
   end

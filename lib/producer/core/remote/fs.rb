@@ -29,11 +29,11 @@ module Producer
         end
 
         def mkdir(path, attributes = {})
-          ret = sftp.mkdir! path, attributes
+          sftp.mkdir! path, attributes
         end
 
         def file_read(path)
-          sftp.file.open(path) { |f| content = f.read }
+          sftp.file.open(path) { |f| f.read }
         rescue Net::SFTP::StatusException
           nil
         end

@@ -38,7 +38,8 @@ module Producer
 
       attr_reader :arguments, :stdin, :stdout, :stderr, :env
 
-      def initialize(args, environment, stdin: $stdin, stdout: $stdout, stderr: $stderr)
+      def initialize(args, environment, stdin: $stdin, stdout: $stdout,
+          stderr: $stderr)
         @arguments  = args
         @stdin      = stdin
         @stdout     = stdout
@@ -82,7 +83,7 @@ module Producer
       def split_arguments_lists(arguments)
         arguments
           .chunk  { |e| e == ARGUMENTS_SEPARATOR }
-          .reject { |b, a| b }
+          .reject { |a, _| a }
           .map    &:last
       end
 

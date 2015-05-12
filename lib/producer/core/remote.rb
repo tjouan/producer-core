@@ -26,16 +26,16 @@ module Producer
 
       def execute(command, output = '', error_output = '')
         session.open_channel do |channel|
-          channel.exec command do |ch, success|
-            ch.on_data do |c, data|
+          channel.exec command do |ch, _success|
+            ch.on_data do |_c, data|
               output << data
             end
 
-            ch.on_extended_data do |c, type, data|
+            ch.on_extended_data do |_c, _type, data|
               error_output << data
             end
 
-            ch.on_request 'exit-status' do |c, data|
+            ch.on_request 'exit-status' do |_c, data|
               exit_status = data.read_long
               fail RemoteCommandExecutionError, command if exit_status != 0
             end

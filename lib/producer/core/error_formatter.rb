@@ -56,7 +56,7 @@ module Producer
       end
 
       def indent_backtrace(backtrace)
-        backtrace.map { |e| '  %s' % e }
+        backtrace.map { |e| '  ' + e }
       end
     end
   end

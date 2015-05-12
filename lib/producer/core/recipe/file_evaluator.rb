@@ -7,7 +7,7 @@ module Producer
             content = File.read(file_path)
             begin
               Recipe.new(env).tap { |o| o.instance_eval content, file_path }
-            rescue Exception => e
+            rescue ::StandardError, ::ScriptError => e
               raise RecipeEvaluationError, e.message, [
                 '%s (recipe)' % file_path,
                 *e.backtrace

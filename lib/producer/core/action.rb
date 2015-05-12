@@ -32,9 +32,8 @@ module Producer
       end
 
       def check_arguments_size!(size)
-        if arguments.compact.size != size
-          fail ArgumentError, '`%s\' action requires %d arguments' % [name, size]
-        end
+        return if arguments.compact.size == size
+        fail ArgumentError, '`%s\' action requires %d arguments' % [name, size]
       end
     end
   end

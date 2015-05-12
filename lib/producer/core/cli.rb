@@ -93,20 +93,17 @@ module Producer
           opts.separator ''
           opts.separator 'options:'
 
-          opts.on '-v', '--verbose', 'enable verbose mode' do
-            env.verbose = true
-          end
-
-          opts.on '-d', '--debug', 'enable debug mode' do
-            env.debug = true
-          end
-
-          opts.on '-n', '--dry-run', 'enable dry run mode' do
-            env.dry_run = true
-          end
-
+          option_parser_add_boolean_options opts
           opts.on '-t', '--target HOST', 'target host' do |e|
             env.target = e
+          end
+        end
+      end
+
+      def option_parser_add_boolean_options(opts)
+        { v: 'verbose', d: 'debug', n: 'dry run' }.each do |k, v|
+          opts.on "-#{k}", "--#{v.tr ' ', '-'}", "enable #{v} mode" do
+            env.send "#{v.tr ' ', '_'}=", true
           end
         end
       end

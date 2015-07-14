@@ -1,3 +1,15 @@
+Then /^the output must contain exactly the usage$/ do
+  assert_exact_output <<-eoh, all_output
+Usage: producer [options] [recipes]
+
+options:
+    -v, --verbose                    enable verbose mode
+    -d, --debug                      enable debug mode
+    -n, --dry-run                    enable dry run mode
+    -t, --target HOST                target host
+  eoh
+end
+
 Then /^the output must match \/([^\/]+)\/$/ do |pattern|
   assert_matching_output pattern, all_output
 end

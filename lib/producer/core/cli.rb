@@ -51,6 +51,8 @@ module Producer
         end
         option_parser.parse! @arguments
         fail ArgumentError, option_parser if @arguments.empty?
+      rescue OptionParser::InvalidOption
+        raise ArgumentError, option_parser
       end
 
       def run worker: Worker.new(@env)

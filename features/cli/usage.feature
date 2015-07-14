@@ -4,14 +4,10 @@ Feature: CLI usage
   Scenario: prints the usage when an argument is missing
     When I run `producer`
     Then the exit status must be 64
-    And the output must contain exactly:
-      """
-      Usage: producer [options] [recipes]
+    And the output must contain exactly the usage
 
-      options:
-          -v, --verbose                    enable verbose mode
-          -d, --debug                      enable debug mode
-          -n, --dry-run                    enable dry run mode
-          -t, --target HOST                target host
-
-      """
+  @exec
+  Scenario: prints the usage when unknown option switch is given
+    When I run `producer --unknown-option`
+    Then the exit status must be 64
+    And the output must contain exactly the usage

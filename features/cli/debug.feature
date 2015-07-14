@@ -3,7 +3,7 @@ Feature: CLI debug option
   Scenario: reports recipe errors with their cause
     Given a recipe with an error
     When I execute the recipe with option -d
-    Then the output must match /\ARuntimeError:.*\n\ncause:\nRuntimeError:/
+    Then the output must match /\ARecipeEvaluationError:.*\n\ncause:\nRuntimeError:/
 
   Scenario: does not exclude anything from backtrace
     Given a recipe using a remote

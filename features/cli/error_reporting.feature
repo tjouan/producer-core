@@ -4,7 +4,7 @@ Feature: CLI error reporting
     Given a recipe with an error
     When I execute the recipe
     Then the exit status must be 70
-    And the output must match /\ARuntimeError: some error\n/
+    And the output must match /\ARecipeEvaluationError: some error\n/
 
   Scenario: reports errors with a backtrace
     Given a recipe with an error

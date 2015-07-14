@@ -18,15 +18,16 @@ module Producer
       end
 
       def format exception
-        lines = format_exception exception, filter: !debug?
-
         if debug? && exception.cause
+          lines = format_exception exception, filter: true
           lines << ''
           lines << 'cause:'
           lines << format_exception(exception.cause, filter: false)
+        else
+          lines = format_exception exception, filter: !debug?
         end
 
-        lines.join("\n")
+        lines.join "\n"
       end
 
     private
@@ -39,7 +40,6 @@ module Producer
       end
 
       def format_message exception
-        exception = exception.cause if @force_cause.include? exception.class
         "#{exception.class.name.split('::').last}: #{exception.message}"
       end
 

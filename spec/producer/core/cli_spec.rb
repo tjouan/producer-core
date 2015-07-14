@@ -55,7 +55,7 @@ module Producer::Core
 
         it 'prints a report to the error stream' do
           expect { trap_exit { run! } }
-            .to output(/\ARemoteCommandExecutionError: false$/).to_stderr
+            .to output(/\ARecipeEvaluationError: false$/).to_stderr
         end
       end
     end

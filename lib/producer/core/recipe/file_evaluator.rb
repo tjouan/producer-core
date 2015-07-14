@@ -3,7 +3,7 @@ module Producer
     class Recipe
       class FileEvaluator
         class << self
-          def evaluate(file_path, env)
+          def evaluate file_path, env
             content = File.read(file_path)
             begin
               Recipe.new(env).tap { |o| o.instance_eval content, file_path }

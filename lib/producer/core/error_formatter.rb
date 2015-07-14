@@ -8,7 +8,7 @@ module Producer
         /\/net-sftp/
       ].freeze
 
-      def initialize(debug: false, force_cause: [])
+      def initialize debug: false, force_cause: []
         @debug        = debug
         @force_cause  = force_cause
       end
@@ -17,7 +17,7 @@ module Producer
         !!@debug
       end
 
-      def format(exception)
+      def format exception
         lines = format_exception exception, filter: !debug?
 
         if debug? && exception.cause
@@ -29,33 +29,32 @@ module Producer
         lines.join("\n")
       end
 
+    private
 
-      private
-
-      def format_exception(exception, filter: true)
+      def format_exception exception, filter: true
         [
           format_message(exception),
           *format_backtrace(exception.backtrace, filter: filter)
         ]
       end
 
-      def format_message(exception)
+      def format_message exception
         exception = exception.cause if @force_cause.include? exception.class
         "#{exception.class.name.split('::').last}: #{exception.message}"
       end
 
-      def format_backtrace(backtrace, filter: true)
+      def format_backtrace backtrace, filter: true
         backtrace = filter_backtrace backtrace if filter
         indent_backtrace backtrace
       end
 
-      def filter_backtrace(backtrace)
+      def filter_backtrace backtrace
         backtrace.reject do |line|
           FILTERS.any? { |filter| line =~ filter }
         end
       end
 
-      def indent_backtrace(backtrace)
+      def indent_backtrace backtrace
         backtrace.map { |e| '  ' + e }
       end
     end

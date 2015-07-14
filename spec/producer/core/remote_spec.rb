@@ -128,7 +128,7 @@ module Producer::Core
 
         it 'raises an exception' do
           expect { remote.execute command }
-            .to raise_error(RemoteCommandExecutionError)
+            .to raise_error RemoteCommandExecutionError
         end
 
         it 'includes the command in the exception message' do

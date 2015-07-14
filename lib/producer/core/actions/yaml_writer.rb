@@ -11,8 +11,7 @@ module Producer
           'yaml_write'
         end
 
-
-        private
+      private
 
         def arguments_size
           1

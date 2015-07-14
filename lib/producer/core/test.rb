@@ -7,7 +7,7 @@ module Producer
 
       attr_reader :env, :arguments
 
-      def initialize(env, *arguments, negated: false)
+      def initialize env, *arguments, negated: false
         @env        = env
         @arguments  = arguments
         @negated    = negated

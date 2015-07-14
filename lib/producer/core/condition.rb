@@ -2,7 +2,7 @@ module Producer
   module Core
     class Condition
       class << self
-        def define_test(keyword, test)
+        def define_test keyword, test
           {
             keyword         => false,
             "no_#{keyword}" => true
@@ -19,7 +19,7 @@ module Producer
           end
         end
 
-        def evaluate(env, *args, &block)
+        def evaluate env, *args, &block
           new.tap do |o|
             o.instance_eval { @env = env }
             return_value = o.instance_exec *args, &block
@@ -44,7 +44,7 @@ module Producer
 
       attr_reader :tests, :return_value
 
-      def initialize(tests = [], return_value = nil)
+      def initialize tests = [], return_value = nil
         @tests        = tests
         @return_value = return_value
       end

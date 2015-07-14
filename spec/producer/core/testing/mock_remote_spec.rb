@@ -21,7 +21,7 @@ module Producer::Core
           let(:command) { 'echo some arguments' }
 
           it 'returns command arguments ended by a record separator' do
-            expect(remote.execute(command)).to eq "some arguments\n"
+            expect(remote.execute command).to eq "some arguments\n"
           end
         end
 
@@ -37,7 +37,8 @@ module Producer::Core
           let(:command) { 'false' }
 
           it 'raises a RemoteCommandExecutionError' do
-            expect { remote.execute(command) }.to raise_error(RemoteCommandExecutionError)
+            expect { remote.execute(command) }
+              .to raise_error RemoteCommandExecutionError
           end
         end
 
@@ -55,7 +56,7 @@ module Producer::Core
 
             it 'raises a RemoteCommandExecutionError' do
               expect { remote.execute(command) }
-                .to raise_error(RemoteCommandExecutionError)
+                .to raise_error RemoteCommandExecutionError
             end
           end
         end

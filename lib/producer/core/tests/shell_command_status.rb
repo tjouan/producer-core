@@ -6,7 +6,7 @@ module Producer
         def_delegator :@arguments, :first, :command
 
         def verify
-          remote.execute(command)
+          remote.execute command
           true
         rescue RemoteCommandExecutionError
           false

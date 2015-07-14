@@ -11,8 +11,7 @@ module Producer
           end
         end
 
-
-        private
+      private
 
         def key
           arguments.first.to_s.upcase

@@ -6,8 +6,7 @@ module Producer
           file_content ? file_content == expected_content : false
         end
 
-
-        private
+      private
 
         def file_content
           @file_content ||= fs.file_read(arguments[0])

@@ -2,13 +2,13 @@ module Producer
   module Core
     class Task
       class << self
-        def define_action(keyword, klass)
-          define_method(keyword) do |*args|
+        def define_action keyword, klass
+          define_method keyword do |*args|
             @actions << klass.new(@env, *args)
           end
         end
 
-        def evaluate(env, name, *args, &block)
+        def evaluate env, name, *args, &block
           new(env, name).tap { |o| o.instance_exec *args, &block }
         end
       end
@@ -32,7 +32,7 @@ module Producer
 
       attr_reader :name, :actions, :condition
 
-      def initialize(env, name, actions = [], condition = true)
+      def initialize env, name, actions = [], condition = true
         @env        = env
         @name       = name
         @actions    = actions
@@ -43,25 +43,24 @@ module Producer
         !!@condition
       end
 
-      def condition(&block)
+      def condition &block
         @condition = Condition.evaluate(@env, &block) if block
         @condition
       end
 
-      def task(name, *args, &block)
+      def task name, *args, &block
         @actions << self.class.evaluate(@env, name, *args, &block)
       end
 
-      def ask(question, choices, prompter: build_prompter)
+      def ask question, choices, prompter: build_prompter
         prompter.prompt(question, choices)
       end
 
-      def template(path, variables = {})
+      def template path, variables = {}
         Template.new(path).render variables
       end
 
-
-      private
+    private
 
       def build_prompter
         Prompter.new(@env.input, @env.output)

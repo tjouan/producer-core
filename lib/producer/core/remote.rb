@@ -4,7 +4,7 @@ module Producer
       attr_reader :hostname
       attr_writer :session
 
-      def initialize(hostname)
+      def initialize hostname
         @hostname = hostname
       end
 
@@ -24,7 +24,7 @@ module Producer
         @fs ||= Remote::FS.new(session.sftp.connect)
       end
 
-      def execute(command, output = '', error_output = '')
+      def execute command, output = '', error_output = ''
         session.open_channel do |channel|
           channel.exec command do |ch, _success|
             ch.on_data do |_c, data|

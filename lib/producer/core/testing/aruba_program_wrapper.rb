@@ -2,8 +2,8 @@ module Producer
   module Core
     module Testing
       class ArubaProgramWrapper
-        def initialize(argv, stdin = $stdin, stdout = $stdout, stderr = $stderr,
-          kernel = Kernel)
+        def initialize argv, stdin = $stdin, stdout = $stdout, stderr = $stderr,
+          kernel = Kernel
           @argv   = argv
           @stdin  = stdin
           @stdout = stdout

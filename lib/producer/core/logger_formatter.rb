@@ -1,14 +1,13 @@
 module Producer
   module Core
     class LoggerFormatter < Logger::Formatter
-      def call(severity, _datetime, _progname, message)
+      def call severity, _datetime, _progname, message
         prefix(severity) + message + "\n"
       end
 
+    private
 
-      private
-
-      def prefix(severity)
+      def prefix severity
         severity == 'WARN' ? 'Warning: ' : ''
       end
     end

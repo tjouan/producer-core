@@ -7,7 +7,7 @@ module Producer
         def_delegator :condition,   :met?,   :verify
 
         def condition
-          Condition.evaluate(env, *condition_args, &condition_block)
+          Condition.evaluate env, *condition_args, &condition_block
         end
 
         def condition_args

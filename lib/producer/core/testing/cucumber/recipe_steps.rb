@@ -1,4 +1,4 @@
-def run_recipe(remote: false, options: nil, check: false, rargv: nil)
+def run_recipe remote: false, options: nil, check: false, rargv: nil
   command = %w[producer recipe.rb]
   case remote
   when :unknown then command += %w[-t unknown_host.test]

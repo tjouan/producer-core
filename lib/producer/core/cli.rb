@@ -15,7 +15,7 @@ module Producer
       ENV_DRYRUN_KEY  = 'PRODUCER_DRYRUN'.freeze
 
       class << self
-        def run!(arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr)
+        def run! arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr
           cli = new(
             arguments, ENV, stdin: stdin, stdout: stdout, stderr: stderr
           )
@@ -38,8 +38,8 @@ module Producer
 
       attr_reader :arguments, :stdin, :stdout, :stderr, :env
 
-      def initialize(args, environment, stdin: $stdin, stdout: $stdout,
-          stderr: $stderr)
+      def initialize args, environment, stdin: $stdin, stdout: $stdout,
+          stderr: $stderr
         @arguments  = args
         @stdin      = stdin
         @stdout     = stdout
@@ -57,7 +57,7 @@ module Producer
         fail ArgumentError, option_parser if @arguments.empty?
       end
 
-      def run(worker: Worker.new(@env))
+      def run worker: Worker.new(@env)
         evaluate_recipes.each { |recipe| worker.process recipe.tasks }
       ensure
         @env.cleanup
@@ -67,20 +67,19 @@ module Producer
         @arguments.map { |e| Recipe::FileEvaluator.evaluate(e, @env) }
       end
 
-
-      private
+    private
 
       def build_env
         Env.new(input: @stdin, output: @stdout, error_output: @stderr)
       end
 
-      def configure_environment!(environment)
+      def configure_environment! environment
         @env.verbose  = true if environment.key? ENV_VERBOSE_KEY
         @env.debug    = true if environment.key? ENV_DEBUG_KEY
         @env.dry_run  = true if environment.key? ENV_DRYRUN_KEY
       end
 
-      def split_arguments_lists(arguments)
+      def split_arguments_lists arguments
         arguments
           .chunk  { |e| e == ARGUMENTS_SEPARATOR }
           .reject { |a, _| a }
@@ -100,7 +99,7 @@ module Producer
         end
       end
 
-      def option_parser_add_boolean_options(opts)
+      def option_parser_add_boolean_options opts
         { v: 'verbose', d: 'debug', n: 'dry run' }.each do |k, v|
           opts.on "-#{k}", "--#{v.tr ' ', '-'}", "enable #{v} mode" do
             env.send "#{v.tr ' ', '_'}=", true

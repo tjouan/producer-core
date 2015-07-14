@@ -6,7 +6,7 @@ module Producer
           fail 'no session for mock remote!'
         end
 
-        def execute(command, output = '', error_output = '')
+        def execute command, output = '', error_output = ''
           tokens = command.gsub(/\d?>.*/, '').split
           program = tokens.shift
 

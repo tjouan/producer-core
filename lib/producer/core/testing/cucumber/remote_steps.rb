@@ -1,4 +1,4 @@
-def stat_mode(path)
+def stat_mode path
   in_current_dir do
     ('%o' % [File::Stat.new(path).mode])[-4, 4]
   end

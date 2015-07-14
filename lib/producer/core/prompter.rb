@@ -3,12 +3,12 @@ module Producer
     class Prompter
       attr_reader :input, :output
 
-      def initialize(input, output)
+      def initialize input, output
         @input  = input
         @output = output
       end
 
-      def prompt(question, choices)
+      def prompt question, choices
         cs = choices.each_with_index.inject '' do |m, (c, i)|
           m + "#{i}: #{c.last}\n"
         end

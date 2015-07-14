@@ -18,8 +18,7 @@ module Producer
           fs.setstat @path, @options unless @options.empty?
         end
 
-
-        private
+      private
 
         def arguments_size
           2

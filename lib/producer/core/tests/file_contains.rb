@@ -7,11 +7,10 @@ module Producer
           content ? content.include?(arguments[1]) : false
         end
 
-
-        private
+      private
 
         def file_content
-          fs.file_read(arguments[0])
+          fs.file_read arguments[0]
         end
       end
     end

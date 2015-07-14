@@ -4,17 +4,17 @@ module Producer
       DRY_RUN_WARNING =
         'running in dry run mode, actions will NOT be applied'.freeze
 
-      def initialize(env)
+      def initialize env
         @env = env
       end
 
-      def process(tasks)
+      def process tasks
         @env.log DRY_RUN_WARNING, :warn if @env.dry_run?
 
         tasks.each { |t| process_task t }
       end
 
-      def process_task(task, indent_level = 0)
+      def process_task task, indent_level = 0
         if task.condition_met?
           log "Task: `#{task}' applying...", indent_level
           task.actions.each do |e|
@@ -30,10 +30,9 @@ module Producer
         end
       end
 
+    private
 
-      private
-
-      def log(message, indent_level)
+      def log message, indent_level
         message = [' ' * indent_level, message].join
         @env.log message
       end

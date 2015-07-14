@@ -4,41 +4,41 @@ module Producer
       class FS
         attr_reader :sftp
 
-        def initialize(sftp)
+        def initialize sftp
           @sftp = sftp
         end
 
-        def dir?(path)
+        def dir? path
           sftp.stat!(path).directory?
         rescue Net::SFTP::StatusException
           false
         end
 
-        def file?(path)
+        def file? path
           sftp.stat!(path).file?
         rescue Net::SFTP::StatusException
           false
         end
 
-        def setstat(path, attributes)
+        def setstat path, attributes
           sftp.setstat! path, attributes
         end
 
-        def chmod(path, mode)
+        def chmod path, mode
           setstat path, permissions: mode
         end
 
-        def mkdir(path, attributes = {})
+        def mkdir path, attributes = {}
           sftp.mkdir! path, attributes
         end
 
-        def file_read(path)
+        def file_read path
           sftp.file.open(path) { |f| f.read }
         rescue Net::SFTP::StatusException
           nil
         end
 
-        def file_write(path, content)
+        def file_write path, content
           sftp.file.open path, 'w' do |f|
             f.write content
           end

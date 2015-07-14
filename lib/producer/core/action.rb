@@ -9,7 +9,7 @@ module Producer
 
       attr_reader :env, :arguments, :options
 
-      def initialize(env, *args, **options)
+      def initialize env, *args, **options
         @env        = env
         @arguments  = args
         @options    = options
@@ -24,14 +24,13 @@ module Producer
         [name, inspect_arguments].join ' '
       end
 
-
-      private
+    private
 
       def inspect_arguments
         @arguments.inspect[0, INSPECT_ARGUMENTS_SUM_LEN - name.length]
       end
 
-      def check_arguments_size!(size)
+      def check_arguments_size! size
         return if arguments.compact.size == size
         fail ArgumentError, '`%s\' action requires %d arguments' % [name, size]
       end

@@ -12,7 +12,7 @@ module Producer
         end
 
         def apply
-          remote.execute(@command, output, error_output)
+          remote.execute @command, output, error_output
         end
       end
     end

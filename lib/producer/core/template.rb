@@ -10,8 +10,8 @@ module Producer
 
       def render variables = {}
         case (file_path = resolve_path).extname
-        when '.yaml'  then render_yaml file_path
-        when '.erb'   then render_erb file_path, variables
+          when '.yaml'  then render_yaml file_path
+          when '.erb'   then render_erb file_path, variables
         end
       end
 

@@ -49,7 +49,7 @@ module Producer
         if @arguments.include? ARGUMENTS_SEPARATOR
           @arguments, @env.recipe_argv = split_arguments_lists @arguments
         end
-        option_parser.parse!(@arguments)
+        option_parser.parse! @arguments
         fail ArgumentError, option_parser if @arguments.empty?
       end
 

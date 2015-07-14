@@ -3,7 +3,7 @@ module Producer
     module Tests
       class HasExecutable < Test
         def verify
-          remote.execute("type #{arguments.first}")
+          remote.execute "type #{arguments.first}"
           true
         rescue RemoteCommandExecutionError
           false

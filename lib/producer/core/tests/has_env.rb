@@ -4,10 +4,8 @@ module Producer
       class HasEnv < Test
         def verify
           case arguments.size
-          when 1
-            remote.environment.key? key
-          when 2
-            remote.environment[key] == arguments.last
+            when 1 then remote.environment.key? key
+            when 2 then remote.environment[key] == arguments.last
           end
         end
 

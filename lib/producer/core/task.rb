@@ -53,7 +53,7 @@ module Producer
       end
 
       def ask question, choices, prompter: build_prompter
-        prompter.prompt(question, choices)
+        prompter.prompt question, choices
       end
 
       def template path, variables = {}

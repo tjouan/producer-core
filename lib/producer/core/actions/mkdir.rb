@@ -14,10 +14,10 @@ module Producer
         end
 
         def apply
-          @path.descend do |p|
-            next if fs.dir? p
-            fs.mkdir p.to_s
-            fs.setstat p.to_s, @options unless @options.empty?
+          @path.descend do |path|
+            next if fs.dir? path
+            fs.mkdir path.to_s
+            fs.setstat path.to_s, @options unless @options.empty?
           end
         end
       end

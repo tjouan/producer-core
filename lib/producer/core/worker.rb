@@ -19,7 +19,8 @@ module Producer
           log "Task: `#{task}' applying...", indent_level
           task.actions.each do |e|
             case e
-            when Task then process_task e, indent_level + 2
+            when Task
+              process_task e, indent_level + 2
             else
               log " action: #{e}", indent_level
               e.apply unless @env.dry_run?

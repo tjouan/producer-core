@@ -1,8 +1,8 @@
 def run_recipe remote: false, options: nil, check: false, rargv: nil
   command = %w[producer recipe.rb]
   case remote
-  when :unknown then command += %w[-t unknown_host.test]
-  when true     then command += %w[-t some_host.test]
+    when :unknown then command += %w[-t unknown_host.test]
+    when true     then command += %w[-t some_host.test]
   end
   command << options if options
   command << ['--', *rargv] if rargv

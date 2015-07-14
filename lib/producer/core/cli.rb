@@ -16,23 +16,19 @@ module Producer
 
       class << self
         def run! arguments, stdin: $stdin, stdout: $stdout, stderr: $stderr
-          cli = new(
-            arguments, ENV, stdin: stdin, stdout: stdout, stderr: stderr
+          cli = new arguments, ENV, stdin: stdin, stdout: stdout, stderr: stderr
+          cli.parse_arguments!
+          cli.run
+        rescue ArgumentError => e
+          stderr.puts e.message
+          exit EX_USAGE
+        rescue StandardError => e
+          ef = ErrorFormatter.new(
+            debug:        cli.env.debug?,
+            force_cause:  [RecipeEvaluationError]
           )
-          begin
-            cli.parse_arguments!
-            cli.run
-          rescue ArgumentError => e
-            stderr.puts e.message
-            exit EX_USAGE
-          rescue StandardError => e
-            ef = ErrorFormatter.new(
-              debug:        cli.env.debug?,
-              force_cause:  [RecipeEvaluationError]
-            )
-            stderr.puts ef.format e
-            exit EX_SOFTWARE
-          end
+          stderr.puts ef.format e
+          exit EX_SOFTWARE
         end
       end
 

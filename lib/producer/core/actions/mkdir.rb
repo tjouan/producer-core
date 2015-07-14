@@ -5,8 +5,7 @@ module Producer
         def setup
           check_arguments_size! 1
           @path = Pathname.new(arguments.first)
-          options[:permissions] = options.delete :mode if options.key? :mode
-          options[:owner]       = options.delete :user if options.key? :user
+          convert_options mode: :permissions, user: :owner
         end
 
         def name

@@ -34,6 +34,12 @@ module Producer
         return if arguments.compact.size == size
         fail ArgumentError, '`%s\' action requires %d arguments' % [name, size]
       end
+
+      def convert_options conversions
+        conversions.each do |original, convertion|
+          options[convertion] = options.delete original if options.key? original
+        end
+      end
     end
   end
 end

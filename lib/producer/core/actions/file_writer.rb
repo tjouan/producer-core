@@ -4,9 +4,8 @@ module Producer
       class FileWriter < Action
         def setup
           check_arguments_size! arguments_size
-          @path, @content       = arguments
-          options[:permissions] = options.delete :mode if options.key? :mode
-          options[:owner]       = options.delete :user if options.key? :user
+          @path, @content = arguments
+          convert_options mode: :permissions, user: :owner
         end
 
         def name

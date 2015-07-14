@@ -1,11 +1,11 @@
 def stat_mode path
-  in_current_dir do
+  cd '.' do
     ('%o' % [File::Stat.new(path).mode])[-4, 4]
   end
 end
 
 Given /^a remote directory named "([^"]+)"$/ do |path|
-  create_dir path
+  create_directory path
 end
 
 Given /^a remote file named "([^"]+)"$/ do |file_name|
@@ -17,7 +17,7 @@ Given /^a remote file named "([^"]+)" with "([^"]+)"$/ do |file_name, content|
 end
 
 Then /^the remote directory "([^"]+)" must exist$/ do |path|
-  check_directory_presence [path], true
+  expect(path).to be_an_existing_directory
 end
 
 Then /^the remote file "([^"]+)" must exist$/ do |path|
@@ -25,19 +25,19 @@ Then /^the remote file "([^"]+)" must exist$/ do |path|
 end
 
 Then /^the remote file "([^"]+)" must contain "([^"]+)"$/ do |path, content|
-  check_file_content path, content, true
+  expect(path).to have_file_content Regexp.new(content)
 end
 
 Then /^the remote file "([^"]+)" must contain exactly "([^"]+)"$/ do |path, content|
-  check_file_content path, content
+  expect(path).to have_file_content content
 end
 
 Then /^the remote file "([^"]+)" must contain exactly:$/ do |path, content|
-  check_file_content path, content
+  expect(path).to have_file_content content
 end
 
 Then /^the remote file "([^"]+)" must match \/([^\/]+)\/$/ do |path, pattern|
-  check_file_content path, /#{pattern}/, true
+  expect(path).to have_file_content /#{pattern}/
 end
 
 Then /^the remote file "([^"]+)" must have (\d+) mode$/ do |path, mode|

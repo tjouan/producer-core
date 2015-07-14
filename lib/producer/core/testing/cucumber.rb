@@ -18,12 +18,12 @@ end
 # Use aruba "in process" optimization only for scenarios not tagged @exec.
 # We need a real process in a few cases: real program name, interactive usage…
 Before('@exec') do
-  Aruba.process = Aruba::SpawnProcess
+  aruba.config.command_launcher = :spawn
 end
 
 Before('~@exec') do
-  Aruba::InProcess.main_class = Producer::Core::Testing::ArubaProgramWrapper
-  Aruba.process = Aruba::InProcess
+  aruba.config.command_launcher = :in_process
+  aruba.config.main_class       = Producer::Core::Testing::ArubaProgramWrapper
 end
 
 # Enable cucumber-sshd "fast" mode (persists sshd across scenarios), and

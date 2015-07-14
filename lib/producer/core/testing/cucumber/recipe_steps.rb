@@ -7,7 +7,7 @@ def run_recipe remote: false, options: nil, check: false, rargv: nil
   command << options if options
   command << ['--', *rargv] if rargv
 
-  with_env 'HOME' => File.expand_path(current_dir) do
+  with_environment 'HOME' => expand_path('.') do
     run_simple command.join(' '), false
   end
 
@@ -72,5 +72,5 @@ When /^I successfully execute the recipe with arguments "([^"]+)"$/ do |rargv|
 end
 
 When /^I execute the recipe interactively$/ do
-  run_interactive 'producer recipe.rb'
+  run 'producer recipe.rb'
 end

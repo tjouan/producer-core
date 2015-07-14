@@ -3,7 +3,9 @@ module Producer
     class CLI
       ArgumentError = Class.new(ArgumentError)
 
-      USAGE = "Usage: #{File.basename $0} [options] [recipes]".freeze
+      USAGE =
+        "Usage: #{File.basename $0} [options] [recipes] [-- recipe_argument...]"
+          .freeze
 
       EX_USAGE    = 64
       EX_SOFTWARE = 70

@@ -1,6 +1,6 @@
 Then /^the output must contain exactly the usage$/ do
   assert_exact_output <<-eoh, all_output
-Usage: producer [options] [recipes]
+Usage: producer [options] [recipes] [-- recipe_argument...]
 
 options:
     -v, --verbose                    enable verbose mode

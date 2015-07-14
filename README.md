@@ -136,7 +136,7 @@ end
 Usage
 -----
 
-    Usage: producer [options] [recipes]
+    Usage: producer [options] [recipes] [-- recipe_arguments...]
     
     options:
         -v, --verbose                    enable verbose mode

@@ -1,7 +1,7 @@
 module Producer
   module Core
     class CLI
-      ArgumentError = Class.new(::ArgumentError)
+      ArgumentError = Class.new(ArgumentError)
 
       USAGE = "Usage: #{File.basename $0} [options] [recipes]".freeze
 

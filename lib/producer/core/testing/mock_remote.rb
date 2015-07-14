@@ -3,7 +3,7 @@ module Producer
     module Testing
       class MockRemote < Remote
         def session
-          fail 'no session for mock remote!'
+          fail RuntimeError, 'no session for mock remote!'
         end
 
         def execute command, output = '', error_output = ''

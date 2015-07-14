@@ -12,7 +12,7 @@ module Producer::Core
 
       describe '#session' do
         it 'raises an error to prevent real session usage' do
-          expect { remote.session }.to raise_error
+          expect { remote.session }.to raise_error RuntimeError
         end
       end
 

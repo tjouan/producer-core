@@ -8,5 +8,6 @@ module Producer
     RecipeEvaluationError       = Class.new(RuntimeError)
     RemoteCommandExecutionError = Class.new(RuntimeError)
     RegistryKeyError            = Class.new(RuntimeError)
+    RemoteInvalidError          = Class.new(ArgumentError)
   end
 end

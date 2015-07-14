@@ -9,7 +9,13 @@ module Producer
       end
 
       def session
-        @session ||= Net::SSH.start(@hostname, user_name)
+        @session ||= begin
+          if !@hostname
+            fail RemoteInvalidError,
+              "remote target is invalid: `#{@hostname.inspect}'"
+          end
+          Net::SSH.start(@hostname, user_name)
+        end
       end
 
       def config

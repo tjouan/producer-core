@@ -27,6 +27,14 @@ module Producer::Core
         allow(Net::SSH).to receive(:start) { Object.new }
         expect(remote.session).to be remote.session
       end
+
+      context 'when hostname is invalid' do
+        let(:hostname) { nil }
+
+        it 'raises RemoteInvalidError' do
+          expect { remote.session }.to raise_error RemoteInvalidError
+        end
+      end
     end
 
     describe '#config' do

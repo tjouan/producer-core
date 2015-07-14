@@ -3,20 +3,8 @@ module Producer
     class Condition
       class << self
         def define_test keyword, test
-          {
-            keyword         => false,
-            "no_#{keyword}" => true
-          }.each do |kw, negated|
-            define_method(kw) do |*args|
-              if test.respond_to? :call
-                args  = [test, *args]
-                klass = Tests::ConditionTest
-              else
-                klass = test
-              end
-              @tests << klass.new(@env, *args, negated: negated)
-            end
-          end
+          declare_test_method keyword, test
+          declare_test_method "no_#{keyword}", test, negated: true
         end
 
         def evaluate env, *args, &block
@@ -24,6 +12,20 @@ module Producer
             o.instance_eval { @env = env }
             return_value = o.instance_exec *args, &block
             o.instance_eval { @return_value = return_value }
+          end
+        end
+
+      private
+
+        def declare_test_method keyword, test, negated: false
+          define_method keyword do |*args|
+            if test.respond_to? :call
+              args.unshift test
+              klass = Tests::ConditionTest
+            else
+              klass = test
+            end
+            @tests << klass.new(@env, *args, negated: negated)
           end
         end
       end

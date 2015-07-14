@@ -10,10 +10,7 @@ module Producer
 
       def session
         @session ||= begin
-          if !@hostname
-            fail RemoteInvalidError,
-              "remote target is invalid: `#{@hostname.inspect}'"
-          end
+          check_hostname!
           Net::SSH.start(@hostname, user_name)
         end
       end
@@ -56,6 +53,14 @@ module Producer
 
       def cleanup
         session.close if @session
+      end
+
+    private
+
+      def check_hostname!
+        return if @hostname
+        fail RemoteInvalidError,
+          "remote target is invalid: `#{@hostname.inspect}'"
       end
     end
   end

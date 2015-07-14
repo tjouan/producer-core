@@ -8,9 +8,8 @@ module Producer
         /\/net-sftp/
       ].freeze
 
-      def initialize debug: false, force_cause: []
-        @debug        = debug
-        @force_cause  = force_cause
+      def initialize debug: false
+        @debug = debug
       end
 
       def debug?

@@ -4,9 +4,7 @@ module Producer
   module Core
     describe ErrorFormatter do
       let(:debug)         { false }
-      let(:force_cause)   { [] }
-      let(:options)       { { debug: debug, force_cause: force_cause } }
-      subject(:formatter) { described_class.new(options) }
+      subject(:formatter) { described_class.new(debug: debug) }
 
       describe '#debug?' do
         it 'returns false' do

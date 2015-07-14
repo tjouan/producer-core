@@ -25,11 +25,7 @@ module Producer
           stderr.puts e.message
           exit EX_USAGE
         rescue StandardError => e
-          ef = ErrorFormatter.new(
-            debug:        cli.env.debug?,
-            force_cause:  [RecipeEvaluationError]
-          )
-          stderr.puts ef.format e
+          stderr.puts ErrorFormatter.new(debug: cli.env.debug?).format e
           exit EX_SOFTWARE
         end
       end

@@ -36,6 +36,14 @@ module Producer::Core
           expect(template.render).to eq "basic template\n"
         end
       end
+
+      context 'when template does not exist' do
+        let(:path) { fixture_path_for('templates/unknown_template') }
+
+        it 'raises a TemplateMissingError' do
+          expect { template.render }.to raise_error TemplateMissingError
+        end
+      end
     end
   end
 end

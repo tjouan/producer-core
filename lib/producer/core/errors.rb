@@ -9,5 +9,6 @@ module Producer
     RemoteCommandExecutionError = Class.new(RuntimeError)
     RegistryKeyError            = Class.new(RuntimeError)
     RemoteInvalidError          = Class.new(ArgumentError)
+    TemplateMissingError        = Class.new(RuntimeError)
   end
 end

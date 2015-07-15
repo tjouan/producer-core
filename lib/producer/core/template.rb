@@ -9,13 +9,19 @@ module Producer
       end
 
       def render variables = {}
-        case (file_path = resolve_path).extname
-          when '.yaml'  then render_yaml file_path
-          when '.erb'   then render_erb file_path, variables
+        check_template_presence! path = resolve_path
+        case path.extname
+          when '.yaml'  then render_yaml path
+          when '.erb'   then render_erb path, variables
         end
       end
 
     private
+
+      def check_template_presence! path
+        return if File.exist?(path.to_s)
+        fail TemplateMissingError, "template `#{path.inspect}' not found"
+      end
 
       def render_erb file_path, variables = {}
         tpl = ERB.new(File.read(file_path), nil, '-')

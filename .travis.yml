@@ -3,8 +3,8 @@ language: ruby
 cache: bundler
 rvm:
   - 2.2
-  - ruby-head
   - 2.1
+  - ruby-head
 script: bundle exec rake ci
 before_script:
   - ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
@@ -12,6 +12,10 @@ before_script:
   - chmod 600 ~/.ssh/authorized_keys
   - eval `ssh-agent -s`
   - ssh-add ~/.ssh/id_rsa
+matrix:
+  fast_finish: true
+  allow_failures:
+    - rvm: ruby-head
 notifications:
   email:
     - tj+travis_producer@a13.fr

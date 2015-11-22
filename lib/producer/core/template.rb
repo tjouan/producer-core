@@ -4,7 +4,8 @@ module Producer
       SEARCH_PATH = 'templates'.freeze
       RENDERERS   = {
         /\.erb\z/   => ERBRenderer,
-        /\.yaml\z/  => YAMLRenderer
+        /\.yaml\z/  => YAMLRenderer,
+        //          => RawRenderer
       }.freeze
 
       def initialize path, search_path: SEARCH_PATH, renderers: RENDERERS

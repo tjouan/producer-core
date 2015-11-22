@@ -29,6 +29,7 @@ end
 # Enable cucumber-sshd "fast" mode (persists sshd across scenarios), and
 # register hooks for @sshd tagged scenarios.
 Before do
-  @_sshd_fast = true
+  @_sshd_fast       = true
+  @_sshd_wait_ready = true if ENV.key? 'TRAVIS'
 end
 require 'cucumber/sshd/cucumber'

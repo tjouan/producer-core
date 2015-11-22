@@ -15,11 +15,11 @@ module Producer
 
       def render variables = {}
         candidates.each do |c|
-          r, _ = @renderers.find { |k, v| v.include? c.extname[1..-1].to_sym }
+          r, * = @renderers.find { |_, v| v.include? c.extname[1..-1].to_sym }
           return r.render c, variables if r
         end
 
-        fail TemplateMissingError, "template `#{@path.to_s}' not found"
+        fail TemplateMissingError, "template `#{@path}' not found"
       end
 
     protected

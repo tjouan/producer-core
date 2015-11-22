@@ -12,7 +12,7 @@ module Producer::Core
 
     let(:path)          { 'basic' }
     let(:search_path)   { fixture_path_for 'templates' }
-    let(:renderers)     { { DummyRenderer => %i[dummy] } }
+    let(:renderers)     { { /\.dummy\z/ => DummyRenderer } }
     subject :template do
       described_class.new path, search_path: search_path, renderers: renderers
     end

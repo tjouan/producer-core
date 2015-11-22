@@ -3,8 +3,8 @@ module Producer
     class Template
       SEARCH_PATH = 'templates'.freeze
       RENDERERS   = {
-        ERBRenderer   => %i[erb],
-        YAMLRenderer  => %i[yaml]
+        /\.erb\z/   => ERBRenderer,
+        /\.yaml\z/  => YAMLRenderer
       }.freeze
 
       def initialize path, search_path: SEARCH_PATH, renderers: RENDERERS
@@ -15,7 +15,7 @@ module Producer
 
       def render variables = {}
         candidates.each do |c|
-          r, * = @renderers.find { |_, v| v.include? c.extname[1..-1].to_sym }
+          _, r = @renderers.find { |k, _| c.to_s =~ k }
           return r.render c, variables if r
         end
 

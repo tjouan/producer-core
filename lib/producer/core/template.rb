@@ -19,7 +19,7 @@ module Producer
           return r.render c, variables if r
         end
 
-        fail TemplateMissingError, "template `#{@path.inspect}' not found"
+        fail TemplateMissingError, "template `#{@path.to_s}' not found"
       end
 
     protected

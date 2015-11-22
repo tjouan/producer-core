@@ -20,6 +20,10 @@ module Producer
       def pass?
         verify ^ negated?
       end
+
+      def verify
+        fail NotImplementedError
+      end
     end
   end
 end

@@ -1,7 +1,7 @@
 module Producer
   module Core
     class Action
-      INSPECT_ARGUMENTS_SUM_LEN = 68.freeze
+      INSPECT_ARGUMENTS_SUM_LEN = 68
 
       extend Forwardable
       def_delegators :@env, :input, :output, :error_output, :remote

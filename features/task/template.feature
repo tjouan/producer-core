@@ -54,4 +54,4 @@ Feature: `template' task keyword
       task(:echo_template) { echo template 'basic' }
       """
     When I execute the recipe
-    Then the output must match /\A\w+Error:\s+template `nil' not found\n/
+    Then the output must match /\A\w+Error:\s+template `#<Pathname:basic>' not found\n/

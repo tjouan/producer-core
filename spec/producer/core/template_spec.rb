@@ -1,47 +1,53 @@
 require 'spec_helper'
 
+class DummyRenderer
+  class << self
+    def render *args
+      args
+    end
+  end
+end
+
 module Producer::Core
   describe Template do
     include FixturesHelpers
 
     let(:path)          { 'basic' }
     let(:search_path)   { fixture_path_for 'templates' }
-    subject(:template)  { described_class.new path, search_path: search_path }
+    let(:renderers)     { { DummyRenderer => %i[dummy] } }
+    subject :template do
+      described_class.new path, search_path: search_path, renderers: renderers
+    end
 
     describe '#render' do
-      it 'renders ERB templates' do
-        expect(template.render).to eq "basic template\n"
+      it 'uses a matching renderer from configured ones' do
+        expect(DummyRenderer).to receive :render
+        expect(template.render)
       end
 
-      context 'yaml templates' do
-        let(:path) { 'basic_yaml' }
-
-        it 'renders yaml templates' do
-          expect(template.render).to eq({ 'foo' => 'bar' })
-        end
+      it 'sends full template path to the renderer' do
+        expect(template.render[0])
+          .to eq Pathname.new("#{search_path}/#{path}.dummy")
       end
 
-      context 'when variables are given' do
-        let(:path) { 'variables' }
-
-        it 'declares given variables in ERB render binding' do
-          expect(template.render foo: 'bar').to eq "bar\n"
-        end
-      end
-
-      context 'when relative path is requested' do
-        let(:path) { fixture_path_for('templates/basic').insert 0, './' }
-
-        it 'does not enforce `template\' search path' do
-          expect(template.render).to eq "basic template\n"
-        end
+      it 'sends given variables to the renderer' do
+        expect(template.render(:foo)[1]).to eq :foo
       end
 
       context 'when template does not exist' do
-        let(:path) { fixture_path_for('templates/unknown_template') }
+        let(:path) { 'templates/unknown_template' }
 
         it 'raises a TemplateMissingError' do
           expect { template.render }.to raise_error TemplateMissingError
+        end
+      end
+
+      context 'when relative path is given' do
+        let(:path) { fixture_path_for('templates/basic').insert 0, './' }
+
+        it 'does not enforce `template\' search path' do
+          expect(template.render[0])
+            .to eq Pathname.new("#{path}.dummy")
         end
       end
     end

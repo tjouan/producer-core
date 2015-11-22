@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   describe Env do
     let(:output)  { StringIO.new }

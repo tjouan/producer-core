@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   class Remote
     describe Environment do

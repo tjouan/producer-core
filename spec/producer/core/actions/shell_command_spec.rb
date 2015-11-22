@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   module Actions
     describe ShellCommand, :env do

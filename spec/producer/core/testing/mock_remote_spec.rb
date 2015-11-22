@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'producer/core/testing'
 
 module Producer::Core

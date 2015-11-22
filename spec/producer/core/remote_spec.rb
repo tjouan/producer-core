@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   describe Remote do
     let(:hostname)    { 'some_host.example' }

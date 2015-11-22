@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer
   module Core
     describe ErrorFormatter do

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 class DummyRenderer
   class << self
     def render *args

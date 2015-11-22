@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   describe Template::ERBRenderer do
     include FixturesHelpers

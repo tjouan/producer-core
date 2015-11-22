@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   describe Task do
     class SomeAction < Action; end

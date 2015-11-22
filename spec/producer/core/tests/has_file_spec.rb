@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   module Tests
     describe HasFile, :env do

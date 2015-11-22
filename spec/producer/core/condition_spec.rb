@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Producer::Core
   describe Condition do
     subject(:condition) { described_class.new }

@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Task do
+  RSpec.describe Task do
     class SomeAction < Action; end
 
     let(:env)       { Env.new }

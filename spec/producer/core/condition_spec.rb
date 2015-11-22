@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Condition do
+  RSpec.describe Condition do
     subject(:condition) { described_class.new }
 
     %w[

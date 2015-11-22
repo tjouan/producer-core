@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe ShellCommand, :env do
+    RSpec.describe ShellCommand, :env do
       let(:command_args)  { 'hello from remote host' }
       let(:command)       { "echo #{command_args}" }
       let(:arguments)     { [command] }

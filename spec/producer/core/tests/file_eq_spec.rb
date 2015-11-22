@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe FileEq, :env do
+    RSpec.describe FileEq, :env do
       let(:filepath)  { 'some_file' }
       let(:content)   { 'some content' }
       subject(:test)  { described_class.new(env, filepath, content) }

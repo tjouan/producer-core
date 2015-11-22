@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Remote do
+  RSpec.describe Remote do
     let(:hostname)    { 'some_host.example' }
     subject(:remote)  { described_class.new(hostname) }
 

@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe FileWriter, :env do
+    RSpec.describe FileWriter, :env do
       let(:path)        { 'some_path' }
       let(:content)     { 'some_content' }
       let(:arguments)   { [path, content] }

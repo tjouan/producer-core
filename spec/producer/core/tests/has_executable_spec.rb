@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe HasExecutable, :env do
+    RSpec.describe HasExecutable, :env do
       subject(:test) { described_class.new(env, executable) }
 
       it_behaves_like 'test'

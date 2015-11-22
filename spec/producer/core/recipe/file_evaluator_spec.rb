@@ -1,6 +1,6 @@
 module Producer::Core
   class Recipe
-    describe FileEvaluator do
+    RSpec.describe FileEvaluator do
       include FixturesHelpers
 
       describe '.evaluate' do

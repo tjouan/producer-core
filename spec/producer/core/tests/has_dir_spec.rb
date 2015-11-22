@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe HasDir, :env do
+    RSpec.describe HasDir, :env do
       let(:path)        { 'some_directory' }
       subject(:has_dir) { described_class.new(env, path) }
 

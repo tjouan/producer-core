@@ -1,6 +1,6 @@
 module Producer::Core
   class Remote
-    describe Environment do
+    RSpec.describe Environment do
       let(:string)          { "FOO=bar\nBAZ=qux" }
       let(:argument)        { variables }
 

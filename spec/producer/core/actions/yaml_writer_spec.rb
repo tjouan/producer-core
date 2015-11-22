@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe YAMLWriter, :env do
+    RSpec.describe YAMLWriter, :env do
       let(:path)        { 'some_path' }
       let(:data)        { { foo: 'bar' } }
       let(:arguments)   { [path] }

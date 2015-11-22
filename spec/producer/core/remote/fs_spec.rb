@@ -1,6 +1,6 @@
 module Producer::Core
   class Remote
-    describe FS do
+    RSpec.describe FS do
       let(:sftp_file) { double 'sftp_file' }
       let(:sftp)      { double('sftp', file: sftp_file) }
       subject(:fs)    { described_class.new(sftp) }

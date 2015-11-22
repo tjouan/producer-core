@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe Echo, :env do
+    RSpec.describe Echo, :env do
       let(:text)      { 'hello' }
       let(:arguments) { [text] }
       subject(:echo)  { described_class.new(env, *arguments) }

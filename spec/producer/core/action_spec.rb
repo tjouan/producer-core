@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Action do
+  RSpec.describe Action do
     let(:env)         { double 'env'}
     let(:arguments)   { [:some, :arguments] }
     let(:options)     { { foo: :bar } }

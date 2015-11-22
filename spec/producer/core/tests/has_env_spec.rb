@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe HasEnv do
+    RSpec.describe HasEnv do
       let(:env)         { Env.new }
       let(:var_name)    { 'SOME_VAR' }
       let(:var_value)   { 'SOME_VALUE' }

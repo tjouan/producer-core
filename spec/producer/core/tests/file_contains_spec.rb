@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe FileContains, :env do
+    RSpec.describe FileContains, :env do
       let(:filepath)  { 'some_file' }
       let(:content)   { 'some_content' }
       subject(:test)  { described_class.new(env, filepath, content) }

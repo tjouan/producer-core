@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Env do
+  RSpec.describe Env do
     let(:output)  { StringIO.new }
     subject(:env) { described_class.new(output: output) }
 

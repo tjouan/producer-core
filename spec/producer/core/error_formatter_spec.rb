@@ -1,6 +1,6 @@
 module Producer
   module Core
-    describe ErrorFormatter do
+    RSpec.describe ErrorFormatter do
       let(:debug)         { false }
       subject(:formatter) { described_class.new(debug: debug) }
 

@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe FileReplaceContent, :env do
+    RSpec.describe FileReplaceContent, :env do
       let(:path)        { 'some_path' }
       let(:pattern)     { 'content' }
       let(:replacement) { 'other content' }

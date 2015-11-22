@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Recipe do
+  RSpec.describe Recipe do
     include FixturesHelpers
 
     let(:env)         { Env.new }

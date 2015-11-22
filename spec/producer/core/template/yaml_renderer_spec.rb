@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Template::YAMLRenderer do
+  RSpec.describe Template::YAMLRenderer do
     include FixturesHelpers
 
     let(:path) { fixture_path_for 'templates/basic_yaml.yaml' }

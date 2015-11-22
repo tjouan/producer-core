@@ -1,5 +1,5 @@
 module Producer::Core
-  describe CLI do
+  RSpec.describe CLI do
     include ExitHelpers
     include FixturesHelpers
 

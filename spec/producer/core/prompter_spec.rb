@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Prompter do
+  RSpec.describe Prompter do
     let(:input)         { StringIO.new }
     let(:output)        { StringIO.new }
     subject(:prompter)  { described_class.new(input, output) }

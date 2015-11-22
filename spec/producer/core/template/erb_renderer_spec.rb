@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Template::ERBRenderer do
+  RSpec.describe Template::ERBRenderer do
     include FixturesHelpers
 
     let(:path) { fixture_path_for 'templates/basic.erb' }

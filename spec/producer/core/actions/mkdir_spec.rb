@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe Mkdir, :env do
+    RSpec.describe Mkdir, :env do
       let(:path)      { 'some_path' }
       let(:options)   { { } }
       let(:arguments) { [path] }

@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe ShellCommandStatus, :env do
+    RSpec.describe ShellCommandStatus, :env do
       let(:command)   { 'true' }
       subject(:test)  { described_class.new(env, command) }
 

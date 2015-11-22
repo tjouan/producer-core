@@ -1,6 +1,6 @@
 module Producer::Core
   module Actions
-    describe FileAppend, :env do
+    RSpec.describe FileAppend, :env do
       let(:path)          { 'some_path' }
       let(:content)       { 'some content' }
       let(:added_content) { ' added' }

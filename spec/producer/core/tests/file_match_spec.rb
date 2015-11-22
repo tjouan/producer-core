@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe FileMatch, :env do
+    RSpec.describe FileMatch, :env do
       let(:filepath)  { 'some_file' }
       let(:pattern)   { /\Asome_content\z/ }
       subject(:test)  { described_class.new(env, filepath, pattern) }

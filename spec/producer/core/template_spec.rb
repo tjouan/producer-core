@@ -7,7 +7,7 @@ class DummyRenderer
 end
 
 module Producer::Core
-  describe Template do
+  RSpec.describe Template do
     include FixturesHelpers
 
     let(:path)          { 'basic' }

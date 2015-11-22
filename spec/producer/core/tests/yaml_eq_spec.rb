@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe YAMLEq, :env do
+    RSpec.describe YAMLEq, :env do
       let(:filepath)  { 'some_file' }
       let(:data)      { { foo: 'bar' } }
       subject(:test)  { described_class.new(env, filepath, data, {}) }

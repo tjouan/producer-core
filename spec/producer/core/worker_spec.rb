@@ -1,5 +1,5 @@
 module Producer::Core
-  describe Worker do
+  RSpec.describe Worker do
     let(:env)         { Env.new }
     subject(:worker)  { described_class.new(env) }
 

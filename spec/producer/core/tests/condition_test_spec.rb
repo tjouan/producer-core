@@ -1,6 +1,6 @@
 module Producer::Core
   module Tests
-    describe ConditionTest do
+    RSpec.describe ConditionTest do
       let(:env)       { double 'env' }
       let(:block)     { proc { true } }
       let(:arguments) { [:some, :args] }

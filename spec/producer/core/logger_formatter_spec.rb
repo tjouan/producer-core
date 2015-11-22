@@ -1,5 +1,5 @@
 module Producer::Core
-  describe LoggerFormatter do
+  RSpec.describe LoggerFormatter do
     describe '#call' do
       let(:severity)  { double 'severity' }
       let(:datetime)  { double 'datetime' }

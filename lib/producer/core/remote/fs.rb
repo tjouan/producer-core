@@ -33,7 +33,7 @@ module Producer
         end
 
         def file_read path
-          sftp.file.open(path) { |f| f.read }
+          sftp.file.open path, &:read
         rescue Net::SFTP::StatusException
           nil
         end

@@ -48,6 +48,18 @@ Feature: `template' task keyword
     When I execute the recipe
     Then the output must match /^bar$/
 
+  Scenario: read raw files
+    Given a file named "templates/basic" with:
+      """
+      foo
+      """
+    And a recipe with:
+      """
+      task(:echo_template) { echo template('basic') }
+      """
+    When I execute the recipe
+    Then the output must contain exactly "foo\n"
+
   Scenario: reports an error on missing template
     Given a recipe with:
       """

@@ -18,7 +18,7 @@ DSL to write "recipes".
   s.executables = 'producer'
   s.extra_rdoc_files = %w[README.md]
 
-  s.add_dependency 'net-ssh',   '~> 2.7'
+  s.add_dependency 'net-ssh',   '~> 3.x'
   s.add_dependency 'net-sftp',  '~> 2.1'
 
   s.add_development_dependency 'aruba',         '~> 0.8', '< 0.9'

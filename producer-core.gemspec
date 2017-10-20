@@ -23,7 +23,7 @@ DSL to write "recipes".
 
   s.add_development_dependency 'aruba',         '0.8.1'
   s.add_development_dependency 'cucumber',      '~> 2.0'
-  s.add_development_dependency 'cucumber-sshd', '~> 1.1', '>= 1.1.1'
+  s.add_development_dependency 'cucumber-sshd', '2.0.0.pre3'
   s.add_development_dependency 'rake',          '~> 10.1'
   s.add_development_dependency 'rspec',         '~> 3.1'
 end

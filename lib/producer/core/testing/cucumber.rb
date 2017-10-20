@@ -1,6 +1,9 @@
 require 'aruba/cucumber'
 require 'aruba/in_process'
 
+ENV['CUCUMBER_SSHD_PERSIST'] = 'yes'
+require 'cucumber/sshd/cucumber'
+
 require 'producer/core'
 require 'producer/core/testing/aruba_program_wrapper'
 require 'producer/core/testing/cucumber/etc_steps'
@@ -9,6 +12,11 @@ require 'producer/core/testing/cucumber/output_steps'
 require 'producer/core/testing/cucumber/recipe_steps'
 require 'producer/core/testing/cucumber/remote_steps'
 require 'producer/core/testing/cucumber/ssh_steps'
+
+# Change aruba working directory to match cucumber-sshd one.
+Aruba.configure do |config|
+  config.working_directory = 'tmp/home'
+end
 
 # Raise aruba default timeout so test suite can run on a slow machine.
 Before do
@@ -25,11 +33,3 @@ Before('~@exec') do
   aruba.config.command_launcher = :in_process
   aruba.config.main_class       = Producer::Core::Testing::ArubaProgramWrapper
 end
-
-# Enable cucumber-sshd "fast" mode (persists sshd across scenarios), and
-# register hooks for @sshd tagged scenarios.
-Before do
-  @_sshd_fast       = true
-  @_sshd_wait_ready = true if ENV.key? 'TRAVIS'
-end
-require 'cucumber/sshd/cucumber'

@@ -21,9 +21,9 @@ DSL to write "recipes".
   s.add_dependency 'net-ssh',   '~> 3.1'
   s.add_dependency 'net-sftp',  '~> 2.1'
 
-  s.add_development_dependency 'aruba',         '~> 0.8', '< 0.9'
+  s.add_development_dependency 'aruba',         '0.8.1'
   s.add_development_dependency 'cucumber',      '~> 2.0'
-  s.add_development_dependency 'cucumber-sshd', '~> 1.1', '>= 1.1.1'
+  s.add_development_dependency 'cucumber-sshd', '2.0.0.pre3'
   s.add_development_dependency 'rake',          '~> 10.1'
   s.add_development_dependency 'rspec',         '~> 3.1'
 end

@@ -29,7 +29,11 @@ module NetSSHStoryHelpers
 
   def expect_story_completed
     raise 'there is no story to expect' if socket.script.events.empty?
-    yield
+    if Net::SSH::Test::Extensions::IO.respond_to? :with_test_extension
+      Net::SSH::Test::Extensions::IO.with_test_extension { yield }
+    else
+      yield
+    end
     expect(socket.script.events)
       .to be_empty, "#{socket.script.events.count} story events still pending"
   end

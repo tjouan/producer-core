@@ -101,7 +101,9 @@ module Producer::Core
           ch.sends_exec command
           ch.gets_data arguments
         end
-        expect(remote.execute command).to eq arguments
+        expect_story_completed do
+          expect(remote.execute command).to eq arguments
+        end
       end
 
       it 'writes command standard output to provided output' do
@@ -109,7 +111,9 @@ module Producer::Core
           ch.sends_exec command
           ch.gets_data arguments
         end
-        remote.execute command, output
+        expect_story_completed do
+          remote.execute command, output
+        end
         expect(output.string).to eq arguments
       end
 
@@ -119,7 +123,9 @@ module Producer::Core
           ch.sends_exec command
           ch.gets_extended_data arguments
         end
-        remote.execute command, output, error_output
+        expect_story_completed do
+          remote.execute command, output, error_output
+        end
         expect(error_output.string).to eq arguments
       end
 
@@ -133,12 +139,21 @@ module Producer::Core
         end
 
         it 'raises an exception' do
-          expect { remote.execute command }
+          expect do
+            expect_story_completed do
+              remote.execute command
+            end
+          end
             .to raise_error RemoteCommandExecutionError
         end
 
         it 'includes the command in the exception message' do
-          expect { remote.execute command }.to raise_error /#{command}/
+          expect do
+            expect_story_completed do
+              remote.execute command
+            end
+          end
+            .to raise_error /#{command}/
         end
       end
     end
